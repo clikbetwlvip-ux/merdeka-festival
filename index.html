@@ -1,391 +1,463 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
-  <title>Festival Game CLICKBET88</title>
+  <meta name="theme-color" content="#5f0610">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
+  <meta
+    name="description"
+    content="Festival Kemerdekaan CLICKBET88 2026"
   >
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap"
-    rel="stylesheet"
-  >
+  <title>CLICKBET88 | Festival Kemerdekaan 2026</title>
 
-  <link rel="stylesheet" href="./style.css?v=100">
+  <!-- CSS utama -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="background"></div>
-  <div class="background-overlay"></div>
+  <!-- =========================================
+       CANVAS EFEK
+       Untuk confetti, kembang api dan partikel
+  ========================================== -->
+  <canvas id="effectCanvas" aria-hidden="true"></canvas>
 
-  <header class="topbar">
 
-    <div class="brand">
-      <span class="brand-main">CLICK</span>
-      <span class="brand-accent">BET88</span>
-    </div>
+  <!-- =========================================
+       LOADING SCREEN
+  ========================================== -->
+  <div id="loadingScreen" class="loading-screen">
 
-    <div class="player-info hidden" id="playerInfo">
-      <span>ID MEMBER</span>
-      <strong id="playerName">-</strong>
-    </div>
+    <div class="loading-glow"></div>
 
-  </header>
+    <div class="loading-content">
 
-  <main class="app-shell">
-
-    <!-- LOGIN -->
-    <section class="login-screen" id="loginScreen">
-
-      <div class="login-card">
-
-        <span class="eyebrow">
-          EVENT KEMERDEKAAN 2026
-        </span>
-
-        <h1>
-          FESTIVAL
-          <strong>3 GAME</strong>
-        </h1>
-
-        <p>
-          Masukkan ID member untuk masuk ke lobby
-          dan memilih permainan.
-        </p>
-
-        <form id="loginForm">
-
-          <label for="memberId">
-            ID MEMBER
-          </label>
-
-          <div class="login-row">
-
-            <input
-              type="text"
-              id="memberId"
-              maxlength="20"
-              placeholder="Masukkan ID member"
-              autocomplete="off"
-            >
-
-            <button
-              type="submit"
-              id="loginButton"
-              disabled
-            >
-              MASUK
-            </button>
-
-          </div>
-
-          <small>
-            Minimal 3 karakter.
-          </small>
-
-        </form>
-
+      <div class="loading-logo">
+        CLICKBET<span>88</span>
       </div>
 
-    </section>
+      <p>MENYIAPKAN FESTIVAL</p>
 
-    <!-- LOBBY -->
-    <section class="lobby-screen hidden" id="lobbyScreen">
-
-      <div class="lobby-heading">
-
-        <div>
-          <span class="eyebrow">
-            PILIH PERMAINAN
-          </span>
-
-          <h2>
-            Mystery Box Festival
-          </h2>
-
-          <p>
-            Pilih salah satu permainan di bawah ini.
-          </p>
-        </div>
-
-        <div class="ticket-box">
-          <span>SISA TIKET</span>
-          <strong id="ticketCount">8</strong>
-        </div>
-
+      <div class="loading-bar">
+        <div id="loadingProgress" class="loading-progress"></div>
       </div>
 
-      <div class="game-grid">
-
-        <!-- PANJAT PINANG -->
-        <article class="game-card game-card-pinang">
-
-          <div class="game-icon">
-            🎁
-          </div>
-
-          <span class="game-tag">
-            GAME 01
-          </span>
-
-          <h3>
-            Panjat Pinang
-          </h3>
-
-          <p>
-            Panjat sampai puncak dan raih Mystery Box.
-          </p>
-
-          <div class="game-prize">
-            Hadiah hingga Rp500.000
-          </div>
-
-          <div class="game-actions">
-
-            <button
-              type="button"
-              class="play-button"
-              data-game="pinang"
-            >
-              MAINKAN
-            </button>
-
-            <button
-              type="button"
-              class="terms-button"
-              data-terms="pinang"
-            >
-              LIHAT S&K
-            </button>
-
-          </div>
-
-        </article>
-
-        <!-- MAKAN KERUPUK -->
-        <article class="game-card game-card-kerupuk">
-
-          <div class="game-icon">
-            🍘
-          </div>
-
-          <span class="game-tag">
-            GAME 02
-          </span>
-
-          <h3>
-            Makan Kerupuk
-          </h3>
-
-          <p>
-            Klik secepat mungkin sampai kerupuk habis.
-          </p>
-
-          <div class="game-prize">
-            Hadiah hingga Rp500.000
-          </div>
-
-          <div class="game-actions">
-
-            <button
-              type="button"
-              class="play-button"
-              data-game="kerupuk"
-            >
-              MAINKAN
-            </button>
-
-            <button
-              type="button"
-              class="terms-button"
-              data-terms="kerupuk"
-            >
-              LIHAT S&K
-            </button>
-
-          </div>
-
-        </article>
-
-        <!-- KELERENG -->
-        <article class="game-card game-card-kelereng">
-
-          <div class="game-icon">
-            ⚪
-          </div>
-
-          <span class="game-tag">
-            GAME 03
-          </span>
-
-          <h3>
-            Lomba Kelereng
-          </h3>
-
-          <p>
-            Jaga keseimbangan sampai garis finis.
-          </p>
-
-          <div class="game-prize">
-            Hadiah hingga Rp500.000
-          </div>
-
-          <div class="game-actions">
-
-            <button
-              type="button"
-              class="play-button"
-              data-game="kelereng"
-            >
-              MAINKAN
-            </button>
-
-            <button
-              type="button"
-              class="terms-button"
-              data-terms="kelereng"
-            >
-              LIHAT S&K
-            </button>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </section>
-
-    <!-- TEMPAT GAME -->
-    <section class="game-screen hidden" id="gameScreen">
-
-      <div class="game-screen-header">
-
-        <button
-          type="button"
-          class="back-button"
-          id="backToLobby"
-        >
-          ← KEMBALI KE LOBBY
-        </button>
-
-        <div>
-          <span class="eyebrow">
-            PERMAINAN
-          </span>
-
-          <h2 id="activeGameTitle">
-            Nama Game
-          </h2>
-        </div>
-
-      </div>
-
-      <div class="game-placeholder">
-
-        <div class="placeholder-icon" id="activeGameIcon">
-          🎮
-        </div>
-
-        <h3 id="placeholderTitle">
-          Game sedang disiapkan
-        </h3>
-
-        <p id="placeholderText">
-          Gameplay akan dimasukkan pada tahap berikutnya.
-        </p>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- POPUP S&K -->
-  <div class="modal hidden" id="termsModal">
-
-    <div class="modal-box">
-
-      <button
-        type="button"
-        class="modal-close"
-        id="closeTermsModal"
-      >
-        ×
-      </button>
-
-      <span class="eyebrow">
-        SYARAT & KETENTUAN
-      </span>
-
-      <h2 id="termsTitle">
-        Mystery Box
-      </h2>
-
-      <div class="terms-content">
-
-        <p>
-          <strong>Syarat:</strong>
-          Kalah Rp50.000 mendapatkan 1 tiket.
-        </p>
-
-        <p>
-          <strong>Limit:</strong>
-          Maksimal 8 tiket per hari untuk setiap akun.
-        </p>
-
-        <p>
-          <strong>Batas Klaim:</strong>
-          Tiket wajib digunakan pada hari yang sama.
-          Tiket yang tidak digunakan akan hangus
-          setelah pergantian hari.
-        </p>
-
-        <p>
-          <strong>Hadiah:</strong>
-          Kesempatan mendapatkan saldo Rp5.000,
-          Rp10.000, Rp25.000, Rp50.000,
-          Rp100.000, Rp250.000,
-          Rp350.000, atau Rp500.000.
-        </p>
-
-        <p>
-          <strong>Ketentuan:</strong>
-          Hasil undian sistem bersifat mutlak dan final.
-          Admin berhak membatalkan tiket maupun hadiah
-          apabila ditemukan indikasi kecurangan.
-          Promo tidak dapat digabungkan dengan bonus lain,
-          kecuali Bonus Point Rungkat.
-        </p>
-
-      </div>
-
-      <button
-        type="button"
-        class="modal-confirm"
-        id="confirmTerms"
-      >
-        SAYA MENGERTI
-      </button>
+      <span id="loadingText">0%</span>
 
     </div>
 
   </div>
 
-  <script src="./script.js?v=100"></script>
 
-</body>
-</html>
+  <!-- =========================================
+       APP UTAMA
+  ========================================== -->
+  <main id="gameApp" class="game-app">
+
+
+    <!-- =========================================
+         OPENING CINEMATIC
+    ========================================== -->
+    <section
+      id="openingScreen"
+      class="screen opening-screen active"
+    >
+
+      <!-- Background dekorasi -->
+      <div class="opening-background">
+
+        <div class="opening-gradient"></div>
+
+        <div class="opening-light opening-light-left"></div>
+        <div class="opening-light opening-light-right"></div>
+
+        <div class="opening-cloud cloud-one"></div>
+        <div class="opening-cloud cloud-two"></div>
+
+        <div class="opening-particle particle-one"></div>
+        <div class="opening-particle particle-two"></div>
+        <div class="opening-particle particle-three"></div>
+
+        <div class="opening-flag flag-left">
+          <span class="flag-red"></span>
+          <span class="flag-white"></span>
+        </div>
+
+        <div class="opening-flag flag-right">
+          <span class="flag-red"></span>
+          <span class="flag-white"></span>
+        </div>
+
+      </div>
+
+
+      <!-- Isi opening -->
+      <div class="opening-content">
+
+        <div class="opening-emblem">
+          <span class="emblem-star">★</span>
+          <span class="emblem-text">SPECIAL EVENT</span>
+          <span class="emblem-star">★</span>
+        </div>
+
+
+        <div class="opening-logo-wrapper">
+
+          <p class="opening-year">2026</p>
+
+          <h1 class="main-logo">
+            CLICKBET<span>88</span>
+          </h1>
+
+          <div class="logo-line"></div>
+
+        </div>
+
+
+        <div class="festival-title">
+
+          <span class="festival-small-title">
+            🇮🇩 SEMARAK KEMERDEKAAN 🇮🇩
+          </span>
+
+          <h2>
+            FESTIVAL
+            <strong>KEMERDEKAAN</strong>
+          </h2>
+
+          <p>
+            Mainkan perlombaan seru, raih kemenangan,
+            lalu buka Mystery Box berhadiah.
+          </p>
+
+        </div>
+
+
+        <div class="opening-prize">
+
+          <small>TOTAL HADIAH MYSTERY BOX</small>
+
+          <strong>
+            Hingga Rp500.000
+          </strong>
+
+        </div>
+
+
+        <button
+          id="enterFestivalButton"
+          class="primary-button gold-button opening-button"
+          type="button"
+        >
+
+          <span class="button-glow"></span>
+
+          <span class="button-icon">🎮</span>
+
+          <span class="button-text">
+            MASUK FESTIVAL
+          </span>
+
+          <span class="button-arrow">➜</span>
+
+        </button>
+
+
+        <button
+          id="soundToggleButton"
+          class="sound-toggle-button"
+          type="button"
+          aria-label="Aktifkan atau matikan suara"
+        >
+
+          <span id="soundToggleIcon">🔊</span>
+
+          <span id="soundToggleText">
+            Suara Aktif
+          </span>
+
+        </button>
+
+
+        <p class="opening-footer-text">
+          Gunakan mode layar penuh untuk pengalaman terbaik
+        </p>
+
+      </div>
+
+
+      <!-- Dekorasi bawah -->
+      <div class="opening-stage-decoration">
+
+        <div class="stage-lamp lamp-one"></div>
+        <div class="stage-lamp lamp-two"></div>
+        <div class="stage-lamp lamp-three"></div>
+        <div class="stage-lamp lamp-four"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         LOGIN SCREEN
+    ========================================== -->
+    <section
+      id="loginScreen"
+      class="screen login-screen"
+    >
+
+      <!-- Background -->
+      <div class="login-background">
+
+        <div class="login-gradient"></div>
+
+        <div class="login-decoration decoration-left"></div>
+        <div class="login-decoration decoration-right"></div>
+
+        <div class="login-lampion lampion-one">🏮</div>
+        <div class="login-lampion lampion-two">🏮</div>
+        <div class="login-lampion lampion-three">🏮</div>
+
+        <div class="login-firework firework-one">✦</div>
+        <div class="login-firework firework-two">✦</div>
+
+      </div>
+
+
+      <!-- Tombol kembali -->
+      <button
+        id="backToOpeningButton"
+        class="back-button"
+        type="button"
+        aria-label="Kembali ke halaman opening"
+      >
+        <span>←</span>
+      </button>
+
+
+      <!-- Login layout -->
+      <div class="login-layout">
+
+
+        <!-- Sisi ilustrasi -->
+        <div class="login-visual">
+
+          <div class="visual-badge">
+            FESTIVAL 2026
+          </div>
+
+          <div class="visual-character-wrapper">
+
+            <div class="character-light"></div>
+
+            <div class="character-placeholder">
+              <span class="character-head">😎</span>
+              <span class="character-body">🇮🇩</span>
+            </div>
+
+          </div>
+
+
+          <div class="visual-copy">
+
+            <span>SELAMAT DATANG DI</span>
+
+            <h2>
+              Arena Permainan
+              <strong>Kemerdekaan</strong>
+            </h2>
+
+            <p>
+              Tiga permainan seru dan Mystery Box
+              menantimu di dalam festival.
+            </p>
+
+          </div>
+
+
+          <div class="visual-feature-list">
+
+            <div class="visual-feature">
+              <span>🎁</span>
+
+              <div>
+                <strong>Mystery Box</strong>
+                <small>Hadiah hingga Rp500.000</small>
+              </div>
+            </div>
+
+
+            <div class="visual-feature">
+              <span>🎮</span>
+
+              <div>
+                <strong>3 Mini Game</strong>
+                <small>Panjat Pinang, Kerupuk, Kelereng</small>
+              </div>
+            </div>
+
+
+            <div class="visual-feature">
+              <span>🏆</span>
+
+              <div>
+                <strong>Riwayat Hadiah</strong>
+                <small>Lihat kemenanganmu hari ini</small>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Form login -->
+        <div class="login-card">
+
+          <div class="login-card-shine"></div>
+
+
+          <div class="login-logo">
+            CLICKBET<span>88</span>
+          </div>
+
+
+          <div class="login-heading">
+
+            <span class="section-label">
+              PLAYER LOGIN
+            </span>
+
+            <h2>Masuk ke Festival</h2>
+
+            <p>
+              Silakan masukkan ID member untuk memulai permainan.
+            </p>
+
+          </div>
+
+
+          <form
+            id="loginForm"
+            class="login-form"
+            autocomplete="off"
+          >
+
+            <label
+              class="input-group"
+              for="memberIdInput"
+            >
+
+              <span class="input-label">
+                ID MEMBER
+              </span>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">👤</span>
+
+                <input
+                  id="memberIdInput"
+                  name="memberId"
+                  type="text"
+                  maxlength="24"
+                  placeholder="Contoh: PLAYER123"
+                  spellcheck="false"
+                  required
+                >
+
+                <span
+                  id="memberValidIcon"
+                  class="input-valid-icon"
+                >
+                  ✓
+                </span>
+
+              </div>
+
+              <small
+                id="memberInputMessage"
+                class="input-message"
+              >
+                Gunakan ID member yang terdaftar.
+              </small>
+
+            </label>
+
+
+            <label class="agreement-row">
+
+              <input
+                id="termsAgreementInput"
+                type="checkbox"
+              >
+
+              <span class="custom-checkbox"></span>
+
+              <span class="agreement-text">
+                Saya telah membaca dan menyetujui
+                <button
+                  id="openLoginTermsButton"
+                  type="button"
+                  class="inline-link-button"
+                >
+                  Syarat &amp; Ketentuan
+                </button>
+              </span>
+
+            </label>
+
+
+            <button
+              id="loginButton"
+              class="primary-button red-button login-button"
+              type="submit"
+              disabled
+            >
+
+              <span class="button-glow"></span>
+
+              <span class="button-icon">🚀</span>
+
+              <span class="button-text">
+                MASUK SEKARANG
+              </span>
+
+              <span class="button-arrow">➜</span>
+
+            </button>
+
+          </form>
+
+
+          <div class="login-security">
+
+            <span class="security-icon">🛡️</span>
+
+            <p>
+              Progres demo tersimpan secara otomatis
+              di perangkat ini.
+            </p>
+
+          </div>
+
+
+          <p class="login-version">
+            MERDEKA FESTIVAL • VERSION 1.0
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
