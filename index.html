@@ -1,75 +1,61 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLICKBET88 - Panjat Pinang</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 
-<title>CLICKBET88 | Arena Lomba</title>
-
-<link rel="stylesheet" href="style.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<div class="background"></div>
+<div id="loadingScreen" class="screen hidden">
+    <div class="loading-box">
+        <h1>MEMASUKI ARENA...</h1>
+        <div class="loading-bar">
+            <div id="loadingFill"></div>
+        </div>
+    </div>
+</div>
 
-<div class="overlay"></div>
-
-<div class="container">
-
-    <!-- KIRI -->
+<div id="loginScreen" class="screen">
 
     <div class="left">
 
-        <div class="logo">
-
-            CLICKBET<span>88</span>
-
-        </div>
-
-        <h4>EVENT KEMERDEKAAN 2026</h4>
+        <h4>EVENT KEMERDEKAAN</h4>
 
         <h1>PANJAT PINANG</h1>
 
-        <div class="badge">
-
-            17 AGUSTUS
-
-        </div>
-
         <p>
 
-            Masuk ke arena, kalahkan lawan,
-            panjat tiang hingga puncak,
-            lalu buka Mystery Box untuk
-            mendapatkan hadiah.
+            Masuk ke arena.
+
+            Panjat hingga puncak.
+
+            Buka Mystery Box.
+
+            Raih hadiah.
 
         </p>
 
     </div>
 
-    <!-- KANAN -->
-
     <div class="right">
 
-        <div class="login-card">
+        <div class="card">
 
-            <h2>MASUK KE ARENA</h2>
-
-            <label>ID MEMBER</label>
+            <h2>MASUK ARENA</h2>
 
             <input
-            type="text"
-            id="memberID"
-            placeholder="Masukkan ID Member">
+                id="memberID"
+                placeholder="Masukkan ID Member">
 
             <button id="loginBtn">
 
-                MASUK KE ARENA
+                MULAI BERMAIN
 
             </button>
 
@@ -79,8 +65,67 @@
 
 </div>
 
+<div id="gameScreen" class="screen hidden">
+
+    <div class="header">
+
+        <h1>PANJAT PINANG</h1>
+
+    </div>
+
+    <div class="arena">
+
+        <div id="box">
+
+            🎁
+
+        </div>
+
+        <div id="pole"></div>
+
+        <div id="player">
+
+            🧍
+
+        </div>
+
+    </div>
+
+    <div class="progress">
+
+        <div id="progressFill"></div>
+
+    </div>
+
+    <button id="climbBtn">
+
+        PANJAT
+
+    </button>
+
+</div>
+
+<div id="rewardScreen" class="screen hidden">
+
+    <h1>
+
+        🎉 SELAMAT 🎉
+
+    </h1>
+
+    <h2 id="rewardText">
+
+    </h2>
+
+    <button onclick="location.reload()">
+
+        MAIN LAGI
+
+    </button>
+
+</div>
+
 <script src="script.js"></script>
 
 </body>
-
 </html>
