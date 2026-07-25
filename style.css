@@ -1,1 +1,263 @@
+/* ==========================
+   RESET
+========================== */
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#071533;
+    overflow:hidden;
+}
+
+/* ==========================
+   BACKGROUND
+========================== */
+
+.background{
+
+    position:fixed;
+    inset:0;
+
+    background:
+    radial-gradient(circle at top,#1b4fa8,#071533 70%);
+
+    z-index:-2;
+
+}
+
+.background::before{
+
+    content:"CLICKBET88   CLICKBET88   CLICKBET88   CLICKBET88";
+
+    position:absolute;
+
+    width:100%;
+
+    top:80px;
+
+    left:-100px;
+
+    font-size:55px;
+
+    color:rgba(255,255,255,.03);
+
+    transform:rotate(-15deg);
+
+    font-weight:bold;
+
+}
+
+/* ==========================
+   CONTAINER
+========================== */
+
+.container{
+
+    width:1200px;
+
+    max-width:95%;
+
+    margin:auto;
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+/* ==========================
+   LEFT
+========================== */
+
+.left{
+
+    width:45%;
+
+}
+
+.logo{
+
+    width:240px;
+
+    margin-bottom:25px;
+
+}
+
+.left h1{
+
+    color:#ffd43b;
+
+    font-family:'Oswald',sans-serif;
+
+    font-size:64px;
+
+    line-height:65px;
+
+}
+
+.badge{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    margin-bottom:25px;
+
+    padding:10px 22px;
+
+    background:#d80027;
+
+    color:white;
+
+    font-weight:bold;
+
+    border-radius:8px;
+
+}
+
+.left p{
+
+    color:white;
+
+    line-height:30px;
+
+    font-size:18px;
+
+    width:400px;
+
+}
+
+/* ==========================
+   RIGHT
+========================== */
+
+.right{
+
+    width:420px;
+
+}
+
+.card{
+
+    border:1px solid rgba(255,193,7,.45);
+
+    border-radius:14px;
+
+    padding:35px;
+
+    background:rgba(9,18,45,.72);
+
+    backdrop-filter:blur(12px);
+
+}
+
+.card h2{
+
+    color:white;
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+    font-family:'Oswald',sans-serif;
+
+}
+
+.card label{
+
+    color:#ffd43b;
+
+    font-size:13px;
+
+    display:block;
+
+    margin-bottom:8px;
+
+}
+
+.card input{
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:8px;
+
+    border:1px solid #ffb300;
+
+    background:#071533;
+
+    color:white;
+
+    outline:none;
+
+    margin-bottom:20px;
+
+}
+
+#loginBtn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#ff163d;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    margin-bottom:15px;
+
+}
+
+#loginBtn:hover{
+
+    transform:scale(1.02);
+
+    background:#ff3157;
+
+}
+
+.back{
+
+    width:100%;
+
+    padding:15px;
+
+    background:transparent;
+
+    border:1px solid #c89b3c;
+
+    color:#c89b3c;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.back:hover{
+
+    background:#c89b3c;
+
+    color:#071533;
+
+}
