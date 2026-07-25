@@ -799,3 +799,485 @@ body{
 
     font-size: 10px;
 }
+
+/* =========================
+   CHARACTER
+========================= */
+
+.character {
+    position: absolute;
+
+    left: 50%;
+    bottom: 12px;
+
+    width: 90px;
+    height: 145px;
+
+    transform: translateX(-50%);
+
+    transition:
+        bottom 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    z-index: 5;
+}
+
+.character-head {
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    width: 42px;
+    height: 42px;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: #f1b57b;
+
+    box-shadow:
+        inset 0 -4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.character-head::before {
+    content: "";
+
+    position: absolute;
+
+    top: -3px;
+    left: 3px;
+
+    width: 36px;
+    height: 20px;
+
+    border-radius: 50% 50% 35% 35%;
+
+    background: #191919;
+}
+
+.character-body {
+    position: absolute;
+
+    top: 39px;
+    left: 50%;
+
+    width: 54px;
+    height: 65px;
+
+    transform: translateX(-50%);
+
+    border-radius: 16px 16px 12px 12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ef4444,
+            #b91c1c
+        );
+
+    border-bottom:
+        11px solid #ffffff;
+}
+
+.character-arm,
+.character-leg {
+    position: absolute;
+
+    border-radius: 20px;
+}
+
+.character-arm {
+    top: 49px;
+
+    width: 17px;
+    height: 52px;
+
+    background: #f1b57b;
+}
+
+.arm-left {
+    left: 12px;
+
+    transform:
+        rotate(28deg);
+}
+
+.arm-right {
+    right: 12px;
+
+    transform:
+        rotate(-28deg);
+}
+
+.character-leg {
+    top: 97px;
+
+    width: 18px;
+    height: 48px;
+
+    background: #243b7a;
+}
+
+.leg-left {
+    left: 26px;
+
+    transform:
+        rotate(7deg);
+}
+
+.leg-right {
+    right: 26px;
+
+    transform:
+        rotate(-7deg);
+}
+
+/* =========================
+   GIFT BOX
+========================= */
+
+.gift-box {
+    position: relative;
+
+    width: 150px;
+    height: 130px;
+
+    margin-bottom: 8px;
+
+    animation:
+        giftFloat 2.4s ease-in-out infinite;
+}
+
+@keyframes giftFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.gift-body {
+    position: absolute;
+
+    left: 15px;
+    right: 15px;
+    bottom: 0;
+
+    height: 95px;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ef2222,
+            #9d0000
+        );
+
+    border:
+        5px solid #ffd45a;
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.35),
+        0 0 22px rgba(255, 213, 45, 0.25);
+}
+
+.gift-lid {
+    position: absolute;
+
+    top: 20px;
+    left: 6px;
+    right: 6px;
+
+    height: 35px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ff3535,
+            #bd0000
+        );
+
+    border:
+        5px solid #ffd45a;
+
+    z-index: 3;
+}
+
+.gift-ribbon-v {
+    position: absolute;
+
+    top: 20px;
+    bottom: 0;
+    left: 50%;
+
+    width: 19px;
+
+    transform: translateX(-50%);
+
+    background: #ffd45a;
+
+    z-index: 4;
+}
+
+.gift-ribbon-h {
+    position: absolute;
+
+    left: 15px;
+    right: 15px;
+    top: 73px;
+
+    height: 18px;
+
+    background: #ffd45a;
+
+    z-index: 4;
+}
+
+.gift-number {
+    position: absolute;
+
+    left: 50%;
+    bottom: 20px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 62px;
+    height: 62px;
+
+    border-radius: 50%;
+
+    background: #b40000;
+
+    border:
+        4px solid #ffd45a;
+
+    color: #ffd45a;
+
+    font-size: 28px;
+    font-weight: 900;
+
+    z-index: 5;
+}
+
+/* =========================
+   RESULT MODAL
+========================= */
+
+.result-modal {
+    position: fixed;
+
+    inset: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 20px;
+
+    background:
+        rgba(7, 4, 24, 0.84);
+
+    backdrop-filter: blur(6px);
+
+    z-index: 500;
+}
+
+.result-box {
+    position: relative;
+
+    width: 100%;
+    max-width: 360px;
+
+    padding: 30px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #34205c,
+            #21153e
+        );
+
+    border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.55);
+
+    text-align: center;
+
+    animation:
+        modalEnter 0.35s ease both;
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform:
+            translateY(22px)
+            scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 8px;
+    right: 12px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #fff;
+
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+.result-box h2 {
+    margin-bottom: 8px;
+
+    color: var(--yellow);
+
+    font-size: 30px;
+}
+
+.result-box p {
+    margin-bottom: 18px;
+
+    color:
+        rgba(255, 255, 255, 0.67);
+
+    font-size: 11px;
+}
+
+/* =========================
+   POPUP GIFT
+========================= */
+
+.popup-gift {
+    position: relative;
+
+    width: 130px;
+    height: 115px;
+
+    margin:
+        0 auto
+        12px;
+}
+
+.popup-gift-body {
+    position: absolute;
+
+    left: 15px;
+    right: 15px;
+    bottom: 0;
+
+    height: 80px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ef2222,
+            #9d0000
+        );
+
+    border:
+        5px solid #ffd45a;
+}
+
+.popup-gift-lid {
+    position: absolute;
+
+    top: 16px;
+    left: 5px;
+    right: 5px;
+
+    height: 32px;
+
+    border-radius: 11px;
+
+    background: #d60000;
+
+    border:
+        5px solid #ffd45a;
+
+    z-index: 2;
+}
+
+.popup-gift-ribbon {
+    position: absolute;
+
+    top: 16px;
+    bottom: 0;
+    left: 50%;
+
+    width: 18px;
+
+    transform: translateX(-50%);
+
+    background: #ffd45a;
+
+    z-index: 3;
+}
+
+/* =========================
+   CONFETTI
+========================= */
+
+.confetti-container {
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    z-index: 600;
+}
+
+.confetti-piece {
+    position: absolute;
+
+    top: -25px;
+
+    width: 9px;
+    height: 15px;
+
+    animation:
+        confettiFall 1.8s linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform:
+            translateY(110vh)
+            rotate(720deg);
+
+        opacity: 0.2;
+    }
+}
