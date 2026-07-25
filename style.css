@@ -1,186 +1,235 @@
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
 }
 
 body{
-    font-family:'Poppins',sans-serif;
-    overflow:hidden;
-    background:#071b34;
-    color:#fff;
+background:linear-gradient(180deg,#1d4ed8,#0f172a);
+overflow:hidden;
+color:white;
 }
 
-.background{
-    position:fixed;
-    inset:0;
-    background:
-    radial-gradient(circle at top,#184a8d 0%,#071b34 60%,#030b15 100%);
-    z-index:-3;
+.screen{
+width:100%;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+position:absolute;
+top:0;
+left:0;
+transition:.5s;
 }
 
-.background::before{
-    content:"";
-    position:absolute;
-    width:700px;
-    height:700px;
-    background:rgba(255,210,0,.08);
-    border-radius:50%;
-    top:-250px;
-    left:-150px;
-    filter:blur(90px);
+.hidden{
+display:none;
 }
 
-.background::after{
-    content:"";
-    position:absolute;
-    width:500px;
-    height:500px;
-    background:rgba(255,0,0,.08);
-    border-radius:50%;
-    bottom:-180px;
-    right:-120px;
-    filter:blur(100px);
-}
-
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.15);
-    z-index:-2;
-}
-
-.container{
-    width:100%;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:80px;
+#loginScreen{
+justify-content:space-between;
+padding:80px;
 }
 
 .left{
-    width:50%;
-}
-
-.logo{
-    font-size:55px;
-    font-family:'Oswald',sans-serif;
-    font-weight:700;
-    color:#ffffff;
-}
-
-.logo span{
-    color:#FFD200;
+width:45%;
 }
 
 .left h4{
-    color:#FFD200;
-    margin-top:20px;
-    letter-spacing:2px;
+color:#FFD700;
+font-size:20px;
+margin-bottom:20px;
 }
 
 .left h1{
-    margin-top:10px;
-    font-size:75px;
-    line-height:1;
-}
-
-.badge{
-    display:inline-block;
-    margin-top:30px;
-    background:#d61d1d;
-    padding:12px 28px;
-    border-radius:50px;
-    font-weight:bold;
+font-size:70px;
+line-height:1;
+margin-bottom:20px;
 }
 
 .left p{
-    margin-top:35px;
-    max-width:520px;
-    line-height:1.8;
-    color:#ddd;
+font-size:22px;
+line-height:1.8;
+color:#ddd;
 }
 
 .right{
-    width:40%;
-    display:flex;
-    justify-content:center;
+width:40%;
+display:flex;
+justify-content:center;
 }
 
-.login-card{
-    width:100%;
-    max-width:420px;
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(16px);
-    border:1px solid rgba(255,255,255,.15);
-    border-radius:25px;
-    padding:40px;
-    box-shadow:0 20px 50px rgba(0,0,0,.4);
+.card{
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(20px);
+padding:40px;
+border-radius:20px;
+width:420px;
+box-shadow:0 20px 40px rgba(0,0,0,.4);
 }
 
-.login-card h2{
-    margin-bottom:30px;
-    text-align:center;
+.card h2{
+text-align:center;
+margin-bottom:25px;
 }
 
-.login-card label{
-    display:block;
-    margin-bottom:10px;
+.card input{
+width:100%;
+padding:16px;
+border:none;
+border-radius:10px;
+margin-bottom:20px;
+font-size:18px;
 }
 
-.login-card input{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    margin-bottom:25px;
-    font-size:16px;
-    outline:none;
+.card button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:10px;
+background:#dc2626;
+color:white;
+font-size:18px;
+cursor:pointer;
+transition:.3s;
 }
 
-.login-card button{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:12px;
-    background:#d61d1d;
-    color:white;
-    font-weight:bold;
-    font-size:16px;
-    cursor:pointer;
-    transition:.3s;
+.card button:hover{
+transform:translateY(-3px);
+background:#ef4444;
 }
 
-.login-card button:hover{
-    transform:translateY(-3px);
-    background:#f12525;
-    box-shadow:0 10px 25px rgba(255,0,0,.4);
+.loading-box{
+width:500px;
+text-align:center;
+}
+
+.loading-bar{
+margin-top:30px;
+height:18px;
+background:#ffffff33;
+border-radius:30px;
+overflow:hidden;
+}
+
+#loadingFill{
+width:0%;
+height:100%;
+background:#FFD700;
+transition:.2s;
+}
+
+#gameScreen{
+flex-direction:column;
+}
+
+.header{
+margin-top:20px;
+}
+
+.arena{
+position:relative;
+width:350px;
+height:600px;
+margin-top:20px;
+}
+
+#pole{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+width:40px;
+height:500px;
+background:#8B4513;
+bottom:40px;
+border-radius:20px;
+}
+
+#box{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+top:20px;
+font-size:60px;
+}
+
+#player{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+bottom:20px;
+font-size:55px;
+transition:.2s;
+}
+
+.progress{
+margin-top:20px;
+width:400px;
+height:22px;
+background:#ffffff22;
+border-radius:30px;
+overflow:hidden;
+}
+
+#progressFill{
+width:0%;
+height:100%;
+background:#22c55e;
+transition:.2s;
+}
+
+#climbBtn{
+margin-top:25px;
+padding:18px 50px;
+font-size:22px;
+border:none;
+border-radius:15px;
+background:#dc2626;
+color:white;
+cursor:pointer;
+}
+
+#rewardScreen{
+flex-direction:column;
+gap:20px;
+}
+
+#rewardScreen button{
+padding:18px 40px;
+font-size:20px;
+border:none;
+border-radius:12px;
+background:#16a34a;
+color:white;
+cursor:pointer;
 }
 
 @media(max-width:900px){
 
-.container{
-    flex-direction:column;
-    padding:40px 20px;
-    text-align:center;
+#loginScreen{
+flex-direction:column;
+padding:30px;
+text-align:center;
 }
 
 .left,
 .right{
-    width:100%;
+width:100%;
 }
 
 .left h1{
-    font-size:50px;
+font-size:50px;
 }
 
-.left p{
-    margin:30px auto;
+.card{
+width:100%;
+max-width:420px;
+margin-top:30px;
 }
 
-.login-card{
-    margin-top:30px;
+.progress{
+width:90%;
 }
 
 }
