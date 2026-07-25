@@ -3,240 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLICKBET88 - Panjat Pinang 2026</title>
 
-<title>CLICKBET88 | Panjat Pinang 2026</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-}
-
-body{
-
-background:linear-gradient(180deg,#0d0d0d,#181818,#101010);
-
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-
-overflow:hidden;
-
-}
-
-.card{
-
-width:420px;
-
-background:#171717;
-
-border:2px solid #d4af37;
-
-border-radius:20px;
-
-padding:40px;
-
-text-align:center;
-
-box-shadow:0 0 50px rgba(255,215,0,.25);
-
-animation:fade .7s;
-
-}
-
-@keyframes fade{
-
-from{
-
-opacity:0;
-transform:translateY(40px);
-
-}
-
-to{
-
-opacity:1;
-transform:translateY(0);
-
-}
-
-}
-
-.logo{
-
-font-size:42px;
-
-font-weight:bold;
-
-color:#FFD700;
-
-}
-
-.logo span{
-
-color:#ff2a2a;
-
-}
-
-.subtitle{
-
-margin-top:8px;
-
-color:#fff;
-
-font-size:18px;
-
-}
-
-.event{
-
-margin-top:25px;
-
-background:#ff2a2a;
-
-display:inline-block;
-
-padding:8px 18px;
-
-border-radius:30px;
-
-font-weight:bold;
-
-color:white;
-
-}
-
-input{
-
-margin-top:30px;
-
-width:100%;
-
-padding:16px;
-
-border-radius:10px;
-
-border:none;
-
-background:#2b2b2b;
-
-color:white;
-
-font-size:18px;
-
-}
-
-button{
-
-margin-top:20px;
-
-width:100%;
-
-padding:16px;
-
-border:none;
-
-border-radius:10px;
-
-background:#FFD700;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-button:hover{
-
-background:#ffce00;
-
-transform:scale(1.03);
-
-}
-
-.footer{
-
-margin-top:25px;
-
-font-size:13px;
-
-color:#999;
-
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
-
 <body>
 
-<div class="card">
+<div class="background"></div>
 
-<div class="logo">
+<div class="login-box">
 
-CLICK<span>BET88</span>
+    <img src="assets/logo.png" class="logo">
 
-</div>
+    <h1>CLICKBET88</h1>
 
-<div class="subtitle">
+    <p class="sub">
+        🇮🇩 EVENT PANJAT PINANG 2026 🇮🇩
+    </p>
 
-KING OF SPORT
+    <input
+        id="member"
+        type="text"
+        placeholder="Masukkan ID Member">
 
-</div>
+    <button onclick="login()">
+        MASUK GAME
+    </button>
 
-<div class="event">
+    <div class="info">
 
-🇮🇩 EVENT PANJAT PINANG 2026 🇮🇩
+        <p>ID harus didaftarkan Admin.</p>
 
-</div>
+        <small>
+        Powered By CLICKBET88
+        </small>
 
-<input
-id="member"
-placeholder="Masukkan ID Member">
-
-<button onclick="login()">
-
-MASUK GAME
-
-</button>
-
-<div class="footer">
-
-Powered by CLICKBET88
+    </div>
 
 </div>
 
-</div>
-
-<script>
-
-function login(){
-
-let id=document.getElementById("member").value;
-
-if(id==""){
-
-alert("Masukkan ID Member");
-
-return;
-
-}
-
-alert("Selamat datang "+id);
-
-location.href="player.html";
-
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
