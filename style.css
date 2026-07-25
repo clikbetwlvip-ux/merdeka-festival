@@ -1281,3 +1281,125 @@ body{
         opacity: 0.2;
     }
 }
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+    .page-wrapper {
+        padding: 100px 20px 30px;
+    }
+
+    .game-area {
+        grid-template-columns: 1fr;
+    }
+
+    .reward-panel {
+        min-height: 320px;
+    }
+}
+
+@media (max-width: 640px) {
+    .topbar {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+    }
+
+    .logo-box {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .player-status {
+        padding: 8px 10px;
+    }
+
+    .player-status span {
+        font-size: 8px;
+    }
+
+    .player-status strong {
+        font-size: 10px;
+    }
+
+    .page-wrapper {
+        padding: 90px 12px 20px;
+        align-items: flex-start;
+    }
+
+    .login-card,
+    .game-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .main-title {
+        font-size: 36px;
+    }
+
+    .login-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .login-form-row button {
+        min-height: 44px;
+    }
+
+    .game-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .game-stats {
+        width: 100%;
+    }
+
+    .stat-box {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .pole-area {
+        min-height: 420px;
+    }
+
+    .reward {
+        left: calc(50% + 40px);
+        font-size: 10px;
+        min-width: 48px;
+    }
+
+    .character {
+        width: 78px;
+        height: 130px;
+    }
+
+    .gift-box {
+        transform: scale(0.9);
+    }
+
+    .result-box {
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 380px) {
+    .main-title {
+        font-size: 31px;
+    }
+
+    .description {
+        font-size: 10px;
+    }
+
+    .pole-area {
+        min-height: 380px;
+    }
+
+    .reward {
+        left: calc(50% + 34px);
+        padding: 7px 8px;
+    }
+}
