@@ -1,46 +1,80 @@
-const playerIdInput = document.getElementById('playerId');
-const loginBtn = document.getElementById('loginBtn');
-const loginForm = document.getElementById('loginForm');
-const statusBadge = document.getElementById('statusBadge');
-const particlesContainer = document.getElementById('particles');
+const playerIdInput = document.getElementById("playerId");
+const loginBtn = document.getElementById("loginBtn");
+const loginForm = document.getElementById("loginForm");
+const statusBadge = document.getElementById("statusBadge");
+const errorMessage = document.getElementById("errorMessage");
+const buttonText = loginBtn.querySelector(".btn-text");
 
-function updateButton() {
-  const value = playerIdInput.value.trim();
-  loginBtn.disabled = value.length < 3;
+function validatePlayerId(value) {
+  return /^[a-zA-Z0-9_]{3,20}$/.test(value);
 }
 
-playerIdInput.addEventListener('input', updateButton);
-
-loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+function updateButtonStatus() {
   const id = playerIdInput.value.trim();
 
-  if (id.length < 3) return;
+  loginBtn.disabled = !validatePlayerId(id);
 
-  loginBtn.disabled = true;
-  loginBtn.querySelector('.btn-text').textContent = 'MEMUAT...';
+  if (id.length === 0) {
+    errorMessage.textContent = "";
+    return;
+  }
 
-  setTimeout(() => {
-    statusBadge.textContent = `ID PEMAIN: ${id}`;
-    statusBadge.classList.add('logged');
-
-    setTimeout(() => {
-      window.location.href = `game.html?id=${encodeURIComponent(id)}`;
-    }, 600);
-  }, 900);
-});
-
-function createParticles() {
-  for (let i = 0; i < 30; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random() * 100 + 'vw';
-    p.style.animationDuration = (3 + Math.random() * 4) + 's';
-    p.style.animationDelay = Math.random() * 4 + 's';
-    p.style.width = (4 + Math.random() * 6) + 'px';
-    p.style.height = p.style.width;
-    particlesContainer.appendChild(p);
+  if (!validatePlayerId(id)) {
+    errorMessage.textContent =
+      "Gunakan minimal 3 karakter: huruf, angka, atau underscore.";
+  } else {
+    errorMessage.textContent = "";
   }
 }
 
-createParticles();
+playerIdInput.addEventListener("input", () => {
+  playerIdInput.value = playerIdInput.value
+    .replace(/\s+/g, "")
+    .slice(0, 20);
+
+  updateButtonStatus();
+});
+
+loginForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const playerId = playerIdInput.value.trim();
+
+  if (!validatePlayerId(playerId)) {
+    errorMessage.textContent = "ID pemain tidak valid.";
+    return;
+  }
+
+  loginBtn.disabled = true;
+  loginBtn.classList.add("loading");
+
+  buttonText.textContent = "MEMUAT";
+
+  statusBadge.classList.add("logged");
+
+  statusBadge.innerHTML = `
+    <span>ID PEMAIN</span>
+    <strong>${escapeHtml(playerId)}</strong>
+  `;
+
+  setTimeout(() => {
+    window.location.href =
+      `game.html?id=${encodeURIComponent(playerId)}`;
+  }, 1000);
+});
+
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    };
+
+    return entities[character];
+  });
+}
+
+updateButtonStatus();
