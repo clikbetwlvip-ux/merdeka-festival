@@ -1,1 +1,203 @@
+/* =========================
+   RESET
+========================= */
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --yellow:#ffd52d;
+    --orange:#ff8c2a;
+    --red:#ff3b3b;
+    --purple:#2e1c50;
+    --purple-dark:#181437;
+
+    --white:#ffffff;
+
+}
+
+html,
+body{
+
+    width:100%;
+    min-height:100%;
+
+}
+
+body{
+
+    font-family:"Poppins",sans-serif;
+
+    background:#181437;
+
+    color:#fff;
+
+    overflow-x:hidden;
+
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.background{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+
+        linear-gradient(
+            rgba(24,20,55,.55),
+            rgba(24,20,55,.75)
+        ),
+
+        url("./assets/background-event.png")
+        center center / cover
+        no-repeat;
+
+    z-index:-3;
+
+}
+
+.background-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+
+        radial-gradient(
+
+            circle at top,
+
+            rgba(255,213,45,.15),
+
+            transparent 65%
+
+        );
+
+    z-index:-2;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar{
+
+    position:fixed;
+
+    top:18px;
+
+    left:20px;
+
+    right:20px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    z-index:100;
+
+}
+
+.logo-box{
+
+    padding:10px 18px;
+
+    border-radius:12px;
+
+    background:#210f45;
+
+    border:1px solid rgba(255,70,70,.45);
+
+    box-shadow:
+
+        0 0 18px rgba(255,0,0,.28);
+
+}
+
+.logo-click{
+
+    color:#fff;
+
+    font-weight:900;
+
+}
+
+.logo-bet{
+
+    color:#ff3939;
+
+    font-weight:900;
+
+}
+
+.player-status{
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    background:#252a53;
+
+    text-align:center;
+
+}
+
+.player-status span{
+
+    display:block;
+
+    font-size:10px;
+
+    color:var(--yellow);
+
+}
+
+.player-status strong{
+
+    display:block;
+
+    font-size:13px;
+
+}
+
+
+/* =========================
+   WRAPPER
+========================= */
+
+.page-wrapper{
+
+    width:100%;
+
+    min-height:100vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    padding:
+
+        120px
+
+        60px
+
+        60px;
+
+}
