@@ -1,131 +1,77 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLICKBET88 - Panjat Pinang</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panjat Pinang CLICKBET88 - Event Kemerdekaan 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <div class="bg-image"></div>
+  <div class="particles" id="particles"></div>
 
-<div id="loadingScreen" class="screen hidden">
-    <div class="loading-box">
-        <h1>MEMASUKI ARENA...</h1>
-        <div class="loading-bar">
-            <div id="loadingFill"></div>
+  <main class="container">
+    <div class="pole-scene">
+      <div class="pole"></div>
+      <div class="rope">
+        <div class="gift-box">
+          <div class="box-body">
+            <span class="gift-logo">CLICKBET88</span>
+          </div>
+          <div class="box-lid"></div>
+          <div class="ribbon-v"></div>
+          <div class="ribbon-h"></div>
+          <div class="bow"></div>
         </div>
-    </div>
-</div>
-
-<div id="loginScreen" class="screen">
-
-    <div class="left">
-
-        <h4>EVENT KEMERDEKAAN</h4>
-
-        <h1>PANJAT PINANG</h1>
-
-        <p>
-
-            Masuk ke arena.
-
-            Panjat hingga puncak.
-
-            Buka Mystery Box.
-
-            Raih hadiah.
-
-        </p>
-
+      </div>
+      <div class="flag">
+        <svg viewBox="0 0 60 40" class="flag-svg">
+          <rect width="60" height="40" fill="#ff0000"/>
+          <rect width="60" height="20" fill="#ffffff"/>
+        </svg>
+      </div>
     </div>
 
-    <div class="right">
-
-        <div class="card">
-
-            <h2>MASUK ARENA</h2>
-
-            <input
-                id="memberID"
-                placeholder="Masukkan ID Member">
-
-            <button id="loginBtn">
-
-                MULAI BERMAIN
-
-            </button>
-
+    <div class="card">
+      <div class="brand">
+        <div class="logo-ring">
+          <span class="logo-text">CLICKBET88</span>
         </div>
+        <h1 class="title">
+          <span class="title-main">PANJAT PINANG</span>
+          <span class="title-sub">Event Kemerdekaan 2026</span>
+        </h1>
+      </div>
 
-    </div>
+      <div class="status-badge" id="statusBadge">ID PEMAIN BELUM LOGIN</div>
 
-</div>
-
-<div id="gameScreen" class="screen hidden">
-
-    <div class="header">
-
-        <h1>PANJAT PINANG</h1>
-
-    </div>
-
-    <div class="arena">
-
-        <div id="box">
-
-            🎁
-
+      <form id="loginForm" class="form" autocomplete="off">
+        <label for="playerId">ID Member / Username</label>
+        <div class="input-wrap">
+          <input
+            type="text"
+            id="playerId"
+            placeholder="Masukkan ID member kamu"
+            maxlength="20"
+          />
+          <span class="input-icon">👤</span>
         </div>
 
-        <div id="pole"></div>
+        <button type="submit" id="loginBtn" class="btn-login" disabled>
+          <span class="btn-text">MASUK GAME</span>
+          <span class="btn-shine"></span>
+        </button>
+      </form>
 
-        <div id="player">
-
-            🧍
-
-        </div>
-
+      <p class="footer-text">
+        Belum punya akun? <a href="#" class="link">Daftar sekarang</a>
+      </p>
     </div>
+  </main>
 
-    <div class="progress">
-
-        <div id="progressFill"></div>
-
-    </div>
-
-    <button id="climbBtn">
-
-        PANJAT
-
-    </button>
-
-</div>
-
-<div id="rewardScreen" class="screen hidden">
-
-    <h1>
-
-        🎉 SELAMAT 🎉
-
-    </h1>
-
-    <h2 id="rewardText">
-
-    </h2>
-
-    <button onclick="location.reload()">
-
-        MAIN LAGI
-
-    </button>
-
-</div>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
