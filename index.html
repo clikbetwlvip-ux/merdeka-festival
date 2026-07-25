@@ -12,12 +12,14 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
 
-  <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin>
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap"
     rel="stylesheet"
   >
 
@@ -26,9 +28,14 @@
 
 <body>
 
+  <!-- BACKGROUND -->
   <div class="background"></div>
   <div class="background-overlay"></div>
 
+  <!-- CONFETTI -->
+  <div class="confetti-container" id="confettiContainer"></div>
+
+  <!-- HEADER -->
   <header class="topbar">
 
     <div class="logo-box">
@@ -36,30 +43,32 @@
       <span class="logo-bet">BET88</span>
     </div>
 
-    <div class="player-status" id="statusBadge">
+    <div class="player-status" id="playerStatus">
       <span>ID PEMAIN</span>
       <strong>BELUM LOGIN</strong>
     </div>
 
   </header>
 
+  <!-- HALAMAN UTAMA -->
   <main class="page-wrapper">
 
-    <section class="login-card">
+    <!-- LOGIN -->
+    <section class="login-card" id="loginCard">
 
-      <div class="event-label">
+      <span class="event-label">
         EVENT KEMERDEKAAN 2026
-      </div>
+      </span>
 
-      <h1>
+      <h1 class="main-title">
         <span>PANJAT</span>
         <span>PINANG</span>
         <strong>CLICKBET88</strong>
       </h1>
 
       <p class="description">
-        Masukkan ID yang sudah didaftarkan admin untuk memulai
-        petualangan dan raih hadiahmu.
+        Masukkan ID member untuk memulai permainan
+        dan raih hadiah di setiap level.
       </p>
 
       <form id="loginForm" autocomplete="off">
@@ -68,7 +77,7 @@
           ID MEMBER
         </label>
 
-        <div class="form-row">
+        <div class="login-form-row">
 
           <input
             type="text"
@@ -82,23 +91,209 @@
             id="loginBtn"
             disabled
           >
-            <span class="btn-text">MASUK GAME</span>
-            <span class="loading-dot"></span>
+            MASUK GAME
           </button>
 
         </div>
 
-        <p class="form-note">
-          ID wajib dibuat dan diaktifkan melalui Admin Panel
+        <p class="login-note" id="loginNote">
+          Minimal 3 karakter. Gunakan huruf, angka, atau underscore.
         </p>
-
-        <p class="error-message" id="errorMessage"></p>
 
       </form>
 
     </section>
 
+    <!-- GAME -->
+    <section class="game-card hidden" id="gameCard">
+
+      <div class="game-header">
+
+        <div>
+          <span class="event-label">
+            PANJAT PINANG
+          </span>
+
+          <h2>
+            Naik dan raih hadiah!
+          </h2>
+        </div>
+
+        <div class="game-stats">
+
+          <div class="stat-box">
+            <span>Kesempatan</span>
+            <strong id="attemptCount">5</strong>
+          </div>
+
+          <div class="stat-box">
+            <span>Level</span>
+            <strong id="levelCount">0/5</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="game-area">
+
+        <!-- AREA TIANG -->
+        <div class="pole-area">
+
+          <div class="reward reward-5">
+            88K
+          </div>
+
+          <div class="reward reward-4">
+            50K
+          </div>
+
+          <div class="reward reward-3">
+            25K
+          </div>
+
+          <div class="reward reward-2">
+            10K
+          </div>
+
+          <div class="reward reward-1">
+            5K
+          </div>
+
+          <div class="pole"></div>
+
+          <div class="character" id="character">
+
+            <div class="character-head"></div>
+
+            <div class="character-body"></div>
+
+            <div class="character-arm arm-left"></div>
+
+            <div class="character-arm arm-right"></div>
+
+            <div class="character-leg leg-left"></div>
+
+            <div class="character-leg leg-right"></div>
+
+          </div>
+
+        </div>
+
+        <!-- PANEL HADIAH -->
+        <aside class="reward-panel">
+
+          <div class="gift-box">
+
+            <div class="gift-lid"></div>
+
+            <div class="gift-body"></div>
+
+            <div class="gift-ribbon-v"></div>
+
+            <div class="gift-ribbon-h"></div>
+
+            <div class="gift-number">
+              88
+            </div>
+
+          </div>
+
+          <h3 id="rewardTitle">
+            Hadiah Menanti
+          </h3>
+
+          <p id="rewardDescription">
+            Tekan tombol PANJAT untuk mulai naik.
+          </p>
+
+          <button
+            type="button"
+            class="climb-button"
+            id="climbBtn"
+          >
+            PANJAT
+          </button>
+
+          <button
+            type="button"
+            class="reset-button"
+            id="resetBtn"
+          >
+            ULANGI GAME
+          </button>
+
+        </aside>
+
+      </div>
+
+      <!-- RIWAYAT HADIAH -->
+      <div class="reward-history">
+
+        <h3>
+          Riwayat Hadiah
+        </h3>
+
+        <div class="history-list" id="historyList">
+
+          <span class="history-empty">
+            Belum ada hadiah.
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
   </main>
+
+  <!-- POPUP HASIL -->
+  <div class="result-modal hidden" id="resultModal">
+
+    <div class="result-box">
+
+      <button
+        type="button"
+        class="modal-close"
+        id="modalClose"
+      >
+        ×
+      </button>
+
+      <div class="popup-gift">
+
+        <div class="popup-gift-lid"></div>
+
+        <div class="popup-gift-body"></div>
+
+        <div class="popup-gift-ribbon"></div>
+
+      </div>
+
+      <span class="event-label">
+        SELAMAT!
+      </span>
+
+      <h2 id="modalReward">
+        BONUS 5.000
+      </h2>
+
+      <p>
+        Hadiah demo berhasil didapatkan.
+      </p>
+
+      <button
+        type="button"
+        class="continue-button"
+        id="continueBtn"
+      >
+        LANJUTKAN
+      </button>
+
+    </div>
+
+  </div>
 
   <script src="script.js"></script>
 
