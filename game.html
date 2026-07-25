@@ -1,256 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<title>Sniper Ball Challenge</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
+    <title>CLICKBET88 - Event Panjat Pinang</title>
 
-#timer{
-position:fixed;
-top:60px;
-left:20px;
-font-size:24px;
-font-weight:bold;
-}
+    <link rel="stylesheet" href="style.css">
 
-#lives{
-position:fixed;
-top:100px;
-left:20px;
-font-size:24px;
-font-weight:bold;
-}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-#best{
-position:fixed;
-top:140px;
-left:20px;
-font-size:24px;
-font-weight:bold;
-}
-  
-body{
-margin:0;
-overflow:hidden;
-height:100vh;
-
-background:
-linear-gradient(
-rgba(0,0,0,0.70),
-rgba(0,0,0,0.70)
-),
-url('https://i.pinimg.com/1200x/bd/64/02/bd6402ed6de8bcd2d029e4ecec2947ad.jpg');
-
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-
-font-family:Arial;
-color:white;
-}
-
-#score{
-position:fixed;
-top:20px;
-left:20px;
-font-size:30px;
-font-weight:bold;
-}
-
-#ball{
-position:absolute;
-width:100px;
-height:100px;
-cursor:pointer;
-transition:0.2s;
-}
-
-#crosshair{
-position:fixed;
-font-size:40px;
-pointer-events:none;
-transform:translate(-50%,-50%);
-}
-
-</style>
 </head>
 
 <body>
 
-<div id="score">
-🏆 Score : 0
+<div class="background"></div>
+
+<div class="overlay"></div>
+
+<header>
+
+<div class="logo">
+
+CLICKBET88
+
 </div>
 
-<div id="timer">
-⏱️ Time : 60
-</div>
+</header>
 
-<div id="lives">
-❤️❤️❤️
-</div>
+<main>
 
-<div id="best">
-🥇 Best : 0
-</div>
+<section class="hero">
 
-<div id="crosshair">
-🔫
-</div>
+<h3>EVENT KEMERDEKAAN 2026</h3>
 
-<img
-id="ball"
-src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Soccerball.svg"
->
+<h1>PANJAT PINANG</h1>
 
-<script>
+<h2>CLICKBET88</h2>
 
-let score = 0;
-let combo = 0;
-let lives = 3;
-let timeLeft = 60;
-let bestScore =
-localStorage.getItem('bestScore') || 0;
+<p>
 
-document.getElementById(
-'best'
-).innerHTML =
-'🥇 Best : ' + bestScore;
+Raih Mystery Box dan hadiah menarik.
 
-const ball =
-document.getElementById('ball');
+</p>
 
-function moveBall(){
+<button id="playBtn">
 
-const x =
-Math.random()*(window.innerWidth-120);
+MULAI BERMAIN
 
-const y =
-Math.random()*(window.innerHeight-120);
-
-ball.style.left = x+'px';
-ball.style.top = y+'px';
-
-}
-
-ball.onclick = function(){
-
-if(timeLeft <= 0){
-return;
-}
-
-score++;
-combo++;
-
-document.getElementById(
-'score'
-).innerHTML =
-'🏆 Score : ' + score;
-
-if(combo >= 3){
-
-const comboText =
-document.createElement('div');
-
-comboText.innerHTML =
-'🔥 COMBO x' + combo;
-
-comboText.style.position='fixed';
-comboText.style.top='50%';
-comboText.style.left='50%';
-comboText.style.transform='translate(-50%,-50%)';
-comboText.style.fontSize='50px';
-comboText.style.fontWeight='bold';
-comboText.style.color='gold';
-comboText.style.zIndex='9999';
-
-document.body.appendChild(comboText);
-
-setTimeout(()=>{
-comboText.remove();
-},800);
-
-}
-moveBall();
-
-};
-
-document.addEventListener(
-'mousemove',
-function(e){
-
-document.getElementById(
-'crosshair'
-).style.left =
-e.clientX+'px';
-
-document.getElementById(
-'crosshair'
-).style.top =
-e.clientY+'px';
-
-}
-);
-
-moveBall();
-
-const gameTimer = setInterval(function(){
-
-timeLeft--;
-
-document.getElementById(
-'timer'
-).innerHTML =
-'⏱️ Time : ' + timeLeft;
-
-if(timeLeft <= 0){
-
-clearInterval(gameTimer);
-
-ball.style.display = 'none';
-
-document.getElementById(
-'score'
-).innerHTML =
-'💀 GAME OVER';
-
-if(score > bestScore){
-
-bestScore = score;
-
-localStorage.setItem(
-'bestScore',
-score
-);
-
-document.getElementById(
-'best'
-).innerHTML =
-'🥇 Best : ' + bestScore;
-
-}
-
-}
-
-},1000);
-
-setInterval(
-moveBall,
-1500
-);
-
-</script>
-
-<button
-onclick="location.reload()"
-style="
-position:fixed;
-top:20px;
-right:20px;
-padding:10px 20px;
-">
-🔄 Restart
 </button>
-  
+
+</section>
+
+<section class="pole">
+
+<div class="pole-body"></div>
+
+<div class="gift">
+
+🎁
+
+</div>
+
+</section>
+
+</main>
+
+<script src="script.js"></script>
+
 </body>
+
 </html>
