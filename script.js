@@ -220,3 +220,124 @@ resetButton.addEventListener("click", function () {
 });
 
 updateGameDisplay();
+
+/* =========================
+   ELEMEN MODAL
+========================= */
+
+const resultModal = document.getElementById("resultModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalMessage = document.getElementById("modalMessage");
+const modalReward = document.getElementById("modalReward");
+
+const modalClose = document.getElementById("modalClose");
+const continueButton = document.getElementById("continueButton");
+
+const confettiContainer =
+    document.getElementById("confettiContainer");
+
+/* =========================
+   TAMPILKAN MODAL
+========================= */
+
+function showResultModal(title, message, reward) {
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+    modalReward.textContent = reward;
+
+    resultModal.classList.remove("hidden");
+
+    if (
+        title === "SELAMAT!" ||
+        title === "BERHASIL NAIK!"
+    ) {
+        createConfetti();
+    }
+}
+
+/* =========================
+   TUTUP MODAL
+========================= */
+
+function closeResultModal() {
+    resultModal.classList.add("hidden");
+
+    confettiContainer.innerHTML = "";
+
+    updateGameDisplay();
+}
+
+modalClose.addEventListener("click", closeResultModal);
+continueButton.addEventListener("click", closeResultModal);
+
+resultModal.addEventListener("click", function (event) {
+    if (event.target === resultModal) {
+        closeResultModal();
+    }
+});
+
+/* =========================
+   CONFETTI
+========================= */
+
+function createConfetti() {
+    confettiContainer.innerHTML = "";
+
+    const confettiColors = [
+        "#ffd52d",
+        "#ff8c2a",
+        "#ffffff",
+        "#ef4444",
+        "#22c55e",
+        "#3b82f6",
+        "#a855f7"
+    ];
+
+    for (let i = 0; i < 70; i++) {
+        const confettiPiece =
+            document.createElement("span");
+
+        confettiPiece.className = "confetti-piece";
+
+        confettiPiece.style.left =
+            Math.random() * 100 + "%";
+
+        confettiPiece.style.backgroundColor =
+            confettiColors[
+                Math.floor(
+                    Math.random() *
+                    confettiColors.length
+                )
+            ];
+
+        confettiPiece.style.animationDelay =
+            Math.random() * 0.7 + "s";
+
+        confettiPiece.style.animationDuration =
+            1.4 + Math.random() * 1.3 + "s";
+
+        confettiPiece.style.transform =
+            "rotate(" +
+            Math.random() * 360 +
+            "deg)";
+
+        confettiContainer.appendChild(confettiPiece);
+    }
+
+    setTimeout(function () {
+        confettiContainer.innerHTML = "";
+    }, 3000);
+}
+
+/* =========================
+   TOMBOL ESC
+========================= */
+
+document.addEventListener("keydown", function (event) {
+    if (
+        event.key === "Escape" &&
+        !resultModal.classList.contains("hidden")
+    ) {
+        closeResultModal();
+    }
+});
