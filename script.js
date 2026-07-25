@@ -1,77 +1,73 @@
-// ============================
-// CLICKBET88 PANJAT PINANG
-// Version 1.0
-// ============================
+const loginScreen = document.getElementById("loginScreen");
+const loadingScreen = document.getElementById("loadingScreen");
+const gameScreen = document.getElementById("gameScreen");
+const rewardScreen = document.getElementById("rewardScreen");
 
 const loginBtn = document.getElementById("loginBtn");
 const memberID = document.getElementById("memberID");
 
-loginBtn.addEventListener("click", startGame);
+const loadingFill = document.getElementById("loadingFill");
+const progressFill = document.getElementById("progressFill");
 
-function startGame(){
+const player = document.getElementById("player");
+const climbBtn = document.getElementById("climbBtn");
 
-    if(memberID.value.trim()==""){
-        alert("Masukkan ID Member terlebih dahulu!");
-        return;
-    }
+const rewardText = document.getElementById("rewardText");
 
-    document.body.innerHTML=`
+let progress = 0;
 
-    <div class="game">
+const hadiah = [
+"FREEBET Rp10.000",
+"FREEBET Rp25.000",
+"FREEBET Rp50.000",
+"BONUS DEPOSIT 20%",
+"BONUS DEPOSIT 30%",
+"LUCKY SPIN"
+];
 
-        <h1>PANJAT PINANG</h1>
+loginBtn.onclick = () => {
 
-        <div class="pole">
+if(memberID.value.trim()==""){
+alert("Masukkan ID Member");
+return;
+}
 
-            <div id="box">🎁</div>
+loginScreen.classList.add("hidden");
+loadingScreen.classList.remove("hidden");
 
-            <div id="player">🧍</div>
+let load = 0;
 
-        </div>
+let timer = setInterval(()=>{
 
-        <div class="progress">
+load+=2;
 
-            <div id="bar"></div>
+loadingFill.style.width=load+"%";
 
-        </div>
+if(load>=100){
 
-        <button id="climbBtn">
+clearInterval(timer);
 
-            PANJAT
+loadingScreen.classList.add("hidden");
 
-        </button>
-
-    </div>
-
-    `;
-
-    game();
+gameScreen.classList.remove("hidden");
 
 }
 
-function game(){
+},30);
 
-let progress=0;
+};
 
-const player=document.getElementById("player");
-const bar=document.getElementById("bar");
-const btn=document.getElementById("climbBtn");
-
-btn.onclick=function(){
+climbBtn.onclick=()=>{
 
 let naik=Math.random()*8+5;
 
 progress+=naik;
 
-if(Math.random()<0.15){
+if(Math.random()<0.2){
 
-progress-=12;
+progress-=10;
 
-if(progress<0){
-
-progress=0;
-
-}
+if(progress<0)progress=0;
 
 alert("Ups! Terpeleset 😆");
 
@@ -83,9 +79,9 @@ progress=100;
 
 }
 
-bar.style.width=progress+"%";
+progressFill.style.width=progress+"%";
 
-player.style.bottom=(progress*4)+"px";
+player.style.bottom=(20+progress*4)+"px";
 
 if(progress>=100){
 
@@ -93,60 +89,16 @@ menang();
 
 }
 
-}
-
-}
+};
 
 function menang(){
 
-setTimeout(()=>{
+gameScreen.classList.add("hidden");
 
-document.body.innerHTML=`
-
-<div class="winner">
-
-<h1>🎉 SELAMAT 🎉</h1>
-
-<h2>ANDA BERHASIL</h2>
-
-<button id="gift">
-
-BUKA MYSTERY BOX
-
-</button>
-
-</div>
-
-`;
-
-document.getElementById("gift").onclick=hadiah;
-
-},500);
-
-}
-
-function hadiah(){
-
-let hadiah=[
-
-"FREEBET Rp10.000",
-
-"FREEBET Rp25.000",
-
-"FREEBET Rp50.000",
-
-"BONUS DEPOSIT 20%",
-
-"BONUS DEPOSIT 30%",
-
-"LUCKY SPIN"
-
-];
+rewardScreen.classList.remove("hidden");
 
 let random=Math.floor(Math.random()*hadiah.length);
 
-alert("Selamat!\n\n"+hadiah[random]);
-
-location.reload();
+rewardText.innerHTML=hadiah[random];
 
 }
