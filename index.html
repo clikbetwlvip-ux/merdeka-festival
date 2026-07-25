@@ -1313,3 +1313,614 @@
       </div>
 
     </section>
+    <!-- =========================================
+         GAME PANJAT PINANG
+    ========================================== -->
+    <section
+      id="pinangScreen"
+      class="screen game-screen pinang-game-screen"
+      aria-hidden="true"
+    >
+
+      <!-- Background arena -->
+      <div class="pinang-game-background">
+
+        <div class="pinang-night-sky"></div>
+        <div class="pinang-moon-glow"></div>
+
+        <div class="pinang-firework pinang-firework-one">✦</div>
+        <div class="pinang-firework pinang-firework-two">✦</div>
+        <div class="pinang-firework pinang-firework-three">✦</div>
+
+        <div class="pinang-festival-light light-string-one"></div>
+        <div class="pinang-festival-light light-string-two"></div>
+
+        <div class="pinang-flag-decoration flag-decoration-left">
+          <span class="mini-red-white-flag"></span>
+          <span class="mini-red-white-flag"></span>
+          <span class="mini-red-white-flag"></span>
+        </div>
+
+        <div class="pinang-flag-decoration flag-decoration-right">
+          <span class="mini-red-white-flag"></span>
+          <span class="mini-red-white-flag"></span>
+          <span class="mini-red-white-flag"></span>
+        </div>
+
+        <div class="pinang-crowd pinang-crowd-left"></div>
+        <div class="pinang-crowd pinang-crowd-right"></div>
+
+        <div class="pinang-arena-ground"></div>
+
+      </div>
+
+
+      <!-- Header game -->
+      <header class="game-header">
+
+        <div class="game-header-left">
+
+          <button
+            id="pinangBackButton"
+            class="game-back-button"
+            type="button"
+            aria-label="Kembali ke lobby"
+          >
+            <span>←</span>
+          </button>
+
+          <div class="game-header-title">
+
+            <span class="game-header-label">
+              GAME 01
+            </span>
+
+            <h1>Panjat Pinang</h1>
+
+          </div>
+
+        </div>
+
+
+        <div class="game-header-center">
+
+          <div class="game-header-brand">
+            CLICKBET<span>88</span>
+          </div>
+
+          <small>FESTIVAL KEMERDEKAAN 2026</small>
+
+        </div>
+
+
+        <div class="game-header-actions">
+
+          <button
+            id="pinangPauseButton"
+            class="game-header-icon-button"
+            type="button"
+            aria-label="Jeda permainan"
+          >
+            <span>Ⅱ</span>
+          </button>
+
+          <button
+            id="pinangSoundButton"
+            class="game-header-icon-button"
+            type="button"
+            aria-label="Aktifkan atau matikan suara"
+          >
+            <span id="pinangSoundIcon">🔊</span>
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- Konten game -->
+      <div class="pinang-game-layout">
+
+
+        <!-- Panel kiri -->
+        <aside class="pinang-status-panel">
+
+          <div class="game-status-card timer-status-card">
+
+            <span class="status-card-label">
+              SISA WAKTU
+            </span>
+
+            <strong id="pinangTimerValue">
+              00:15
+            </strong>
+
+            <div class="timer-decoration">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+          </div>
+
+
+          <div class="game-status-card progress-status-card">
+
+            <span class="status-card-label">
+              PROGRESS
+            </span>
+
+            <div class="vertical-progress-wrapper">
+
+              <div class="vertical-progress-track">
+
+                <div
+                  id="pinangVerticalProgress"
+                  class="vertical-progress-fill"
+                  style="height: 0%;"
+                ></div>
+
+                <div
+                  id="pinangProgressMarker"
+                  class="vertical-progress-marker"
+                  style="bottom: 0%;"
+                >
+                  <span>▲</span>
+                </div>
+
+              </div>
+
+
+              <strong id="pinangProgressValue">
+                0%
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-status-card tap-status-card">
+
+            <span class="status-card-label">
+              TOTAL TAP
+            </span>
+
+            <strong id="pinangTapCount">
+              0
+            </strong>
+
+            <small>
+              Target: 45 tap
+            </small>
+
+          </div>
+
+        </aside>
+
+
+
+        <!-- Arena utama -->
+        <main class="pinang-main-arena">
+
+
+          <!-- Banner -->
+          <div class="pinang-arena-banner">
+
+            <span class="banner-wing banner-wing-left"></span>
+
+            <div>
+              <small>PERLOMBAAN DIMULAI</small>
+              <strong>PANJAT PINANG</strong>
+            </div>
+
+            <span class="banner-wing banner-wing-right"></span>
+
+          </div>
+
+
+
+          <!-- Tiang dan hadiah -->
+          <div class="pinang-stage">
+
+
+            <!-- Cahaya belakang -->
+            <div class="pinang-stage-glow"></div>
+
+
+            <!-- Hadiah atas -->
+            <div class="pinang-prize-platform">
+
+              <div class="pinang-prize-rope"></div>
+
+              <div class="pinang-prize-item prize-item-one">
+                <span>🎁</span>
+              </div>
+
+              <div class="pinang-prize-item prize-item-two">
+                <span>📺</span>
+              </div>
+
+              <div class="pinang-prize-item prize-item-three">
+                <span>🚲</span>
+              </div>
+
+              <div class="pinang-prize-item prize-item-four">
+                <span>📱</span>
+              </div>
+
+              <div class="pinang-prize-item prize-item-five">
+                <span>🎁</span>
+              </div>
+
+            </div>
+
+
+            <!-- Bendera atas -->
+            <div class="pinang-top-flag">
+
+              <span class="top-flag-red"></span>
+              <span class="top-flag-white"></span>
+
+            </div>
+
+
+            <!-- Tiang utama -->
+            <div class="pinang-pole-wrapper">
+
+              <div class="pinang-pole-highlight"></div>
+
+              <div
+                id="pinangPole"
+                class="pinang-pole-main"
+              ></div>
+
+              <div class="pinang-pole-shadow"></div>
+
+              <div class="pinang-pole-base"></div>
+
+            </div>
+
+
+            <!-- Karakter pemanjat -->
+            <div
+              id="pinangPlayer"
+              class="pinang-player-character"
+              style="bottom: 8%;"
+            >
+
+              <div class="pinang-player-shadow"></div>
+
+              <!-- Nanti diganti PNG/WebP HD -->
+              <div class="pinang-player-placeholder">
+
+                <div class="player-hair"></div>
+
+                <div class="player-head">
+                  <span class="player-face">😤</span>
+                  <span class="player-headband"></span>
+                </div>
+
+                <div class="player-body">
+                  <span class="player-shirt-logo">88</span>
+                </div>
+
+                <div class="player-arm player-arm-left"></div>
+                <div class="player-arm player-arm-right"></div>
+
+                <div class="player-leg player-leg-left"></div>
+                <div class="player-leg player-leg-right"></div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Efek debu -->
+            <div
+              id="pinangDustEffect"
+              class="pinang-dust-effect"
+            >
+
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+
+            </div>
+
+
+            <!-- Penonton -->
+            <div class="pinang-spectator-row">
+
+              <div class="spectator spectator-one">
+                <span class="spectator-head">😆</span>
+                <span class="spectator-body">👕</span>
+              </div>
+
+              <div class="spectator spectator-two">
+                <span class="spectator-head">🤩</span>
+                <span class="spectator-body">👚</span>
+              </div>
+
+              <div class="spectator spectator-three">
+                <span class="spectator-head">😁</span>
+                <span class="spectator-body">👕</span>
+              </div>
+
+              <div class="spectator spectator-four">
+                <span class="spectator-head">🥳</span>
+                <span class="spectator-body">👚</span>
+              </div>
+
+            </div>
+
+
+            <!-- Garis tanah -->
+            <div class="pinang-stage-ground">
+
+              <span class="ground-grass grass-one"></span>
+              <span class="ground-grass grass-two"></span>
+              <span class="ground-grass grass-three"></span>
+              <span class="ground-grass grass-four"></span>
+
+            </div>
+
+          </div>
+
+        </main>
+
+
+
+        <!-- Panel kanan -->
+        <aside class="pinang-mission-panel">
+
+          <div class="mission-card">
+
+            <div class="mission-card-header">
+
+              <span class="mission-icon">🎯</span>
+
+              <div>
+                <small>MISI PERMAINAN</small>
+                <strong>Capai Puncak!</strong>
+              </div>
+
+            </div>
+
+
+            <p>
+              Tekan tombol secepat mungkin sampai karakter
+              mencapai hadiah di atas tiang.
+            </p>
+
+
+            <div class="mission-target-list">
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">⏱️</span>
+
+                <div>
+                  <small>Waktu</small>
+                  <strong>15 Detik</strong>
+                </div>
+
+              </div>
+
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">👆</span>
+
+                <div>
+                  <small>Target</small>
+                  <strong>45 Tap</strong>
+                </div>
+
+              </div>
+
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">🎁</span>
+
+                <div>
+                  <small>Hadiah</small>
+                  <strong>Mystery Box</strong>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="pinang-player-mini-card">
+
+            <span class="mini-card-label">
+              PEMAIN
+            </span>
+
+            <div class="mini-player-information">
+
+              <div class="mini-player-avatar">
+                😎
+              </div>
+
+              <div>
+                <strong id="pinangMemberName">
+                  PLAYER123
+                </strong>
+
+                <small>
+                  Tiket tersisa:
+                  <span id="pinangRemainingTicket">8</span>
+                </small>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-tip-card">
+
+            <span class="tip-icon">💡</span>
+
+            <div>
+              <strong>Tips</strong>
+
+              <p>
+                Gunakan dua jari secara bergantian agar tap
+                menjadi lebih cepat.
+              </p>
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+
+
+      <!-- Kontrol bawah -->
+      <div class="pinang-control-area">
+
+        <div
+          id="pinangReadyMessage"
+          class="game-ready-message"
+        >
+          Tekan tombol mulai untuk bersiap!
+        </div>
+
+
+        <button
+          id="pinangStartButton"
+          class="pinang-start-button"
+          type="button"
+        >
+
+          <span class="start-button-glow"></span>
+          <span class="start-button-icon">🚩</span>
+          <span class="start-button-text">MULAI PERMAINAN</span>
+
+        </button>
+
+
+        <button
+          id="pinangTapButton"
+          class="pinang-tap-button"
+          type="button"
+          disabled
+        >
+
+          <span class="tap-button-glow"></span>
+
+          <span class="tap-hand-icon">
+            👆
+          </span>
+
+          <span class="tap-button-copy">
+
+            <strong>TAP CEPAT!</strong>
+
+            <small>
+              Klik atau tekan tombol Space
+            </small>
+
+          </span>
+
+        </button>
+
+
+        <div class="keyboard-control-hint">
+
+          <span class="keyboard-key">
+            SPACE
+          </span>
+
+          <small>
+            Bisa dimainkan menggunakan keyboard
+          </small>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Countdown sebelum game -->
+      <div
+        id="pinangCountdownOverlay"
+        class="game-countdown-overlay"
+        aria-hidden="true"
+      >
+
+        <div class="countdown-content">
+
+          <small>PERMAINAN DIMULAI DALAM</small>
+
+          <strong id="pinangCountdownValue">
+            3
+          </strong>
+
+          <span id="pinangCountdownMessage">
+            Bersiap!
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Pause overlay -->
+      <div
+        id="pinangPauseOverlay"
+        class="game-pause-overlay"
+        aria-hidden="true"
+      >
+
+        <div class="pause-modal">
+
+          <div class="pause-icon">
+            Ⅱ
+          </div>
+
+          <span class="section-label">
+            PERMAINAN DIJEDA
+          </span>
+
+          <h2>Istirahat Sebentar</h2>
+
+          <p>
+            Timer berhenti selama permainan dijeda.
+          </p>
+
+
+          <button
+            id="pinangResumeButton"
+            class="primary-button gold-button"
+            type="button"
+          >
+            <span class="button-icon">▶</span>
+            <span class="button-text">LANJUTKAN</span>
+          </button>
+
+
+          <button
+            id="pinangQuitButton"
+            class="secondary-button"
+            type="button"
+          >
+            Keluar ke Lobby
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
