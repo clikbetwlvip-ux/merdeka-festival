@@ -1,104 +1,46 @@
-const loginScreen = document.getElementById("loginScreen");
-const loadingScreen = document.getElementById("loadingScreen");
-const gameScreen = document.getElementById("gameScreen");
-const rewardScreen = document.getElementById("rewardScreen");
+const playerIdInput = document.getElementById('playerId');
+const loginBtn = document.getElementById('loginBtn');
+const loginForm = document.getElementById('loginForm');
+const statusBadge = document.getElementById('statusBadge');
+const particlesContainer = document.getElementById('particles');
 
-const loginBtn = document.getElementById("loginBtn");
-const memberID = document.getElementById("memberID");
-
-const loadingFill = document.getElementById("loadingFill");
-const progressFill = document.getElementById("progressFill");
-
-const player = document.getElementById("player");
-const climbBtn = document.getElementById("climbBtn");
-
-const rewardText = document.getElementById("rewardText");
-
-let progress = 0;
-
-const hadiah = [
-"FREEBET Rp10.000",
-"FREEBET Rp25.000",
-"FREEBET Rp50.000",
-"BONUS DEPOSIT 20%",
-"BONUS DEPOSIT 30%",
-"LUCKY SPIN"
-];
-
-loginBtn.onclick = () => {
-
-if(memberID.value.trim()==""){
-alert("Masukkan ID Member");
-return;
+function updateButton() {
+  const value = playerIdInput.value.trim();
+  loginBtn.disabled = value.length < 3;
 }
 
-loginScreen.classList.add("hidden");
-loadingScreen.classList.remove("hidden");
+playerIdInput.addEventListener('input', updateButton);
 
-let load = 0;
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const id = playerIdInput.value.trim();
 
-let timer = setInterval(()=>{
+  if (id.length < 3) return;
 
-load+=2;
+  loginBtn.disabled = true;
+  loginBtn.querySelector('.btn-text').textContent = 'MEMUAT...';
 
-loadingFill.style.width=load+"%";
+  setTimeout(() => {
+    statusBadge.textContent = `ID PEMAIN: ${id}`;
+    statusBadge.classList.add('logged');
 
-if(load>=100){
+    setTimeout(() => {
+      window.location.href = `game.html?id=${encodeURIComponent(id)}`;
+    }, 600);
+  }, 900);
+});
 
-clearInterval(timer);
-
-loadingScreen.classList.add("hidden");
-
-gameScreen.classList.remove("hidden");
-
+function createParticles() {
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (3 + Math.random() * 4) + 's';
+    p.style.animationDelay = Math.random() * 4 + 's';
+    p.style.width = (4 + Math.random() * 6) + 'px';
+    p.style.height = p.style.width;
+    particlesContainer.appendChild(p);
+  }
 }
 
-},30);
-
-};
-
-climbBtn.onclick=()=>{
-
-let naik=Math.random()*8+5;
-
-progress+=naik;
-
-if(Math.random()<0.2){
-
-progress-=10;
-
-if(progress<0)progress=0;
-
-alert("Ups! Terpeleset 😆");
-
-}
-
-if(progress>100){
-
-progress=100;
-
-}
-
-progressFill.style.width=progress+"%";
-
-player.style.bottom=(20+progress*4)+"px";
-
-if(progress>=100){
-
-menang();
-
-}
-
-};
-
-function menang(){
-
-gameScreen.classList.add("hidden");
-
-rewardScreen.classList.remove("hidden");
-
-let random=Math.floor(Math.random()*hadiah.length);
-
-rewardText.innerHTML=hadiah[random];
-
-}
+createParticles();
