@@ -461,3 +461,855 @@
       </div>
 
     </section>
+    <!-- =========================================
+         LOBBY FESTIVAL
+    ========================================== -->
+    <section
+      id="lobbyScreen"
+      class="screen lobby-screen"
+    >
+
+      <!-- Background lobby -->
+      <div class="lobby-background">
+
+        <div class="lobby-sky"></div>
+        <div class="lobby-sun-glow"></div>
+
+        <div class="lobby-cloud lobby-cloud-one"></div>
+        <div class="lobby-cloud lobby-cloud-two"></div>
+        <div class="lobby-cloud lobby-cloud-three"></div>
+
+        <div class="lobby-firework lobby-firework-one">✦</div>
+        <div class="lobby-firework lobby-firework-two">✦</div>
+        <div class="lobby-firework lobby-firework-three">✦</div>
+
+        <div class="lobby-lampion lobby-lampion-left">
+          <span>🏮</span>
+          <span>🏮</span>
+          <span>🏮</span>
+        </div>
+
+        <div class="lobby-lampion lobby-lampion-right">
+          <span>🏮</span>
+          <span>🏮</span>
+          <span>🏮</span>
+        </div>
+
+        <div class="festival-ground"></div>
+
+      </div>
+
+
+      <!-- Header lobby -->
+      <header class="lobby-header">
+
+        <div class="lobby-brand">
+
+          <button
+            id="lobbyMenuButton"
+            class="lobby-menu-button"
+            type="button"
+            aria-label="Buka menu"
+          >
+            ☰
+          </button>
+
+          <div class="lobby-logo">
+            CLICKBET<span>88</span>
+          </div>
+
+          <div class="lobby-event-name">
+            FESTIVAL KEMERDEKAAN
+          </div>
+
+        </div>
+
+
+        <div class="lobby-header-actions">
+
+          <button
+            id="lobbySoundButton"
+            class="header-icon-button"
+            type="button"
+            aria-label="Pengaturan suara"
+          >
+            <span id="lobbySoundIcon">🔊</span>
+          </button>
+
+          <button
+            id="logoutButton"
+            class="header-icon-button logout-icon-button"
+            type="button"
+            aria-label="Keluar dari akun"
+          >
+            <span>↪</span>
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- Konten utama lobby -->
+      <div class="lobby-content">
+
+
+        <!-- Informasi pemain -->
+        <section class="player-dashboard">
+
+          <div class="player-welcome">
+
+            <div class="player-avatar">
+              <span>😎</span>
+
+              <div class="player-online-indicator"></div>
+            </div>
+
+            <div class="player-welcome-copy">
+
+              <span class="player-greeting">
+                SELAMAT DATANG
+              </span>
+
+              <h1 id="lobbyMemberName">
+                PLAYER123
+              </h1>
+
+              <p>
+                Pilih perlombaan dan menangkan Mystery Box.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="player-stats">
+
+            <div class="stat-card ticket-stat-card">
+
+              <div class="stat-icon">
+                🎫
+              </div>
+
+              <div class="stat-copy">
+                <span>SISA TIKET HARI INI</span>
+
+                <strong>
+                  <span id="remainingTicketValue">8</span>
+                  <small>/ 8</small>
+                </strong>
+              </div>
+
+              <div class="ticket-progress">
+
+                <div
+                  id="ticketProgressBar"
+                  class="ticket-progress-bar"
+                  style="width: 100%;"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <div class="stat-card reward-stat-card">
+
+              <div class="stat-icon">
+                🏆
+              </div>
+
+              <div class="stat-copy">
+                <span>TOTAL HADIAH HARI INI</span>
+
+                <strong id="todayRewardValue">
+                  Rp0
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat-card game-stat-card">
+
+              <div class="stat-icon">
+                🎮
+              </div>
+
+              <div class="stat-copy">
+                <span>GAME DIMAINKAN</span>
+
+                <strong id="playedGameValue">
+                  0
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- Hero lobby -->
+        <section class="lobby-hero">
+
+          <div class="lobby-hero-copy">
+
+            <span class="hero-event-label">
+              🇮🇩 EVENT SPESIAL KEMERDEKAAN 🇮🇩
+            </span>
+
+            <h2>
+              Taklukkan Arena,
+              <strong>Raih Hadiahnya!</strong>
+            </h2>
+
+            <p>
+              Gunakan tiketmu untuk memainkan perlombaan.
+              Setiap kemenangan membuka satu Mystery Box.
+            </p>
+
+            <div class="hero-prize-list">
+
+              <span>Rp5.000</span>
+              <span>Rp50.000</span>
+              <span>Rp100.000</span>
+              <span>Rp500.000</span>
+
+            </div>
+
+
+            <button
+              id="scrollToGamesButton"
+              class="primary-button gold-button hero-main-button"
+              type="button"
+            >
+
+              <span class="button-glow"></span>
+              <span class="button-icon">🎯</span>
+              <span class="button-text">PILIH PERMAINAN</span>
+              <span class="button-arrow">↓</span>
+
+            </button>
+
+          </div>
+
+
+          <div class="lobby-hero-visual">
+
+            <div class="hero-visual-glow"></div>
+
+            <div class="hero-character hero-character-left">
+
+              <div class="hero-character-head">
+                😁
+              </div>
+
+              <div class="hero-character-body">
+                🇮🇩
+              </div>
+
+            </div>
+
+
+            <div class="hero-mystery-box">
+
+              <div class="hero-box-light"></div>
+
+              <div class="hero-box-body">
+                <span class="hero-box-ribbon-vertical"></span>
+                <span class="hero-box-ribbon-horizontal"></span>
+                <span class="hero-box-question">?</span>
+              </div>
+
+              <div class="hero-box-shadow"></div>
+
+            </div>
+
+
+            <div class="hero-character hero-character-right">
+
+              <div class="hero-character-head">
+                🤩
+              </div>
+
+              <div class="hero-character-body">
+                🇮🇩
+              </div>
+
+            </div>
+
+
+            <span class="hero-floating-star star-one">★</span>
+            <span class="hero-floating-star star-two">★</span>
+            <span class="hero-floating-star star-three">★</span>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- Pilihan game -->
+        <section
+          id="gameSelectionSection"
+          class="game-selection-section"
+        >
+
+          <div class="section-heading">
+
+            <div>
+
+              <span class="section-label">
+                FESTIVAL GAME
+              </span>
+
+              <h2>Pilih Perlombaanmu</h2>
+
+              <p>
+                Semua game menggunakan satu tiket untuk setiap permainan.
+              </p>
+
+            </div>
+
+
+            <button
+              id="openLobbyTermsButton"
+              class="secondary-button terms-button"
+              type="button"
+            >
+              <span>📜</span>
+              Lihat S&amp;K
+            </button>
+
+          </div>
+
+
+
+          <div class="game-card-grid">
+
+
+            <!-- Game 1: Panjat Pinang -->
+            <article
+              class="game-card game-card-pinang"
+              data-game="pinang"
+            >
+
+              <div class="game-card-background">
+
+                <div class="game-card-sky"></div>
+                <div class="game-card-sun"></div>
+                <div class="game-card-hill hill-left"></div>
+                <div class="game-card-hill hill-right"></div>
+
+              </div>
+
+
+              <div class="game-card-top">
+
+                <span class="game-number">
+                  GAME 01
+                </span>
+
+                <span class="game-difficulty">
+                  ★★★☆☆
+                </span>
+
+              </div>
+
+
+              <div class="game-card-visual pinang-visual">
+
+                <div class="pinang-prize-top">
+                  🎁 🎁 🎁
+                </div>
+
+                <div class="pinang-pole"></div>
+
+                <div class="pinang-character">
+
+                  <span class="mini-character-head">
+                    😤
+                  </span>
+
+                  <span class="mini-character-body">
+                    🇮🇩
+                  </span>
+
+                </div>
+
+                <div class="pinang-ground">
+                  🌿🌿🌿
+                </div>
+
+              </div>
+
+
+              <div class="game-card-content">
+
+                <div class="game-title-row">
+
+                  <div class="game-title-icon">
+                    🎁
+                  </div>
+
+                  <div>
+                    <span>PERLOMBAAN</span>
+                    <h3>Panjat Pinang</h3>
+                  </div>
+
+                </div>
+
+
+                <p>
+                  Panjat tiang secepat mungkin dan raih hadiah
+                  sebelum waktu berakhir.
+                </p>
+
+
+                <div class="game-card-information">
+
+                  <div>
+                    <span>Biaya</span>
+                    <strong>1 Tiket</strong>
+                  </div>
+
+                  <div>
+                    <span>Durasi</span>
+                    <strong>15 Detik</strong>
+                  </div>
+
+                  <div>
+                    <span>Kontrol</span>
+                    <strong>Tap Cepat</strong>
+                  </div>
+
+                </div>
+
+
+                <button
+                  id="playPinangButton"
+                  class="game-play-button"
+                  type="button"
+                  data-game-target="pinang"
+                >
+                  <span>MAIN SEKARANG</span>
+                  <span>➜</span>
+                </button>
+
+              </div>
+
+              <div class="game-card-shine"></div>
+
+            </article>
+
+
+
+            <!-- Game 2: Makan Kerupuk -->
+            <article
+              class="game-card game-card-kerupuk"
+              data-game="kerupuk"
+            >
+
+              <div class="game-card-background">
+
+                <div class="game-card-sky"></div>
+                <div class="kerupuk-decoration-left">🇮🇩</div>
+                <div class="kerupuk-decoration-right">🇮🇩</div>
+
+              </div>
+
+
+              <div class="game-card-top">
+
+                <span class="game-number">
+                  GAME 02
+                </span>
+
+                <span class="game-difficulty">
+                  ★★☆☆☆
+                </span>
+
+              </div>
+
+
+              <div class="game-card-visual kerupuk-visual">
+
+                <div class="kerupuk-rope"></div>
+
+                <div class="hanging-kerupuk">
+                  🍘
+                </div>
+
+                <div class="kerupuk-character">
+
+                  <span class="mini-character-head">
+                    😋
+                  </span>
+
+                  <span class="mini-character-body">
+                    🇮🇩
+                  </span>
+
+                </div>
+
+                <div class="kerupuk-table">
+                  ▰▰▰
+                </div>
+
+              </div>
+
+
+              <div class="game-card-content">
+
+                <div class="game-title-row">
+
+                  <div class="game-title-icon">
+                    🍘
+                  </div>
+
+                  <div>
+                    <span>PERLOMBAAN</span>
+                    <h3>Makan Kerupuk</h3>
+                  </div>
+
+                </div>
+
+
+                <p>
+                  Tap secepat mungkin untuk menghabiskan kerupuk
+                  sebelum hitungan waktu selesai.
+                </p>
+
+
+                <div class="game-card-information">
+
+                  <div>
+                    <span>Biaya</span>
+                    <strong>1 Tiket</strong>
+                  </div>
+
+                  <div>
+                    <span>Durasi</span>
+                    <strong>10 Detik</strong>
+                  </div>
+
+                  <div>
+                    <span>Kontrol</span>
+                    <strong>Tap / Space</strong>
+                  </div>
+
+                </div>
+
+
+                <button
+                  id="playKerupukButton"
+                  class="game-play-button"
+                  type="button"
+                  data-game-target="kerupuk"
+                >
+                  <span>MAIN SEKARANG</span>
+                  <span>➜</span>
+                </button>
+
+              </div>
+
+              <div class="game-card-shine"></div>
+
+            </article>
+
+
+
+            <!-- Game 3: Lomba Kelereng -->
+            <article
+              class="game-card game-card-kelereng"
+              data-game="kelereng"
+            >
+
+              <div class="game-card-background">
+
+                <div class="game-card-sky"></div>
+                <div class="race-track-line"></div>
+                <div class="finish-flag">🏁</div>
+
+              </div>
+
+
+              <div class="game-card-top">
+
+                <span class="game-number">
+                  GAME 03
+                </span>
+
+                <span class="game-difficulty">
+                  ★★★★☆
+                </span>
+
+              </div>
+
+
+              <div class="game-card-visual kelereng-visual">
+
+                <div class="kelereng-character">
+
+                  <span class="mini-character-head">
+                    😬
+                  </span>
+
+                  <span class="mini-character-body">
+                    🇮🇩
+                  </span>
+
+                </div>
+
+                <div class="spoon-wrapper">
+
+                  <div class="mini-spoon">
+                    🥄
+                  </div>
+
+                  <div class="mini-marble">
+                    🔵
+                  </div>
+
+                </div>
+
+                <div class="kelereng-finish">
+                  🏁
+                </div>
+
+              </div>
+
+
+              <div class="game-card-content">
+
+                <div class="game-title-row">
+
+                  <div class="game-title-icon">
+                    🔵
+                  </div>
+
+                  <div>
+                    <span>PERLOMBAAN</span>
+                    <h3>Lomba Kelereng</h3>
+                  </div>
+
+                </div>
+
+
+                <p>
+                  Jaga keseimbangan kelereng di atas sendok
+                  sampai melewati garis akhir.
+                </p>
+
+
+                <div class="game-card-information">
+
+                  <div>
+                    <span>Biaya</span>
+                    <strong>1 Tiket</strong>
+                  </div>
+
+                  <div>
+                    <span>Durasi</span>
+                    <strong>20 Detik</strong>
+                  </div>
+
+                  <div>
+                    <span>Kontrol</span>
+                    <strong>Kiri / Kanan</strong>
+                  </div>
+
+                </div>
+
+
+                <button
+                  id="playKelerengButton"
+                  class="game-play-button"
+                  type="button"
+                  data-game-target="kelereng"
+                >
+                  <span>MAIN SEKARANG</span>
+                  <span>➜</span>
+                </button>
+
+              </div>
+
+              <div class="game-card-shine"></div>
+
+            </article>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- Mystery Box -->
+        <section class="lobby-mystery-section">
+
+          <div class="mystery-panel">
+
+            <div class="mystery-panel-copy">
+
+              <span class="section-label">
+                HADIAH SPESIAL
+              </span>
+
+              <h2>Mystery Box</h2>
+
+              <p>
+                Selesaikan permainan untuk membuka Mystery Box
+                dan mendapatkan hadiah secara acak.
+              </p>
+
+
+              <div class="mystery-reward-preview">
+
+                <span>Rp5K</span>
+                <span>Rp10K</span>
+                <span>Rp25K</span>
+                <span>Rp50K</span>
+                <span>Rp100K</span>
+                <span>Rp250K</span>
+                <span>Rp350K</span>
+                <span>Rp500K</span>
+
+              </div>
+
+
+              <div
+                id="mysteryBoxLobbyStatus"
+                class="mystery-lock-status"
+              >
+
+                <span>🔒</span>
+
+                <div>
+                  <strong>BOX MASIH TERKUNCI</strong>
+                  <small>Menangkan satu permainan terlebih dahulu.</small>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="mystery-panel-visual">
+
+              <div class="mystery-lobby-glow"></div>
+
+              <div
+                id="lobbyMysteryBox"
+                class="lobby-mystery-box locked"
+              >
+
+                <div class="lobby-box-lid"></div>
+
+                <div class="lobby-box-body">
+
+                  <span class="lobby-box-ribbon"></span>
+                  <span class="lobby-box-question">?</span>
+
+                </div>
+
+                <div class="lobby-box-lock">
+                  🔒
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- Riwayat hadiah -->
+        <section class="reward-history-section">
+
+          <div class="section-heading">
+
+            <div>
+
+              <span class="section-label">
+                AKTIVITAS HARI INI
+              </span>
+
+              <h2>Riwayat Hadiah</h2>
+
+              <p>
+                Hadiah yang diperoleh pada perangkat ini akan tampil di sini.
+              </p>
+
+            </div>
+
+
+            <button
+              id="clearHistoryButton"
+              class="secondary-button history-clear-button"
+              type="button"
+            >
+              Hapus Riwayat
+            </button>
+
+          </div>
+
+
+          <div
+            id="rewardHistoryList"
+            class="reward-history-list"
+          >
+
+            <div
+              id="emptyHistoryState"
+              class="empty-history-state"
+            >
+
+              <div class="empty-history-icon">
+                🏆
+              </div>
+
+              <h3>Belum Ada Hadiah</h3>
+
+              <p>
+                Mainkan salah satu perlombaan untuk mendapatkan hadiah pertamamu.
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- Footer lobby -->
+        <footer class="lobby-footer">
+
+          <div class="footer-logo">
+            CLICKBET<span>88</span>
+          </div>
+
+          <p>
+            Festival Kemerdekaan 2026
+          </p>
+
+          <button
+            id="footerTermsButton"
+            class="footer-link-button"
+            type="button"
+          >
+            Syarat &amp; Ketentuan
+          </button>
+
+        </footer>
+
+      </div>
+
+    </section>
