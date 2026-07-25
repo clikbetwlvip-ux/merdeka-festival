@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Panjat Pinang CLICKBET88</title>
+  <title>Festival Game CLICKBET88</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -23,224 +23,290 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./style.css?v=100">
 </head>
 
 <body>
 
-  <!-- BACKGROUND -->
   <div class="background"></div>
   <div class="background-overlay"></div>
 
-  <!-- CONFETTI -->
-  <div class="confetti-container" id="confettiContainer"></div>
-
-  <!-- HEADER -->
   <header class="topbar">
 
-    <div class="logo-box">
-      <span class="logo-click">CLICK</span>
-      <span class="logo-bet">BET88</span>
+    <div class="brand">
+      <span class="brand-main">CLICK</span>
+      <span class="brand-accent">BET88</span>
     </div>
 
-    <div class="player-status" id="playerStatus">
-      <span>ID PEMAIN</span>
-      <strong>BELUM LOGIN</strong>
+    <div class="player-info hidden" id="playerInfo">
+      <span>ID MEMBER</span>
+      <strong id="playerName">-</strong>
     </div>
 
   </header>
 
-  <!-- HALAMAN UTAMA -->
-  <main class="page-wrapper">
+  <main class="app-shell">
 
     <!-- LOGIN -->
-    <section class="login-card" id="loginCard">
+    <section class="login-screen" id="loginScreen">
 
-      <span class="event-label">
-        EVENT KEMERDEKAAN 2026
-      </span>
+      <div class="login-card">
 
-      <h1 class="main-title">
-        <span>PANJAT</span>
-        <span>PINANG</span>
-        <strong>CLICKBET88</strong>
-      </h1>
+        <span class="eyebrow">
+          EVENT KEMERDEKAAN 2026
+        </span>
 
-      <p class="description">
-        Masukkan ID member untuk memulai permainan
-        dan raih hadiah di setiap level.
-      </p>
+        <h1>
+          FESTIVAL
+          <strong>3 GAME</strong>
+        </h1>
 
-      <form id="loginForm" autocomplete="off">
-
-        <label for="playerId">
-          ID MEMBER
-        </label>
-
-        <div class="login-form-row">
-
-          <input
-            type="text"
-            id="playerId"
-            maxlength="20"
-            placeholder="Masukkan ID pemain"
-          >
-
-          <button
-            type="submit"
-            id="loginBtn"
-            disabled
-          >
-            MASUK GAME
-          </button>
-
-        </div>
-
-        <p class="login-note" id="loginNote">
-          Minimal 3 karakter. Gunakan huruf, angka, atau underscore.
+        <p>
+          Masukkan ID member untuk masuk ke lobby
+          dan memilih permainan.
         </p>
 
-      </form>
+        <form id="loginForm">
+
+          <label for="memberId">
+            ID MEMBER
+          </label>
+
+          <div class="login-row">
+
+            <input
+              type="text"
+              id="memberId"
+              maxlength="20"
+              placeholder="Masukkan ID member"
+              autocomplete="off"
+            >
+
+            <button
+              type="submit"
+              id="loginButton"
+              disabled
+            >
+              MASUK
+            </button>
+
+          </div>
+
+          <small>
+            Minimal 3 karakter.
+          </small>
+
+        </form>
+
+      </div>
 
     </section>
 
-    <!-- GAME -->
-    <section class="game-card hidden" id="gameCard">
+    <!-- LOBBY -->
+    <section class="lobby-screen hidden" id="lobbyScreen">
 
-      <div class="game-header">
+      <div class="lobby-heading">
 
         <div>
-          <span class="event-label">
-            PANJAT PINANG
+          <span class="eyebrow">
+            PILIH PERMAINAN
           </span>
 
           <h2>
-            Naik dan raih hadiah!
+            Mystery Box Festival
+          </h2>
+
+          <p>
+            Pilih salah satu permainan di bawah ini.
+          </p>
+        </div>
+
+        <div class="ticket-box">
+          <span>SISA TIKET</span>
+          <strong id="ticketCount">8</strong>
+        </div>
+
+      </div>
+
+      <div class="game-grid">
+
+        <!-- PANJAT PINANG -->
+        <article class="game-card game-card-pinang">
+
+          <div class="game-icon">
+            🎁
+          </div>
+
+          <span class="game-tag">
+            GAME 01
+          </span>
+
+          <h3>
+            Panjat Pinang
+          </h3>
+
+          <p>
+            Panjat sampai puncak dan raih Mystery Box.
+          </p>
+
+          <div class="game-prize">
+            Hadiah hingga Rp500.000
+          </div>
+
+          <div class="game-actions">
+
+            <button
+              type="button"
+              class="play-button"
+              data-game="pinang"
+            >
+              MAINKAN
+            </button>
+
+            <button
+              type="button"
+              class="terms-button"
+              data-terms="pinang"
+            >
+              LIHAT S&K
+            </button>
+
+          </div>
+
+        </article>
+
+        <!-- MAKAN KERUPUK -->
+        <article class="game-card game-card-kerupuk">
+
+          <div class="game-icon">
+            🍘
+          </div>
+
+          <span class="game-tag">
+            GAME 02
+          </span>
+
+          <h3>
+            Makan Kerupuk
+          </h3>
+
+          <p>
+            Klik secepat mungkin sampai kerupuk habis.
+          </p>
+
+          <div class="game-prize">
+            Hadiah hingga Rp500.000
+          </div>
+
+          <div class="game-actions">
+
+            <button
+              type="button"
+              class="play-button"
+              data-game="kerupuk"
+            >
+              MAINKAN
+            </button>
+
+            <button
+              type="button"
+              class="terms-button"
+              data-terms="kerupuk"
+            >
+              LIHAT S&K
+            </button>
+
+          </div>
+
+        </article>
+
+        <!-- KELERENG -->
+        <article class="game-card game-card-kelereng">
+
+          <div class="game-icon">
+            ⚪
+          </div>
+
+          <span class="game-tag">
+            GAME 03
+          </span>
+
+          <h3>
+            Lomba Kelereng
+          </h3>
+
+          <p>
+            Jaga keseimbangan sampai garis finis.
+          </p>
+
+          <div class="game-prize">
+            Hadiah hingga Rp500.000
+          </div>
+
+          <div class="game-actions">
+
+            <button
+              type="button"
+              class="play-button"
+              data-game="kelereng"
+            >
+              MAINKAN
+            </button>
+
+            <button
+              type="button"
+              class="terms-button"
+              data-terms="kelereng"
+            >
+              LIHAT S&K
+            </button>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+    <!-- TEMPAT GAME -->
+    <section class="game-screen hidden" id="gameScreen">
+
+      <div class="game-screen-header">
+
+        <button
+          type="button"
+          class="back-button"
+          id="backToLobby"
+        >
+          ← KEMBALI KE LOBBY
+        </button>
+
+        <div>
+          <span class="eyebrow">
+            PERMAINAN
+          </span>
+
+          <h2 id="activeGameTitle">
+            Nama Game
           </h2>
         </div>
 
-        <div class="game-stats">
-
-          <div class="stat-box">
-            <span>Kesempatan</span>
-            <strong id="attemptCount">5</strong>
-          </div>
-
-          <div class="stat-box">
-            <span>Level</span>
-            <strong id="levelCount">0/5</strong>
-          </div>
-
-        </div>
-
       </div>
 
-      <div class="game-area">
+      <div class="game-placeholder">
 
-        <!-- AREA TIANG -->
-        <div class="pole-area">
-
-          <div class="reward reward-5">
-            88K
-          </div>
-
-          <div class="reward reward-4">
-            50K
-          </div>
-
-          <div class="reward reward-3">
-            25K
-          </div>
-
-          <div class="reward reward-2">
-            10K
-          </div>
-
-          <div class="reward reward-1">
-            5K
-          </div>
-
-          <div class="pole"></div>
-
-          <div class="character" id="character">
-
-            <div class="character-head"></div>
-
-            <div class="character-body"></div>
-
-            <div class="character-arm arm-left"></div>
-
-            <div class="character-arm arm-right"></div>
-
-            <div class="character-leg leg-left"></div>
-
-            <div class="character-leg leg-right"></div>
-
-          </div>
-
+        <div class="placeholder-icon" id="activeGameIcon">
+          🎮
         </div>
 
-        <!-- PANEL HADIAH -->
-        <aside class="reward-panel">
-
-          <div class="gift-box">
-
-            <div class="gift-lid"></div>
-
-            <div class="gift-body"></div>
-
-            <div class="gift-ribbon-v"></div>
-
-            <div class="gift-ribbon-h"></div>
-
-            <div class="gift-number">
-              88
-            </div>
-
-          </div>
-
-          <h3 id="rewardTitle">
-            Hadiah Menanti
-          </h3>
-
-          <p id="rewardDescription">
-            Tekan tombol PANJAT untuk mulai naik.
-          </p>
-
-          <button
-            type="button"
-            class="climb-button"
-            id="climbBtn"
-          >
-            PANJAT
-          </button>
-
-          <button
-            type="button"
-            class="reset-button"
-            id="resetBtn"
-          >
-            ULANGI GAME
-          </button>
-
-        </aside>
-
-      </div>
-
-      <!-- RIWAYAT HADIAH -->
-      <div class="reward-history">
-
-        <h3>
-          Riwayat Hadiah
+        <h3 id="placeholderTitle">
+          Game sedang disiapkan
         </h3>
 
-        <div class="history-list" id="historyList">
-
-          <span class="history-empty">
-            Belum ada hadiah.
-          </span>
-
-        </div>
+        <p id="placeholderText">
+          Gameplay akan dimasukkan pada tahap berikutnya.
+        </p>
 
       </div>
 
@@ -248,54 +314,78 @@
 
   </main>
 
-  <!-- POPUP HASIL -->
-  <div class="result-modal hidden" id="resultModal">
+  <!-- POPUP S&K -->
+  <div class="modal hidden" id="termsModal">
 
-    <div class="result-box">
+    <div class="modal-box">
 
       <button
         type="button"
         class="modal-close"
-        id="modalClose"
+        id="closeTermsModal"
       >
         ×
       </button>
 
-      <div class="popup-gift">
+      <span class="eyebrow">
+        SYARAT & KETENTUAN
+      </span>
 
-        <div class="popup-gift-lid"></div>
+      <h2 id="termsTitle">
+        Mystery Box
+      </h2>
 
-        <div class="popup-gift-body"></div>
+      <div class="terms-content">
 
-        <div class="popup-gift-ribbon"></div>
+        <p>
+          <strong>Syarat:</strong>
+          Kalah Rp50.000 mendapatkan 1 tiket.
+        </p>
+
+        <p>
+          <strong>Limit:</strong>
+          Maksimal 8 tiket per hari untuk setiap akun.
+        </p>
+
+        <p>
+          <strong>Batas Klaim:</strong>
+          Tiket wajib digunakan pada hari yang sama.
+          Tiket yang tidak digunakan akan hangus
+          setelah pergantian hari.
+        </p>
+
+        <p>
+          <strong>Hadiah:</strong>
+          Kesempatan mendapatkan saldo Rp5.000,
+          Rp10.000, Rp25.000, Rp50.000,
+          Rp100.000, Rp250.000,
+          Rp350.000, atau Rp500.000.
+        </p>
+
+        <p>
+          <strong>Ketentuan:</strong>
+          Hasil undian sistem bersifat mutlak dan final.
+          Admin berhak membatalkan tiket maupun hadiah
+          apabila ditemukan indikasi kecurangan.
+          Promo tidak dapat digabungkan dengan bonus lain,
+          kecuali Bonus Point Rungkat.
+        </p>
 
       </div>
 
-      <span class="event-label">
-        SELAMAT!
-      </span>
-
-      <h2 id="modalReward">
-        BONUS 5.000
-      </h2>
-
-      <p>
-        Hadiah demo berhasil didapatkan.
-      </p>
-
       <button
         type="button"
-        class="continue-button"
-        id="continueBtn"
+        class="modal-confirm"
+        id="confirmTerms"
       >
-        LANJUTKAN
+        SAYA MENGERTI
       </button>
 
     </div>
 
   </div>
 
-  <script src="script.js"></script>
+  <script src="./script.js?v=100"></script>
 
 </body>
 </html>
