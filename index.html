@@ -3990,3 +3990,361 @@
     id="kelerengResultOverlay"
     class="game-result-overlay"
     aria-hidden="true"
+<div id="kelerengResultModal" class="game-result-modal">
+
+    <div class="result-background-glow"></div>
+
+    <button
+        id="closeKelerengResultButton"
+        class="result-close-button"
+        type="button">
+        ×
+    </button>
+        <!-- Tampilan menang -->
+        <div
+          id="kelerengWinContent"
+          class="result-content win-result-content"
+        >
+
+          <div class="result-ribbon">
+            <span>FINISH!</span>
+          </div>
+
+          <div class="result-icon-wrapper">
+
+            <div class="result-icon-glow"></div>
+
+            <div class="result-trophy-icon">
+              🏆
+            </div>
+
+          </div>
+
+          <span class="result-label">
+            LOMBA KELERENG BERHASIL
+          </span>
+
+          <h2>
+            Kamu Mencapai Garis Finis!
+          </h2>
+
+          <p>
+            Hebat! Kamu berhasil menjaga keseimbangan kelereng
+            sampai melewati garis akhir.
+          </p>
+
+          <div class="result-stat-grid">
+
+            <div class="result-stat-item">
+
+              <span>⏱️</span>
+
+              <div>
+                <small>Sisa Waktu</small>
+
+                <strong id="kelerengResultRemainingTime">
+                  00:00
+                </strong>
+              </div>
+
+            </div>
+
+            <div class="result-stat-item">
+
+              <span>🏁</span>
+
+              <div>
+                <small>Jarak Tempuh</small>
+
+                <strong>
+                  100%
+                </strong>
+              </div>
+
+            </div>
+
+            <div class="result-stat-item">
+
+              <span>🔵</span>
+
+              <div>
+                <small>Keseimbangan</small>
+
+                <strong id="kelerengResultBalance">
+                  STABIL
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="result-unlock-box">
+
+            <div class="result-box-glow"></div>
+
+            <div class="result-mini-box">
+
+              <span class="result-mini-box-ribbon"></span>
+
+              <span class="result-mini-box-question">
+                ?
+              </span>
+
+            </div>
+
+            <div class="result-unlock-copy">
+
+              <small>HADIAH TERBUKA</small>
+
+              <strong>
+                Mystery Box
+              </strong>
+
+              <p>
+                Buka kotak untuk mengetahui hadiahmu.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="result-action-group">
+
+            <button
+              id="openKelerengMysteryButton"
+              class="primary-button gold-button result-primary-button"
+              type="button"
+            >
+
+              <span class="button-glow"></span>
+
+              <span class="button-icon">
+                🎁
+              </span>
+
+              <span class="button-text">
+                BUKA MYSTERY BOX
+              </span>
+
+              <span class="button-arrow">
+                ➜
+              </span>
+
+            </button>
+
+            <button
+              id="kelerengWinLobbyButton"
+              class="secondary-button result-secondary-button"
+              type="button"
+            >
+              Kembali ke Lobby
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Tampilan kalah karena kelereng jatuh -->
+        <div
+          id="kelerengLoseContent"
+          class="result-content lose-result-content"
+          hidden
+        >
+
+          <div class="result-ribbon lose-ribbon">
+            <span>KELERENG JATUH</span>
+          </div>
+
+          <div class="result-icon-wrapper">
+
+            <div class="result-icon-glow lose-icon-glow"></div>
+
+            <div class="result-fail-icon">
+              🔵
+            </div>
+
+          </div>
+
+          <span class="result-label lose-result-label">
+            PERLOMBAAN BELUM SELESAI
+          </span>
+
+          <h2>
+            Keseimbangan Hilang!
+          </h2>
+
+          <p id="kelerengLoseDescription">
+            Kelereng terjatuh dari sendok. Coba kendalikan arah
+            dengan sentuhan yang lebih pendek.
+          </p>
+
+          <div class="result-stat-grid">
+
+            <div class="result-stat-item">
+
+              <span>🏁</span>
+
+              <div>
+                <small>Jarak Tempuh</small>
+
+                <strong id="kelerengLoseProgress">
+                  0%
+                </strong>
+              </div>
+
+            </div>
+
+            <div class="result-stat-item">
+
+              <span>🔵</span>
+
+              <div>
+                <small>Status</small>
+
+                <strong id="kelerengLoseReason">
+                  JATUH
+                </strong>
+              </div>
+
+            </div>
+
+            <div class="result-stat-item">
+
+              <span>🎫</span>
+
+              <div>
+                <small>Sisa Tiket</small>
+
+                <strong id="kelerengLoseTicket">
+                  7
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="result-fail-message">
+
+            <span>💡</span>
+
+            <p>
+              Tekan tombol kiri dan kanan secara singkat.
+              Jangan menahannya terlalu lama agar kelereng tetap stabil.
+            </p>
+
+          </div>
+
+          <div class="result-action-group">
+
+            <button
+              id="retryKelerengButton"
+              class="primary-button red-button result-primary-button"
+              type="button"
+            >
+
+              <span class="button-glow"></span>
+
+              <span class="button-icon">
+                🔄
+              </span>
+
+              <span class="button-text">
+                COBA LAGI
+              </span>
+
+            </button>
+
+            <button
+              id="kelerengLoseLobbyButton"
+              class="secondary-button result-secondary-button"
+              type="button"
+            >
+              Kembali ke Lobby
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         KONFIRMASI KELUAR LOMBA KELERENG
+    ========================================== -->
+    <div
+      id="kelerengExitConfirmOverlay"
+      class="confirmation-overlay"
+      aria-hidden="true"
+    >
+
+      <div class="confirmation-modal">
+
+        <div class="confirmation-icon">
+          ⚠️
+        </div>
+
+        <span class="section-label">
+          KONFIRMASI
+        </span>
+
+        <h2>
+          Keluar dari Permainan?
+        </h2>
+
+        <p>
+          Progres lomba kelereng yang sedang berlangsung akan hilang.
+        </p>
+
+        <div class="confirmation-actions">
+
+          <button
+            id="cancelKelerengExitButton"
+            class="secondary-button"
+            type="button"
+          >
+            Tetap Bermain
+          </button>
+
+          <button
+            id="confirmKelerengExitButton"
+            class="primary-button red-button"
+            type="button"
+          >
+            Keluar ke Lobby
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NOTIFIKASI LOMBA KELERENG
+    ========================================== -->
+    <div
+      id="kelerengToast"
+      class="game-toast"
+      role="status"
+      aria-live="polite"
+    >
+
+      <span id="kelerengToastIcon">
+        ℹ️
+      </span>
+
+      <p id="kelerengToastMessage">
+        Pesan permainan
+      </p>
+
+    </div>
