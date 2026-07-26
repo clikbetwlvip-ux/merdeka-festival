@@ -20966,3 +20966,336 @@ body.no-scroll {
     margin-top: 17px;
   }
 }
+/* =========================================================
+   FIX 10 — TOAST / NOTIFIKASI
+========================================================= */
+
+.game-toast,
+.global-toast {
+  position: fixed !important;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  left: auto !important;
+  z-index: 12000 !important;
+
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+
+  width: min(390px, calc(100vw - 36px)) !important;
+  min-height: 62px;
+  max-height: min(180px, 45dvh);
+  padding: 14px 16px;
+
+  overflow: hidden;
+  overflow-wrap: anywhere;
+
+  border: 1px solid rgba(255, 218, 105, 0.34);
+  border-radius: 17px;
+
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(255, 207, 69, 0.12),
+      transparent 43%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(91, 5, 18, 0.98),
+      rgba(22, 2, 6, 0.99)
+    );
+
+  box-shadow:
+    0 19px 45px rgba(0, 0, 0, 0.5),
+    inset 0 1px rgba(255, 255, 255, 0.1),
+    0 0 24px rgba(255, 204, 51, 0.08);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform:
+    translateY(22px)
+    scale(0.96);
+
+  transition:
+    opacity 0.24s ease,
+    visibility 0.24s ease,
+    transform 0.24s ease;
+}
+
+/* Saat toast muncul */
+.game-toast.show,
+.global-toast.show {
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  transform:
+    translateY(0)
+    scale(1) !important;
+}
+
+/* Ikon */
+.game-toast > span,
+.global-toast > span {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+
+  border: 1px solid rgba(255, 219, 111, 0.22);
+  border-radius: 12px;
+
+  background: rgba(255, 212, 76, 0.1);
+
+  font-size: 1.28rem;
+  line-height: 1;
+}
+
+/* Pesan */
+.game-toast > p,
+.global-toast > p {
+  min-width: 0;
+  max-height: 105px;
+  margin: 0;
+  padding-right: 2px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   WARNA BERDASARKAN DATA-TYPE DARI JAVASCRIPT
+========================================================= */
+
+/* Informasi */
+.game-toast[data-type="info"],
+.global-toast[data-type="info"] {
+  border-color: rgba(94, 173, 255, 0.42);
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(78, 165, 255, 0.15),
+      transparent 43%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15, 48, 83, 0.98),
+      rgba(5, 15, 29, 0.99)
+    );
+}
+
+.game-toast[data-type="info"] > span,
+.global-toast[data-type="info"] > span {
+  border-color: rgba(91, 176, 255, 0.28);
+  background: rgba(65, 156, 255, 0.12);
+}
+
+/* Berhasil */
+.game-toast[data-type="success"],
+.global-toast[data-type="success"],
+.game-toast[data-type="reward"],
+.global-toast[data-type="reward"] {
+  border-color: rgba(81, 255, 135, 0.42);
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(67, 255, 124, 0.14),
+      transparent 43%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(13, 74, 35, 0.98),
+      rgba(3, 24, 12, 0.99)
+    );
+}
+
+.game-toast[data-type="success"] > span,
+.global-toast[data-type="success"] > span,
+.game-toast[data-type="reward"] > span,
+.global-toast[data-type="reward"] > span {
+  border-color: rgba(80, 255, 133, 0.3);
+  background: rgba(66, 245, 118, 0.12);
+}
+
+/* Peringatan / tiket */
+.game-toast[data-type="warning"],
+.global-toast[data-type="warning"],
+.game-toast[data-type="ticket"],
+.global-toast[data-type="ticket"] {
+  border-color: rgba(255, 209, 74, 0.5);
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(255, 202, 44, 0.18),
+      transparent 43%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(91, 54, 5, 0.98),
+      rgba(30, 15, 2, 0.99)
+    );
+}
+
+.game-toast[data-type="warning"] > span,
+.global-toast[data-type="warning"] > span,
+.game-toast[data-type="ticket"] > span,
+.global-toast[data-type="ticket"] > span {
+  border-color: rgba(255, 215, 89, 0.32);
+  background: rgba(255, 205, 50, 0.14);
+}
+
+/* Error */
+.game-toast[data-type="error"],
+.global-toast[data-type="error"] {
+  border-color: rgba(255, 82, 82, 0.52);
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(255, 52, 52, 0.17),
+      transparent 43%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(91, 7, 13, 0.99),
+      rgba(31, 2, 5, 0.99)
+    );
+}
+
+.game-toast[data-type="error"] > span,
+.global-toast[data-type="error"] > span {
+  border-color: rgba(255, 91, 91, 0.32);
+  background: rgba(255, 66, 66, 0.13);
+}
+
+/* Suara */
+.game-toast[data-type="sound"],
+.global-toast[data-type="sound"] {
+  border-color: rgba(193, 119, 255, 0.44);
+  background:
+    radial-gradient(
+      circle at 0% 50%,
+      rgba(183, 93, 255, 0.16),
+      transparent 43%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(62, 19, 89, 0.98),
+      rgba(20, 5, 29, 0.99)
+    );
+}
+
+/* =========================================================
+   TOAST KHUSUS GAME
+========================================================= */
+
+/* Tipe tambahan yang dipakai game */
+.game-toast[data-type="perfect"],
+.game-toast[data-type="combo"] {
+  border-color: rgba(255, 210, 68, 0.52);
+  box-shadow:
+    0 19px 45px rgba(0, 0, 0, 0.5),
+    0 0 28px rgba(255, 203, 46, 0.17);
+}
+
+.game-toast[data-type="slip"],
+.game-toast[data-type="tired"] {
+  border-color: rgba(255, 119, 75, 0.46);
+}
+
+/* =========================================================
+   HP
+========================================================= */
+
+@media (max-width: 600px) {
+  .game-toast,
+  .global-toast {
+    right: max(10px, env(safe-area-inset-right)) !important;
+    bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    left: max(10px, env(safe-area-inset-left)) !important;
+
+    width: auto !important;
+    min-height: 56px;
+    max-height: min(150px, 38dvh);
+
+    gap: 10px;
+    padding: 11px 12px;
+
+    border-radius: 15px;
+
+    transform:
+      translateY(18px)
+      scale(0.97);
+  }
+
+  .game-toast > span,
+  .global-toast > span {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+
+    border-radius: 10px;
+    font-size: 1.12rem;
+  }
+
+  .game-toast > p,
+  .global-toast > p {
+    max-height: 90px;
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+}
+
+/* HP kecil */
+@media (max-width: 380px) {
+  .game-toast,
+  .global-toast {
+    right: 7px !important;
+    bottom: max(7px, env(safe-area-inset-bottom)) !important;
+    left: 7px !important;
+
+    padding: 10px;
+  }
+
+  .game-toast > span,
+  .global-toast > span {
+    width: 33px;
+    height: 33px;
+    flex-basis: 33px;
+    font-size: 1rem;
+  }
+
+  .game-toast > p,
+  .global-toast > p {
+    font-size: 0.68rem;
+  }
+}
+
+/* Landscape HP */
+@media (max-height: 500px) and (orientation: landscape) {
+  .game-toast,
+  .global-toast {
+    right: 12px !important;
+    bottom: 10px !important;
+    left: auto !important;
+
+    width: min(360px, calc(100vw - 24px)) !important;
+    min-height: 50px;
+    max-height: 105px;
+  }
+}
+
+/* Aksesibilitas */
+@media (prefers-reduced-motion: reduce) {
+  .game-toast,
+  .global-toast {
+    transition: none !important;
+  }
+}
