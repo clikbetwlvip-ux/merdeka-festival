@@ -6623,3 +6623,1097 @@ height:15px;
     }
 
 }
+/* =========================================================
+   CSS PART 4A-1 — PANJAT PINANG GAME ARENA & HUD
+========================================================= */
+
+
+/* =========================================================
+   PANJAT PINANG SCREEN
+========================================================= */
+
+#panjatPinangScreen,
+#panjatPinangGame,
+.panjat-pinang-screen,
+.panjat-game-screen{
+    position:relative;
+    min-height:100vh;
+    overflow:hidden;
+    isolation:isolate;
+
+    background:
+        radial-gradient(
+            circle at 50% 15%,
+            rgba(255,224,139,.18),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #2594d5 0%,
+            #72cef1 43%,
+            #d8f4ff 70%,
+            #6eb447 70.5%,
+            #357b31 100%
+        );
+}
+
+
+/* =========================================================
+   SKY DECORATION
+========================================================= */
+
+.panjat-sky-glow{
+    position:absolute;
+    top:-180px;
+    left:50%;
+    z-index:-4;
+    width:700px;
+    height:420px;
+    transform:translateX(-50%);
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,248,201,.85),
+            rgba(255,226,128,.24) 42%,
+            transparent 72%
+        );
+
+    filter:blur(8px);
+    pointer-events:none;
+}
+
+.panjat-cloud{
+    position:absolute;
+    z-index:-2;
+    width:180px;
+    height:52px;
+    border-radius:999px;
+
+    background:rgba(255,255,255,.78);
+
+    box-shadow:
+        45px -19px 0 -4px rgba(255,255,255,.8),
+        91px -5px 0 -13px rgba(255,255,255,.76),
+        112px 10px 0 -18px rgba(255,255,255,.7);
+
+    filter:blur(.2px);
+    opacity:.75;
+    animation:panjatCloudMove 26s linear infinite;
+}
+
+.panjat-cloud.cloud-1{
+    top:18%;
+    left:-220px;
+}
+
+.panjat-cloud.cloud-2{
+    top:34%;
+    left:-300px;
+    opacity:.48;
+    transform:scale(.7);
+    animation-duration:34s;
+    animation-delay:-13s;
+}
+
+@keyframes panjatCloudMove{
+    from{
+        translate:0 0;
+    }
+
+    to{
+        translate:calc(100vw + 450px) 0;
+    }
+}
+
+
+/* =========================================================
+   GAME CONTAINER
+========================================================= */
+
+.panjat-game-container,
+.panjat-arena-container{
+    position:relative;
+    z-index:2;
+    width:min(1180px,calc(100% - 28px));
+    min-height:100vh;
+    margin-inline:auto;
+    padding:
+        max(16px,env(safe-area-inset-top))
+        0
+        max(24px,env(safe-area-inset-bottom));
+}
+
+
+/* =========================================================
+   TOP HUD
+========================================================= */
+
+.panjat-game-hud,
+.game-hud.panjat-hud{
+    position:relative;
+    z-index:20;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+    align-items:center;
+    gap:14px;
+    padding:13px 15px;
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,27,37,.76),
+            rgba(5,10,15,.56)
+        );
+
+    border:1px solid rgba(255,234,167,.24);
+    backdrop-filter:blur(14px);
+
+    box-shadow:
+        0 14px 34px rgba(0,0,0,.25),
+        inset 0 1px rgba(255,255,255,.1);
+}
+
+
+/* =========================================================
+   HUD LEFT
+========================================================= */
+
+.panjat-hud-left{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    min-width:0;
+}
+
+.panjat-back-button,
+.game-back-button{
+    flex-shrink:0;
+    display:grid;
+    place-items:center;
+    width:42px;
+    height:42px;
+    padding:0;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    cursor:pointer;
+
+    color:#fff4ca;
+    font-size:1.15rem;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.12),
+            rgba(255,255,255,.045)
+        );
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.09);
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.panjat-back-button:hover,
+.game-back-button:hover{
+    transform:translateX(-2px);
+    border-color:rgba(255,226,128,.38);
+    background:rgba(255,207,74,.13);
+}
+
+.panjat-game-title-wrap{
+    min-width:0;
+}
+
+.panjat-game-label{
+    color:rgba(255,255,255,.48);
+    font-size:.58rem;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+}
+
+.panjat-game-title{
+    overflow:hidden;
+    margin-top:3px;
+    color:#fff;
+    font-size:1rem;
+    font-weight:1000;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+.panjat-timer,
+.game-timer{
+    position:relative;
+    min-width:112px;
+    padding:9px 17px;
+    text-align:center;
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,226,125,.2),
+            rgba(255,173,28,.08)
+        );
+
+    border:1px solid rgba(255,226,128,.37);
+
+    box-shadow:
+        0 0 20px rgba(255,190,39,.11),
+        inset 0 1px rgba(255,255,255,.1);
+}
+
+.panjat-timer-label,
+.game-timer-label{
+    display:block;
+    margin-bottom:2px;
+    color:rgba(255,255,255,.54);
+    font-size:.53rem;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+}
+
+.panjat-timer-value,
+.game-timer-value{
+    color:#ffe07e;
+    font-size:1.35rem;
+    font-variant-numeric:tabular-nums;
+    font-weight:1000;
+    line-height:1;
+
+    text-shadow:
+        0 0 12px rgba(255,205,73,.32);
+}
+
+.panjat-timer.warning,
+.game-timer.warning{
+    border-color:rgba(255,102,75,.58);
+    background:rgba(255,59,34,.13);
+    animation:panjatTimerWarning .65s ease-in-out infinite;
+}
+
+.panjat-timer.warning .panjat-timer-value,
+.game-timer.warning .game-timer-value{
+    color:#ffb09e;
+}
+
+@keyframes panjatTimerWarning{
+    50%{
+        transform:scale(1.045);
+        box-shadow:
+            0 0 24px rgba(255,65,35,.26),
+            inset 0 1px rgba(255,255,255,.1);
+    }
+}
+
+
+/* =========================================================
+   HUD RIGHT
+========================================================= */
+
+.panjat-hud-right{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:9px;
+}
+
+.panjat-score-box,
+.panjat-ticket-box{
+    min-width:78px;
+    padding:8px 11px;
+    border-radius:14px;
+
+    background:rgba(255,255,255,.065);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.panjat-score-box span,
+.panjat-ticket-box span{
+    display:block;
+    color:rgba(255,255,255,.47);
+    font-size:.52rem;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+
+.panjat-score-box strong,
+.panjat-ticket-box strong{
+    display:block;
+    margin-top:3px;
+    color:#fff;
+    font-size:.86rem;
+    font-weight:1000;
+    font-variant-numeric:tabular-nums;
+}
+
+.panjat-ticket-box strong{
+    color:#ffe083;
+}
+
+
+/* =========================================================
+   ARENA
+========================================================= */
+
+.panjat-arena,
+.panjat-pinang-arena{
+    position:relative;
+    min-height:690px;
+    margin-top:17px;
+    overflow:hidden;
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.07),
+            rgba(255,255,255,.015)
+        );
+
+    border:1px solid rgba(255,255,255,.23);
+
+    box-shadow:
+        0 24px 55px rgba(0,0,0,.24),
+        inset 0 1px rgba(255,255,255,.18);
+
+    backdrop-filter:blur(2px);
+}
+
+
+/* =========================================================
+   ARENA SUNLIGHT
+========================================================= */
+
+.panjat-arena::before,
+.panjat-pinang-arena::before{
+    content:"";
+    position:absolute;
+    top:-100px;
+    left:50%;
+    width:500px;
+    height:550px;
+    transform:translateX(-50%);
+    clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,249,196,.29),
+            rgba(255,244,164,.04) 65%,
+            transparent
+        );
+
+    filter:blur(8px);
+    opacity:.75;
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   GROUND
+========================================================= */
+
+.panjat-ground{
+    position:absolute;
+    right:-5%;
+    bottom:-40px;
+    left:-5%;
+    z-index:2;
+    height:190px;
+    border-radius:50% 50% 0 0;
+
+    background:
+        radial-gradient(
+            ellipse at center top,
+            rgba(171,224,84,.95),
+            #5ba63d 42%,
+            #2d6d30 100%
+        );
+
+    box-shadow:
+        inset 0 18px 24px rgba(255,255,255,.1),
+        0 -10px 30px rgba(42,113,47,.18);
+}
+
+.panjat-ground::after{
+    content:"";
+    position:absolute;
+    inset:18px 0 0;
+
+    background:
+        repeating-linear-gradient(
+            105deg,
+            transparent 0 28px,
+            rgba(255,255,255,.05) 29px 31px,
+            transparent 32px 58px
+        );
+
+    opacity:.45;
+}
+
+
+/* =========================================================
+   MAIN PINANG TREE
+========================================================= */
+
+.panjat-main-tree,
+.panjat-arena-tree{
+    position:absolute;
+    bottom:105px;
+    left:50%;
+    z-index:5;
+    width:86px;
+    height:490px;
+    transform:translateX(-50%);
+    transform-origin:center bottom;
+    border-radius:55% 55% 24px 24px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #553013 0%,
+            #97602a 18%,
+            #d29a52 42%,
+            #efbe77 51%,
+            #a3652c 72%,
+            #4a270f 100%
+        );
+
+    box-shadow:
+        inset 11px 0 15px rgba(255,255,255,.12),
+        inset -15px 0 17px rgba(0,0,0,.26),
+        0 22px 24px rgba(0,0,0,.27);
+
+    animation:panjatMainTreeSway 5s ease-in-out infinite;
+}
+
+.panjat-main-tree::before,
+.panjat-arena-tree::before{
+    content:"";
+    position:absolute;
+    inset:26px 9px;
+
+    background:
+        repeating-linear-gradient(
+            176deg,
+            transparent 0 38px,
+            rgba(255,255,255,.16) 39px 42px,
+            transparent 43px 74px
+        );
+}
+
+@keyframes panjatMainTreeSway{
+    0%,
+    100%{
+        transform:translateX(-50%) rotate(-.45deg);
+    }
+
+    50%{
+        transform:translateX(-50%) rotate(.55deg);
+    }
+}
+
+
+/* =========================================================
+   TREE LEAVES
+========================================================= */
+
+.panjat-tree-leaves{
+    position:absolute;
+    top:-48px;
+    left:50%;
+    width:220px;
+    height:115px;
+    transform:translateX(-50%);
+    pointer-events:none;
+}
+
+.panjat-tree-leaves::before,
+.panjat-tree-leaves::after{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #91dd55 0 12%,
+            #48a53c 35%,
+            #20742f 58%,
+            transparent 65%
+        );
+
+    filter:drop-shadow(0 9px 9px rgba(0,0,0,.22));
+}
+
+.panjat-tree-leaves::after{
+    transform:rotate(42deg);
+}
+
+
+/* =========================================================
+   TREE PRIZE
+========================================================= */
+
+.panjat-top-prize,
+.panjat-prize-bundle{
+    position:absolute;
+    top:-45px;
+    left:50%;
+    z-index:9;
+    display:grid;
+    place-items:center;
+    width:94px;
+    height:94px;
+    transform:translateX(-50%);
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,251,203,.98),
+            rgba(255,203,50,.4) 37%,
+            transparent 71%
+        );
+
+    filter:
+        drop-shadow(0 0 14px rgba(255,224,94,.66))
+        drop-shadow(0 0 30px rgba(255,174,22,.32));
+
+    animation:panjatTopPrizeFloat 1.9s ease-in-out infinite;
+}
+
+.panjat-top-prize::before,
+.panjat-prize-bundle::before{
+    content:"🎁";
+    font-size:2.65rem;
+}
+
+@keyframes panjatTopPrizeFloat{
+    0%,
+    100%{
+        transform:translateX(-50%) translateY(0) rotate(-3deg) scale(.96);
+    }
+
+    50%{
+        transform:translateX(-50%) translateY(-9px) rotate(3deg) scale(1.06);
+    }
+}
+
+
+/* =========================================================
+   CLIMB PROGRESS PANEL
+========================================================= */
+
+.panjat-progress-panel{
+    position:absolute;
+    top:22px;
+    right:22px;
+    z-index:15;
+    display:grid;
+    grid-template-columns:auto 18px;
+    align-items:center;
+    gap:12px;
+    padding:13px;
+    border-radius:19px;
+
+    background:rgba(9,16,22,.62);
+    border:1px solid rgba(255,255,255,.13);
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+        0 13px 27px rgba(0,0,0,.2),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+.panjat-progress-info{
+    text-align:right;
+}
+
+.panjat-progress-info span{
+    display:block;
+    color:rgba(255,255,255,.52);
+    font-size:.56rem;
+    font-weight:900;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+}
+
+.panjat-progress-info strong{
+    display:block;
+    margin-top:3px;
+    color:#ffe180;
+    font-size:.94rem;
+    font-weight:1000;
+}
+
+.panjat-progress-track{
+    position:relative;
+    width:16px;
+    height:155px;
+    overflow:hidden;
+    border-radius:999px;
+
+    background:rgba(0,0,0,.4);
+    border:1px solid rgba(255,255,255,.11);
+
+    box-shadow:
+        inset 0 3px 7px rgba(0,0,0,.5);
+}
+
+.panjat-progress-fill{
+    position:absolute;
+    right:1px;
+    bottom:1px;
+    left:1px;
+    height:0%;
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            0deg,
+            #db8d0b,
+            #ffd75e 62%,
+            #fff2aa
+        );
+
+    box-shadow:
+        0 0 13px rgba(255,206,65,.47);
+
+    transition:
+        height .45s cubic-bezier(.2,.8,.2,1);
+}
+
+.panjat-progress-fill::after{
+    content:"";
+    position:absolute;
+    inset:auto 0 0;
+    height:36px;
+
+    background:
+        linear-gradient(
+            0deg,
+            transparent,
+            rgba(255,255,255,.62),
+            transparent
+        );
+
+    animation:panjatProgressShine 1.8s linear infinite;
+}
+
+@keyframes panjatProgressShine{
+    from{
+        translate:0 40px;
+    }
+
+    to{
+        translate:0 -170px;
+    }
+}
+
+
+/* =========================================================
+   GAME INSTRUCTION
+========================================================= */
+
+.panjat-instruction{
+    position:absolute;
+    top:22px;
+    left:22px;
+    z-index:15;
+    max-width:270px;
+    padding:13px 15px;
+    border-radius:17px;
+
+    color:rgba(255,255,255,.78);
+    font-size:.7rem;
+    font-weight:700;
+    line-height:1.5;
+
+    background:rgba(8,15,21,.58);
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(11px);
+
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.18),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+.panjat-instruction strong{
+    color:#ffe28b;
+}
+
+
+/* =========================================================
+   CONTROL AREA
+========================================================= */
+
+.panjat-control-area{
+    position:absolute;
+    right:0;
+    bottom:20px;
+    left:0;
+    z-index:20;
+    display:flex;
+    justify-content:center;
+    padding:0 18px;
+}
+
+.panjat-climb-button,
+.climb-button{
+    position:relative;
+    width:min(360px,100%);
+    min-height:64px;
+    overflow:hidden;
+    border:1px solid rgba(255,245,190,.88);
+    border-radius:22px;
+    cursor:pointer;
+
+    color:#452500;
+    font-size:.9rem;
+    font-weight:1000;
+    letter-spacing:.065em;
+    text-transform:uppercase;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff5b8 0%,
+            #ffd85d 43%,
+            #e4910b 100%
+        );
+
+    box-shadow:
+        0 15px 30px rgba(0,0,0,.28),
+        0 0 25px rgba(255,191,41,.31),
+        inset 0 2px rgba(255,255,255,.76),
+        inset 0 -3px rgba(122,62,0,.22);
+
+    transition:
+        transform .15s ease,
+        filter .2s ease,
+        box-shadow .2s ease;
+
+    animation:panjatButtonPulse 1.8s ease-in-out infinite;
+}
+
+.panjat-climb-button::before,
+.climb-button::before{
+    content:"";
+    position:absolute;
+    top:-70%;
+    left:-35%;
+    width:28%;
+    height:240%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.9),
+            transparent
+        );
+
+    transform:rotate(22deg);
+    animation:panjatControlShine 2.8s ease-in-out infinite;
+}
+
+.panjat-climb-button:hover,
+.climb-button:hover{
+    transform:translateY(-3px) scale(1.015);
+    filter:brightness(1.07);
+
+    box-shadow:
+        0 19px 35px rgba(0,0,0,.3),
+        0 0 35px rgba(255,194,39,.42),
+        inset 0 2px rgba(255,255,255,.82);
+}
+
+.panjat-climb-button:active,
+.climb-button:active,
+.panjat-climb-button.pressed,
+.climb-button.pressed{
+    transform:translateY(2px) scale(.965);
+    animation:none;
+}
+
+.panjat-climb-button:disabled,
+.climb-button:disabled{
+    cursor:not-allowed;
+    color:rgba(255,255,255,.42);
+    background:rgba(255,255,255,.11);
+    border-color:rgba(255,255,255,.09);
+    box-shadow:none;
+    animation:none;
+}
+
+.panjat-climb-button:disabled::before,
+.climb-button:disabled::before{
+    display:none;
+}
+
+@keyframes panjatButtonPulse{
+    50%{
+        transform:scale(1.025);
+        box-shadow:
+            0 17px 34px rgba(0,0,0,.29),
+            0 0 37px rgba(255,193,37,.38),
+            inset 0 2px rgba(255,255,255,.78);
+    }
+}
+
+@keyframes panjatControlShine{
+    0%,
+    62%{
+        left:-35%;
+    }
+
+    100%{
+        left:135%;
+    }
+}
+
+
+/* =========================================================
+   TAP INDICATOR
+========================================================= */
+
+.panjat-tap-indicator{
+    position:absolute;
+    bottom:97px;
+    left:50%;
+    z-index:19;
+    transform:translateX(-50%);
+    color:rgba(255,255,255,.82);
+    font-size:.67rem;
+    font-weight:900;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    text-shadow:0 2px 8px rgba(0,0,0,.32);
+
+    animation:panjatTapIndicator 1.15s ease-in-out infinite;
+}
+
+@keyframes panjatTapIndicator{
+    50%{
+        opacity:.5;
+        transform:translateX(-50%) translateY(5px);
+    }
+}
+
+
+/* =========================================================
+   SCREEN SHAKE
+========================================================= */
+
+.panjat-arena.shake,
+.panjat-pinang-arena.shake{
+    animation:panjatArenaShake .28s linear;
+}
+
+@keyframes panjatArenaShake{
+    0%,
+    100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-5px);
+    }
+
+    50%{
+        transform:translateX(5px);
+    }
+
+    75%{
+        transform:translateX(-3px);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+
+@media(max-width:820px){
+
+    .panjat-game-hud,
+    .game-hud.panjat-hud{
+        grid-template-columns:1fr auto;
+    }
+
+    .panjat-hud-right{
+        grid-column:1 / -1;
+        justify-content:center;
+    }
+
+    .panjat-arena,
+    .panjat-pinang-arena{
+        min-height:660px;
+    }
+
+    .panjat-main-tree,
+    .panjat-arena-tree{
+        height:455px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+
+@media(max-width:560px){
+
+    .panjat-game-container,
+    .panjat-arena-container{
+        width:min(100% - 16px,1180px);
+    }
+
+    .panjat-game-hud,
+    .game-hud.panjat-hud{
+        gap:9px;
+        padding:10px;
+        border-radius:18px;
+    }
+
+    .panjat-back-button,
+    .game-back-button{
+        width:38px;
+        height:38px;
+    }
+
+    .panjat-game-title{
+        max-width:130px;
+        font-size:.82rem;
+    }
+
+    .panjat-timer,
+    .game-timer{
+        min-width:88px;
+        padding:8px 11px;
+    }
+
+    .panjat-timer-value,
+    .game-timer-value{
+        font-size:1.08rem;
+    }
+
+    .panjat-score-box,
+    .panjat-ticket-box{
+        min-width:72px;
+        padding:7px 9px;
+    }
+
+    .panjat-arena,
+    .panjat-pinang-arena{
+        min-height:625px;
+        margin-top:11px;
+        border-radius:23px;
+    }
+
+    .panjat-main-tree,
+    .panjat-arena-tree{
+        bottom:103px;
+        width:68px;
+        height:410px;
+    }
+
+    .panjat-tree-leaves{
+        width:175px;
+        height:95px;
+    }
+
+    .panjat-top-prize,
+    .panjat-prize-bundle{
+        width:75px;
+        height:75px;
+    }
+
+    .panjat-top-prize::before,
+    .panjat-prize-bundle::before{
+        font-size:2.1rem;
+    }
+
+    .panjat-instruction{
+        top:13px;
+        left:13px;
+        max-width:185px;
+        padding:10px 11px;
+        font-size:.6rem;
+    }
+
+    .panjat-progress-panel{
+        top:13px;
+        right:13px;
+        padding:9px;
+    }
+
+    .panjat-progress-track{
+        width:13px;
+        height:125px;
+    }
+
+    .panjat-progress-info{
+        display:none;
+    }
+
+    .panjat-control-area{
+        bottom:14px;
+        padding:0 12px;
+    }
+
+    .panjat-climb-button,
+    .climb-button{
+        min-height:57px;
+        border-radius:18px;
+        font-size:.8rem;
+    }
+
+    .panjat-tap-indicator{
+        bottom:82px;
+        font-size:.59rem;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    .panjat-cloud,
+    .panjat-main-tree,
+    .panjat-arena-tree,
+    .panjat-top-prize,
+    .panjat-prize-bundle,
+    .panjat-progress-fill::after,
+    .panjat-climb-button,
+    .climb-button,
+    .panjat-climb-button::before,
+    .climb-button::before,
+    .panjat-tap-indicator,
+    .panjat-timer.warning,
+    .game-timer.warning{
+        animation:none !important;
+    }
+
+}
