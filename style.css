@@ -18461,3 +18461,167 @@ height:15px;
     padding-left: 43px !important;
   }
 }
+/* =========================================================
+   FIX 04 - PLAYER DASHBOARD
+========================================================= */
+
+.player-dashboard{
+display:flex;
+flex-direction:column;
+gap:24px;
+margin-bottom:36px;
+}
+
+.player-welcome{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:25px;
+padding:26px 30px;
+border-radius:24px;
+background:linear-gradient(145deg,#770814,#2b0208);
+border:1px solid rgba(255,215,120,.22);
+box-shadow:0 20px 45px rgba(0,0,0,.35);
+}
+
+.player-avatar{
+width:82px;
+height:82px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:2.8rem;
+background:linear-gradient(145deg,#ffd84d,#ffb300);
+position:relative;
+flex-shrink:0;
+}
+
+.player-online-indicator{
+position:absolute;
+right:6px;
+bottom:6px;
+width:16px;
+height:16px;
+border-radius:50%;
+background:#31ff66;
+border:3px solid #fff;
+}
+
+.player-welcome-copy{
+flex:1;
+min-width:0;
+}
+
+.player-welcome-copy h1{
+font-size:2rem;
+font-weight:900;
+color:#fff;
+margin:6px 0;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+}
+
+.player-welcome-copy p{
+margin:0;
+opacity:.8;
+}
+
+.player-greeting{
+font-size:.72rem;
+letter-spacing:2px;
+font-weight:700;
+color:#ffd34d;
+}
+
+.player-stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px;
+}
+
+.stat-card{
+min-height:145px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+padding:22px;
+border-radius:20px;
+background:linear-gradient(145deg,#580610,#250207);
+border:1px solid rgba(255,220,120,.18);
+box-shadow:0 12px 28px rgba(0,0,0,.30);
+transition:.25s;
+}
+
+.stat-card:hover{
+transform:translateY(-4px);
+}
+
+.stat-icon{
+font-size:2rem;
+margin-bottom:12px;
+}
+
+.stat-copy span{
+font-size:.72rem;
+letter-spacing:1px;
+opacity:.7;
+}
+
+.stat-copy strong{
+display:block;
+margin-top:8px;
+font-size:1.8rem;
+font-weight:900;
+color:#fff;
+}
+
+.ticket-progress{
+margin-top:14px;
+height:8px;
+border-radius:20px;
+overflow:hidden;
+background:#2f2f2f;
+}
+
+.ticket-progress-bar{
+height:100%;
+border-radius:20px;
+background:linear-gradient(90deg,#ffd000,#ff9c00);
+}
+
+/* Tablet */
+
+@media(max-width:900px){
+
+.player-welcome{
+flex-direction:column;
+text-align:center;
+}
+
+.player-stats{
+grid-template-columns:1fr;
+}
+
+}
+
+/* HP */
+
+@media(max-width:600px){
+
+.player-avatar{
+width:68px;
+height:68px;
+font-size:2.2rem;
+}
+
+.player-welcome-copy h1{
+font-size:1.45rem;
+}
+
+.stat-copy strong{
+font-size:1.45rem;
+}
+
+}
