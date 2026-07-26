@@ -1924,3 +1924,396 @@
       </div>
 
     </section>
+    <!-- =========================================
+         HASIL GAME PANJAT PINANG
+    ========================================== -->
+    <div
+      id="pinangResultOverlay"
+      class="game-result-overlay"
+      aria-hidden="true"
+    >
+
+      <div
+        id="pinangResultModal"
+        class="game-result-modal"
+      >
+
+        <div class="result-background-glow"></div>
+
+        <button
+          id="closePinangResultButton"
+          class="result-close-button"
+          type="button"
+          aria-label="Tutup hasil permainan"
+        >
+          ×
+        </button>
+
+
+        <!-- Tampilan menang -->
+        <div
+          id="pinangWinContent"
+          class="result-content win-result-content"
+        >
+
+          <div class="result-ribbon">
+            <span>SELAMAT!</span>
+          </div>
+
+
+          <div class="result-icon-wrapper">
+
+            <div class="result-icon-glow"></div>
+
+            <div class="result-trophy-icon">
+              🏆
+            </div>
+
+          </div>
+
+
+          <span class="result-label">
+            PANJAT PINANG BERHASIL
+          </span>
+
+          <h2>
+            Kamu Mencapai Puncak!
+          </h2>
+
+          <p>
+            Hebat! Kamu berhasil menyelesaikan perlombaan
+            sebelum waktu habis.
+          </p>
+
+
+          <div class="result-stat-grid">
+
+            <div class="result-stat-item">
+
+              <span>⏱️</span>
+
+              <div>
+                <small>Sisa Waktu</small>
+
+                <strong id="pinangResultRemainingTime">
+                  00:00
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-stat-item">
+
+              <span>👆</span>
+
+              <div>
+                <small>Total Tap</small>
+
+                <strong id="pinangResultTapCount">
+                  45
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-stat-item">
+
+              <span>📈</span>
+
+              <div>
+                <small>Progress</small>
+
+                <strong>
+                  100%
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="result-unlock-box">
+
+            <div class="result-box-glow"></div>
+
+            <div class="result-mini-box">
+
+              <span class="result-mini-box-ribbon"></span>
+
+              <span class="result-mini-box-question">
+                ?
+              </span>
+
+            </div>
+
+
+            <div class="result-unlock-copy">
+
+              <small>HADIAH TERBUKA</small>
+
+              <strong>
+                Mystery Box
+              </strong>
+
+              <p>
+                Buka kotak untuk mengetahui hadiahmu.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="result-action-group">
+
+            <button
+              id="openPinangMysteryButton"
+              class="primary-button gold-button result-primary-button"
+              type="button"
+            >
+
+              <span class="button-glow"></span>
+
+              <span class="button-icon">
+                🎁
+              </span>
+
+              <span class="button-text">
+                BUKA MYSTERY BOX
+              </span>
+
+              <span class="button-arrow">
+                ➜
+              </span>
+
+            </button>
+
+
+            <button
+              id="pinangWinLobbyButton"
+              class="secondary-button result-secondary-button"
+              type="button"
+            >
+              Kembali ke Lobby
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Tampilan kalah -->
+        <div
+          id="pinangLoseContent"
+          class="result-content lose-result-content"
+          hidden
+        >
+
+          <div class="result-ribbon lose-ribbon">
+            <span>WAKTU HABIS</span>
+          </div>
+
+
+          <div class="result-icon-wrapper">
+
+            <div class="result-icon-glow lose-icon-glow"></div>
+
+            <div class="result-fail-icon">
+              ⏳
+            </div>
+
+          </div>
+
+
+          <span class="result-label lose-result-label">
+            PANJAT PINANG BELUM SELESAI
+          </span>
+
+          <h2>
+            Sedikit Lagi!
+          </h2>
+
+          <p>
+            Waktu permainan telah habis. Coba tap lebih cepat
+            pada kesempatan berikutnya.
+          </p>
+
+
+          <div class="result-stat-grid">
+
+            <div class="result-stat-item">
+
+              <span>👆</span>
+
+              <div>
+                <small>Total Tap</small>
+
+                <strong id="pinangLoseTapCount">
+                  0
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-stat-item">
+
+              <span>📈</span>
+
+              <div>
+                <small>Progress</small>
+
+                <strong id="pinangLoseProgress">
+                  0%
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-stat-item">
+
+              <span>🎫</span>
+
+              <div>
+                <small>Sisa Tiket</small>
+
+                <strong id="pinangLoseTicket">
+                  7
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="result-fail-message">
+
+            <span>💡</span>
+
+            <p>
+              Gunakan dua jari secara bergantian atau tekan tombol
+              Space dengan cepat untuk mencapai target.
+            </p>
+
+          </div>
+
+
+          <div class="result-action-group">
+
+            <button
+              id="retryPinangButton"
+              class="primary-button red-button result-primary-button"
+              type="button"
+            >
+
+              <span class="button-glow"></span>
+
+              <span class="button-icon">
+                🔄
+              </span>
+
+              <span class="button-text">
+                COBA LAGI
+              </span>
+
+            </button>
+
+
+            <button
+              id="pinangLoseLobbyButton"
+              class="secondary-button result-secondary-button"
+              type="button"
+            >
+              Kembali ke Lobby
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         KONFIRMASI KELUAR PANJAT PINANG
+    ========================================== -->
+    <div
+      id="pinangExitConfirmOverlay"
+      class="confirmation-overlay"
+      aria-hidden="true"
+    >
+
+      <div class="confirmation-modal">
+
+        <div class="confirmation-icon">
+          ⚠️
+        </div>
+
+        <span class="section-label">
+          KONFIRMASI
+        </span>
+
+        <h2>
+          Keluar dari Permainan?
+        </h2>
+
+        <p>
+          Progres permainan yang sedang berlangsung akan hilang.
+        </p>
+
+
+        <div class="confirmation-actions">
+
+          <button
+            id="cancelPinangExitButton"
+            class="secondary-button"
+            type="button"
+          >
+            Tetap Bermain
+          </button>
+
+
+          <button
+            id="confirmPinangExitButton"
+            class="primary-button red-button"
+            type="button"
+          >
+            Keluar ke Lobby
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NOTIFIKASI PANJAT PINANG
+    ========================================== -->
+    <div
+      id="pinangToast"
+      class="game-toast"
+      role="status"
+      aria-live="polite"
+    >
+
+      <span id="pinangToastIcon">
+        ℹ️
+      </span>
+
+      <p id="pinangToastMessage">
+        Pesan permainan
+      </p>
+
+    </div>
