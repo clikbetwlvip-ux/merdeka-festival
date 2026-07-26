@@ -9283,3 +9283,1234 @@ height:15px;
     }
 
 }
+/* =========================================================
+   CSS PART 4B-1 — MAKAN KERUPUK ARENA & HUD
+========================================================= */
+
+
+/* =========================================================
+   MAKAN KERUPUK SCREEN
+========================================================= */
+
+#makanKerupukScreen,
+#makanKerupukGame,
+.makan-kerupuk-screen,
+.kerupuk-game-screen{
+    position:relative;
+    min-height:100vh;
+    overflow:hidden;
+    isolation:isolate;
+
+    background:
+        radial-gradient(
+            circle at 50% 8%,
+            rgba(255,247,194,.42),
+            transparent 32%
+        ),
+        linear-gradient(
+            180deg,
+            #2c9bd6 0%,
+            #80d8ef 44%,
+            #e7f8ff 68%,
+            #84bf4a 68.5%,
+            #397b31 100%
+        );
+}
+
+
+/* =========================================================
+   BACKGROUND SUN
+========================================================= */
+
+.kerupuk-sun{
+    position:absolute;
+    top:55px;
+    right:9%;
+    z-index:-4;
+    width:145px;
+    height:145px;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #fffbd2 0 18%,
+            #ffe46f 42%,
+            rgba(255,193,51,.34) 65%,
+            transparent 72%
+        );
+
+    filter:
+        drop-shadow(0 0 24px rgba(255,226,104,.52));
+
+    animation:kerupukSunPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes kerupukSunPulse{
+    50%{
+        transform:scale(1.06);
+        filter:
+            drop-shadow(0 0 38px rgba(255,226,104,.68));
+    }
+}
+
+
+/* =========================================================
+   CLOUDS
+========================================================= */
+
+.kerupuk-cloud{
+    position:absolute;
+    z-index:-2;
+    width:165px;
+    height:48px;
+    border-radius:999px;
+
+    background:rgba(255,255,255,.8);
+
+    box-shadow:
+        42px -17px 0 -4px rgba(255,255,255,.82),
+        85px -2px 0 -12px rgba(255,255,255,.76),
+        108px 10px 0 -17px rgba(255,255,255,.68);
+
+    opacity:.72;
+    animation:kerupukCloudMove 28s linear infinite;
+}
+
+.kerupuk-cloud.cloud-1{
+    top:20%;
+    left:-240px;
+}
+
+.kerupuk-cloud.cloud-2{
+    top:35%;
+    left:-320px;
+    opacity:.45;
+    transform:scale(.72);
+    animation-duration:36s;
+    animation-delay:-12s;
+}
+
+@keyframes kerupukCloudMove{
+    from{
+        translate:0 0;
+    }
+
+    to{
+        translate:calc(100vw + 460px) 0;
+    }
+}
+
+
+/* =========================================================
+   GAME CONTAINER
+========================================================= */
+
+.kerupuk-game-container,
+.kerupuk-arena-container{
+    position:relative;
+    z-index:2;
+    width:min(1180px,calc(100% - 28px));
+    min-height:100vh;
+    margin-inline:auto;
+    padding:
+        max(16px,env(safe-area-inset-top))
+        0
+        max(24px,env(safe-area-inset-bottom));
+}
+
+
+/* =========================================================
+   TOP HUD
+========================================================= */
+
+.kerupuk-game-hud,
+.game-hud.kerupuk-hud{
+    position:relative;
+    z-index:30;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+    align-items:center;
+    gap:14px;
+    padding:13px 15px;
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18,26,35,.78),
+            rgba(5,10,15,.57)
+        );
+
+    border:1px solid rgba(255,239,180,.24);
+    backdrop-filter:blur(14px);
+
+    box-shadow:
+        0 14px 34px rgba(0,0,0,.25),
+        inset 0 1px rgba(255,255,255,.1);
+}
+
+
+/* =========================================================
+   HUD LEFT
+========================================================= */
+
+.kerupuk-hud-left{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    min-width:0;
+}
+
+.kerupuk-back-button{
+    flex-shrink:0;
+    display:grid;
+    place-items:center;
+    width:42px;
+    height:42px;
+    padding:0;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    cursor:pointer;
+
+    color:#fff3c4;
+    font-size:1.15rem;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.12),
+            rgba(255,255,255,.045)
+        );
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,.09);
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.kerupuk-back-button:hover{
+    transform:translateX(-2px);
+    border-color:rgba(255,226,128,.4);
+    background:rgba(255,207,74,.13);
+}
+
+.kerupuk-game-title-wrap{
+    min-width:0;
+}
+
+.kerupuk-game-label{
+    color:rgba(255,255,255,.48);
+    font-size:.58rem;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+}
+
+.kerupuk-game-title{
+    overflow:hidden;
+    margin-top:3px;
+    color:#fff;
+    font-size:1rem;
+    font-weight:1000;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+.kerupuk-timer{
+    position:relative;
+    min-width:112px;
+    padding:9px 17px;
+    text-align:center;
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,226,125,.2),
+            rgba(255,173,28,.08)
+        );
+
+    border:1px solid rgba(255,226,128,.37);
+
+    box-shadow:
+        0 0 20px rgba(255,190,39,.11),
+        inset 0 1px rgba(255,255,255,.1);
+}
+
+.kerupuk-timer-label{
+    display:block;
+    margin-bottom:2px;
+    color:rgba(255,255,255,.54);
+    font-size:.53rem;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+}
+
+.kerupuk-timer-value{
+    color:#ffe07e;
+    font-size:1.35rem;
+    font-variant-numeric:tabular-nums;
+    font-weight:1000;
+    line-height:1;
+
+    text-shadow:
+        0 0 12px rgba(255,205,73,.32);
+}
+
+.kerupuk-timer.warning{
+    border-color:rgba(255,102,75,.58);
+    background:rgba(255,59,34,.13);
+    animation:kerupukTimerWarning .65s ease-in-out infinite;
+}
+
+.kerupuk-timer.warning .kerupuk-timer-value{
+    color:#ffb09e;
+}
+
+@keyframes kerupukTimerWarning{
+    50%{
+        transform:scale(1.045);
+        box-shadow:
+            0 0 24px rgba(255,65,35,.26),
+            inset 0 1px rgba(255,255,255,.1);
+    }
+}
+
+
+/* =========================================================
+   HUD RIGHT
+========================================================= */
+
+.kerupuk-hud-right{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:9px;
+}
+
+.kerupuk-score-box,
+.kerupuk-bite-box{
+    min-width:78px;
+    padding:8px 11px;
+    border-radius:14px;
+
+    background:rgba(255,255,255,.065);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.kerupuk-score-box span,
+.kerupuk-bite-box span{
+    display:block;
+    color:rgba(255,255,255,.47);
+    font-size:.52rem;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+
+.kerupuk-score-box strong,
+.kerupuk-bite-box strong{
+    display:block;
+    margin-top:3px;
+    color:#fff;
+    font-size:.86rem;
+    font-weight:1000;
+    font-variant-numeric:tabular-nums;
+}
+
+.kerupuk-bite-box strong{
+    color:#ffe083;
+}
+
+
+/* =========================================================
+   MAIN ARENA
+========================================================= */
+
+.kerupuk-arena,
+.makan-kerupuk-arena{
+    position:relative;
+    min-height:690px;
+    margin-top:17px;
+    overflow:hidden;
+    border-radius:30px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.018)
+        );
+
+    border:1px solid rgba(255,255,255,.23);
+
+    box-shadow:
+        0 24px 55px rgba(0,0,0,.24),
+        inset 0 1px rgba(255,255,255,.18);
+
+    backdrop-filter:blur(2px);
+}
+
+
+/* =========================================================
+   FESTIVAL BANNER
+========================================================= */
+
+.kerupuk-festival-banner{
+    position:absolute;
+    top:23px;
+    left:50%;
+    z-index:5;
+    min-width:260px;
+    padding:11px 28px;
+
+    transform:translateX(-50%) rotate(-1deg);
+    text-align:center;
+
+    color:#fff8cf;
+    font-size:.82rem;
+    font-weight:1000;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+
+    background:
+        linear-gradient(
+            180deg,
+            #e52d35,
+            #a40d16
+        );
+
+    border:2px solid rgba(255,242,174,.75);
+    border-radius:7px;
+
+    box-shadow:
+        0 9px 18px rgba(0,0,0,.22),
+        inset 0 2px rgba(255,255,255,.22);
+}
+
+.kerupuk-festival-banner::before,
+.kerupuk-festival-banner::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    width:45px;
+    height:28px;
+
+    transform:translateY(-50%);
+    z-index:-1;
+
+    background:#8b0810;
+}
+
+.kerupuk-festival-banner::before{
+    right:calc(100% - 8px);
+    clip-path:polygon(0 0,100% 0,82% 50%,100% 100%,0 100%);
+}
+
+.kerupuk-festival-banner::after{
+    left:calc(100% - 8px);
+    clip-path:polygon(0 0,100% 0,100% 100%,0 100%,18% 50%);
+}
+
+
+/* =========================================================
+   GROUND
+========================================================= */
+
+.kerupuk-ground{
+    position:absolute;
+    right:-5%;
+    bottom:-42px;
+    left:-5%;
+    z-index:2;
+    height:190px;
+    border-radius:50% 50% 0 0;
+
+    background:
+        radial-gradient(
+            ellipse at center top,
+            rgba(179,225,93,.98),
+            #60a943 42%,
+            #2f6d31 100%
+        );
+
+    box-shadow:
+        inset 0 18px 24px rgba(255,255,255,.1),
+        0 -10px 30px rgba(42,113,47,.18);
+}
+
+.kerupuk-ground::after{
+    content:"";
+    position:absolute;
+    inset:18px 0 0;
+
+    background:
+        repeating-linear-gradient(
+            105deg,
+            transparent 0 28px,
+            rgba(255,255,255,.05) 29px 31px,
+            transparent 32px 58px
+        );
+
+    opacity:.45;
+}
+
+
+/* =========================================================
+   SUPPORT POLES
+========================================================= */
+
+.kerupuk-pole{
+    position:absolute;
+    bottom:104px;
+    z-index:6;
+    width:34px;
+    height:445px;
+    border-radius:14px 14px 8px 8px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #552e10,
+            #b67631 35%,
+            #e0a25b 50%,
+            #8b511e 76%,
+            #452309
+        );
+
+    box-shadow:
+        inset 5px 0 6px rgba(255,255,255,.12),
+        inset -7px 0 8px rgba(0,0,0,.2),
+        0 15px 18px rgba(0,0,0,.22);
+}
+
+.kerupuk-pole.pole-left{
+    left:16%;
+}
+
+.kerupuk-pole.pole-right{
+    right:16%;
+}
+
+.kerupuk-pole::after{
+    content:"";
+    position:absolute;
+    inset:18px 5px;
+
+    background:
+        repeating-linear-gradient(
+            177deg,
+            transparent 0 35px,
+            rgba(255,255,255,.13) 36px 39px,
+            transparent 40px 68px
+        );
+}
+
+
+/* =========================================================
+   TOP CROSSBAR
+========================================================= */
+
+.kerupuk-crossbar{
+    position:absolute;
+    top:128px;
+    left:16%;
+    right:16%;
+    z-index:8;
+    height:30px;
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #d59853,
+            #8d511f 55%,
+            #5a2f10
+        );
+
+    box-shadow:
+        inset 0 5px 5px rgba(255,255,255,.15),
+        0 9px 13px rgba(0,0,0,.23);
+}
+
+.kerupuk-crossbar::after{
+    content:"";
+    position:absolute;
+    inset:7px 18px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 46px,
+            rgba(255,255,255,.17) 47px 50px,
+            transparent 51px 82px
+        );
+}
+
+
+/* =========================================================
+   ROPE
+========================================================= */
+
+.kerupuk-rope-wrap{
+    position:absolute;
+    top:151px;
+    left:50%;
+    z-index:10;
+    width:180px;
+    height:285px;
+
+    transform:translateX(-50%);
+    transform-origin:50% 0;
+    pointer-events:none;
+
+    animation:kerupukRopeSwing 2.4s ease-in-out infinite;
+}
+
+.kerupuk-rope{
+    position:absolute;
+    top:0;
+    left:50%;
+    width:5px;
+    height:230px;
+
+    transform:translateX(-50%);
+    border-radius:999px;
+
+    background:
+        repeating-linear-gradient(
+            180deg,
+            #f1d49b 0 7px,
+            #a97535 8px 13px
+        );
+
+    box-shadow:
+        1px 0 3px rgba(0,0,0,.25);
+}
+
+@keyframes kerupukRopeSwing{
+    0%,
+    100%{
+        transform:
+            translateX(-50%)
+            rotate(-7deg);
+    }
+
+    50%{
+        transform:
+            translateX(-50%)
+            rotate(7deg);
+    }
+}
+
+
+/* =========================================================
+   KERUPUK
+========================================================= */
+
+.kerupuk-target{
+    position:absolute;
+    top:210px;
+    left:50%;
+    z-index:11;
+    display:grid;
+    place-items:center;
+    width:110px;
+    height:110px;
+
+    transform:translateX(-50%);
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 45% 42%,
+            #fff8df 0 12%,
+            #f5dfb7 34%,
+            #d4af72 63%,
+            #a87b41 100%
+        );
+
+    border:5px solid rgba(128,79,33,.42);
+
+    box-shadow:
+        inset 0 0 0 6px rgba(255,255,255,.18),
+        inset -12px -12px 16px rgba(120,76,29,.15),
+        0 14px 18px rgba(0,0,0,.24),
+        0 0 25px rgba(255,232,163,.24);
+
+    animation:kerupukRotate 5s linear infinite;
+}
+
+.kerupuk-target::before{
+    content:"";
+    position:absolute;
+    inset:12px;
+    border-radius:50%;
+
+    background:
+        radial-gradient(circle at 18% 25%,rgba(139,93,42,.27) 0 4px,transparent 5px),
+        radial-gradient(circle at 68% 17%,rgba(139,93,42,.23) 0 5px,transparent 6px),
+        radial-gradient(circle at 78% 60%,rgba(139,93,42,.22) 0 4px,transparent 5px),
+        radial-gradient(circle at 35% 75%,rgba(139,93,42,.23) 0 5px,transparent 6px),
+        radial-gradient(circle at 45% 45%,rgba(255,255,255,.38),transparent 55%);
+}
+
+.kerupuk-target::after{
+    content:"";
+    width:19px;
+    height:19px;
+    border-radius:50%;
+
+    background:#76502a;
+
+    box-shadow:
+        inset 2px 2px 4px rgba(0,0,0,.3);
+}
+
+@keyframes kerupukRotate{
+    to{
+        rotate:360deg;
+    }
+}
+
+
+/* =========================================================
+   BITE PROGRESS
+========================================================= */
+
+.kerupuk-progress-panel{
+    position:absolute;
+    top:93px;
+    right:22px;
+    z-index:18;
+    width:190px;
+    padding:13px;
+    border-radius:18px;
+
+    background:rgba(8,15,21,.63);
+    border:1px solid rgba(255,255,255,.13);
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+        0 13px 27px rgba(0,0,0,.2),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+.kerupuk-progress-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:9px;
+}
+
+.kerupuk-progress-header span{
+    color:rgba(255,255,255,.54);
+    font-size:.56rem;
+    font-weight:900;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+}
+
+.kerupuk-progress-header strong{
+    color:#ffe083;
+    font-size:.78rem;
+    font-weight:1000;
+}
+
+.kerupuk-progress-track{
+    position:relative;
+    height:12px;
+    overflow:hidden;
+    border-radius:999px;
+
+    background:rgba(0,0,0,.43);
+
+    box-shadow:
+        inset 0 2px 5px rgba(0,0,0,.48);
+}
+
+.kerupuk-progress-fill{
+    position:absolute;
+    inset:1px auto 1px 1px;
+    width:0%;
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #e89213,
+            #ffd452 60%,
+            #fff4ad
+        );
+
+    box-shadow:
+        0 0 12px rgba(255,205,64,.45);
+
+    transition:width .38s cubic-bezier(.2,.8,.2,1);
+}
+
+.kerupuk-progress-fill::after{
+    content:"";
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:42px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.7),
+            transparent
+        );
+
+    animation:kerupukProgressShine 1.7s linear infinite;
+}
+
+@keyframes kerupukProgressShine{
+    from{
+        left:-45px;
+    }
+
+    to{
+        left:calc(100% + 45px);
+    }
+}
+
+
+/* =========================================================
+   GAME INSTRUCTION
+========================================================= */
+
+.kerupuk-instruction{
+    position:absolute;
+    top:93px;
+    left:22px;
+    z-index:18;
+    max-width:260px;
+    padding:13px 15px;
+    border-radius:17px;
+
+    color:rgba(255,255,255,.78);
+    font-size:.7rem;
+    font-weight:700;
+    line-height:1.5;
+
+    background:rgba(8,15,21,.58);
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(11px);
+
+    box-shadow:
+        0 12px 25px rgba(0,0,0,.18),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+.kerupuk-instruction strong{
+    color:#ffe28b;
+}
+
+
+/* =========================================================
+   CONTROL AREA
+========================================================= */
+
+.kerupuk-control-area{
+    position:absolute;
+    right:0;
+    bottom:20px;
+    left:0;
+    z-index:25;
+    display:flex;
+    justify-content:center;
+    padding:0 18px;
+}
+
+.kerupuk-bite-button,
+.bite-button{
+    position:relative;
+    width:min(360px,100%);
+    min-height:64px;
+    overflow:hidden;
+    border:1px solid rgba(255,245,190,.88);
+    border-radius:22px;
+    cursor:pointer;
+
+    color:#452500;
+    font-size:.9rem;
+    font-weight:1000;
+    letter-spacing:.065em;
+    text-transform:uppercase;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff5b8 0%,
+            #ffd85d 43%,
+            #e4910b 100%
+        );
+
+    box-shadow:
+        0 15px 30px rgba(0,0,0,.28),
+        0 0 25px rgba(255,191,41,.31),
+        inset 0 2px rgba(255,255,255,.76),
+        inset 0 -3px rgba(122,62,0,.22);
+
+    transition:
+        transform .15s ease,
+        filter .2s ease,
+        box-shadow .2s ease;
+
+    animation:kerupukButtonPulse 1.8s ease-in-out infinite;
+}
+
+.kerupuk-bite-button::before,
+.bite-button::before{
+    content:"";
+    position:absolute;
+    top:-70%;
+    left:-35%;
+    width:28%;
+    height:240%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.9),
+            transparent
+        );
+
+    transform:rotate(22deg);
+    animation:kerupukButtonShine 2.8s ease-in-out infinite;
+}
+
+.kerupuk-bite-button:hover,
+.bite-button:hover{
+    transform:translateY(-3px) scale(1.015);
+    filter:brightness(1.07);
+
+    box-shadow:
+        0 19px 35px rgba(0,0,0,.3),
+        0 0 35px rgba(255,194,39,.42),
+        inset 0 2px rgba(255,255,255,.82);
+}
+
+.kerupuk-bite-button:active,
+.bite-button:active,
+.kerupuk-bite-button.pressed,
+.bite-button.pressed{
+    transform:translateY(2px) scale(.965);
+    animation:none;
+}
+
+.kerupuk-bite-button:disabled,
+.bite-button:disabled{
+    cursor:not-allowed;
+    color:rgba(255,255,255,.42);
+    background:rgba(255,255,255,.11);
+    border-color:rgba(255,255,255,.09);
+    box-shadow:none;
+    animation:none;
+}
+
+.kerupuk-bite-button:disabled::before,
+.bite-button:disabled::before{
+    display:none;
+}
+
+@keyframes kerupukButtonPulse{
+    50%{
+        transform:scale(1.025);
+        box-shadow:
+            0 17px 34px rgba(0,0,0,.29),
+            0 0 37px rgba(255,193,37,.38),
+            inset 0 2px rgba(255,255,255,.78);
+    }
+}
+
+@keyframes kerupukButtonShine{
+    0%,
+    62%{
+        left:-35%;
+    }
+
+    100%{
+        left:135%;
+    }
+}
+
+
+/* =========================================================
+   TAP INDICATOR
+========================================================= */
+
+.kerupuk-tap-indicator{
+    position:absolute;
+    bottom:97px;
+    left:50%;
+    z-index:24;
+
+    transform:translateX(-50%);
+
+    color:rgba(255,255,255,.84);
+    font-size:.67rem;
+    font-weight:900;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.32);
+
+    animation:kerupukTapIndicator 1.15s ease-in-out infinite;
+}
+
+@keyframes kerupukTapIndicator{
+    50%{
+        opacity:.48;
+        transform:
+            translateX(-50%)
+            translateY(5px);
+    }
+}
+
+
+/* =========================================================
+   ARENA SHAKE
+========================================================= */
+
+.kerupuk-arena.shake,
+.makan-kerupuk-arena.shake{
+    animation:kerupukArenaShake .28s linear;
+}
+
+@keyframes kerupukArenaShake{
+    0%,
+    100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-5px);
+    }
+
+    50%{
+        transform:translateX(5px);
+    }
+
+    75%{
+        transform:translateX(-3px);
+    }
+}
+
+
+/* =========================================================
+   TABLET RESPONSIVE
+========================================================= */
+
+@media(max-width:820px){
+
+    .kerupuk-game-hud,
+    .game-hud.kerupuk-hud{
+        grid-template-columns:1fr auto;
+    }
+
+    .kerupuk-hud-right{
+        grid-column:1 / -1;
+        justify-content:center;
+    }
+
+    .kerupuk-arena,
+    .makan-kerupuk-arena{
+        min-height:660px;
+    }
+
+    .kerupuk-pole{
+        height:420px;
+    }
+
+    .kerupuk-pole.pole-left{
+        left:10%;
+    }
+
+    .kerupuk-pole.pole-right{
+        right:10%;
+    }
+
+    .kerupuk-crossbar{
+        left:10%;
+        right:10%;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE RESPONSIVE
+========================================================= */
+
+@media(max-width:560px){
+
+    .kerupuk-game-container,
+    .kerupuk-arena-container{
+        width:min(100% - 16px,1180px);
+    }
+
+    .kerupuk-game-hud,
+    .game-hud.kerupuk-hud{
+        gap:9px;
+        padding:10px;
+        border-radius:18px;
+    }
+
+    .kerupuk-back-button{
+        width:38px;
+        height:38px;
+    }
+
+    .kerupuk-game-title{
+        max-width:130px;
+        font-size:.82rem;
+    }
+
+    .kerupuk-timer{
+        min-width:88px;
+        padding:8px 11px;
+    }
+
+    .kerupuk-timer-value{
+        font-size:1.08rem;
+    }
+
+    .kerupuk-score-box,
+    .kerupuk-bite-box{
+        min-width:72px;
+        padding:7px 9px;
+    }
+
+    .kerupuk-arena,
+    .makan-kerupuk-arena{
+        min-height:625px;
+        margin-top:11px;
+        border-radius:23px;
+    }
+
+    .kerupuk-festival-banner{
+        top:15px;
+        min-width:205px;
+        padding:9px 20px;
+        font-size:.68rem;
+    }
+
+    .kerupuk-pole{
+        bottom:101px;
+        width:26px;
+        height:390px;
+    }
+
+    .kerupuk-pole.pole-left{
+        left:6%;
+    }
+
+    .kerupuk-pole.pole-right{
+        right:6%;
+    }
+
+    .kerupuk-crossbar{
+        top:111px;
+        left:6%;
+        right:6%;
+        height:24px;
+    }
+
+    .kerupuk-rope-wrap{
+        top:134px;
+        width:140px;
+        height:245px;
+    }
+
+    .kerupuk-rope{
+        height:195px;
+    }
+
+    .kerupuk-target{
+        top:180px;
+        width:87px;
+        height:87px;
+        border-width:4px;
+    }
+
+    .kerupuk-instruction{
+        top:75px;
+        left:12px;
+        max-width:178px;
+        padding:10px 11px;
+        font-size:.59rem;
+    }
+
+    .kerupuk-progress-panel{
+        top:75px;
+        right:12px;
+        width:135px;
+        padding:10px;
+    }
+
+    .kerupuk-progress-header span{
+        font-size:.48rem;
+    }
+
+    .kerupuk-progress-header strong{
+        font-size:.65rem;
+    }
+
+    .kerupuk-control-area{
+        bottom:14px;
+        padding:0 12px;
+    }
+
+    .kerupuk-bite-button,
+    .bite-button{
+        min-height:57px;
+        border-radius:18px;
+        font-size:.8rem;
+    }
+
+    .kerupuk-tap-indicator{
+        bottom:82px;
+        font-size:.59rem;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    .kerupuk-sun,
+    .kerupuk-cloud,
+    .kerupuk-rope-wrap,
+    .kerupuk-target,
+    .kerupuk-progress-fill::after,
+    .kerupuk-bite-button,
+    .bite-button,
+    .kerupuk-bite-button::before,
+    .bite-button::before,
+    .kerupuk-tap-indicator,
+    .kerupuk-timer.warning{
+        animation:none !important;
+    }
+
+}
