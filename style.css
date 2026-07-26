@@ -1617,3 +1617,856 @@ font-size:16px;
 }
 
 }
+/* =========================================================
+   CSS PART 3A — LOBBY PREMIUM
+   BACKGROUND + HEADER + MAIN LAYOUT
+========================================================= */
+
+
+/* =========================================================
+   1. LOBBY SCREEN
+========================================================= */
+
+#lobbyScreen {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(255, 199, 71, 0.2),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 10% 25%,
+      rgba(229, 37, 53, 0.17),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 55%,
+      rgba(255, 189, 52, 0.1),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      #54000c 0%,
+      #260006 31%,
+      #100204 68%,
+      #050102 100%
+    );
+}
+
+#lobbyScreen::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.025) 50%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 38px,
+      rgba(255, 255, 255, 0.018) 39px,
+      rgba(255, 255, 255, 0.018) 40px
+    );
+  pointer-events: none;
+  content: "";
+}
+
+#lobbyScreen::after {
+  position: absolute;
+  top: -260px;
+  left: 50%;
+  z-index: 0;
+  width: 780px;
+  height: 520px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255, 210, 85, 0.25),
+      rgba(229, 37, 53, 0.08) 48%,
+      transparent 72%
+    );
+  filter: blur(18px);
+  pointer-events: none;
+  content: "";
+  transform: translateX(-50%);
+  animation: lobbyTopGlow 6s ease-in-out infinite;
+}
+
+@keyframes lobbyTopGlow {
+  0%,
+  100% {
+    opacity: 0.68;
+    transform: translateX(-50%) scale(0.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+  }
+}
+
+
+/* =========================================================
+   2. DECORATION LOBBY
+========================================================= */
+
+.lobby-decoration,
+.lobby-background-decoration {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.lobby-decoration-circle {
+  position: absolute;
+  border: 1px solid rgba(255, 218, 115, 0.11);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 35px rgba(255, 210, 80, 0.035),
+    0 0 30px rgba(255, 210, 80, 0.035);
+}
+
+.lobby-decoration-circle:nth-child(1) {
+  top: 150px;
+  left: -120px;
+  width: 360px;
+  height: 360px;
+  animation: rotateSlow 32s linear infinite;
+}
+
+.lobby-decoration-circle:nth-child(2) {
+  top: 420px;
+  right: -170px;
+  width: 470px;
+  height: 470px;
+  animation: rotateSlow 40s linear infinite reverse;
+}
+
+.lobby-decoration-circle:nth-child(3) {
+  bottom: 60px;
+  left: 20%;
+  width: 220px;
+  height: 220px;
+  opacity: 0.45;
+  animation: pulseGlow 5s ease-in-out infinite;
+}
+
+.lobby-light-particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  box-shadow:
+    0 0 8px var(--gold-400),
+    0 0 18px rgba(255, 216, 115, 0.5);
+  opacity: 0.45;
+  animation: lobbyParticleFloat 8s linear infinite;
+}
+
+.lobby-light-particle:nth-child(1) {
+  bottom: -20px;
+  left: 8%;
+  animation-delay: 0s;
+}
+
+.lobby-light-particle:nth-child(2) {
+  bottom: -20px;
+  left: 24%;
+  animation-delay: 2s;
+  animation-duration: 10s;
+}
+
+.lobby-light-particle:nth-child(3) {
+  bottom: -20px;
+  left: 52%;
+  animation-delay: 4s;
+  animation-duration: 12s;
+}
+
+.lobby-light-particle:nth-child(4) {
+  bottom: -20px;
+  left: 74%;
+  animation-delay: 1s;
+  animation-duration: 9s;
+}
+
+.lobby-light-particle:nth-child(5) {
+  bottom: -20px;
+  left: 91%;
+  animation-delay: 5s;
+  animation-duration: 11s;
+}
+
+@keyframes lobbyParticleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+
+  15% {
+    opacity: 0.6;
+  }
+
+  75% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-110vh) scale(1.35);
+  }
+}
+
+
+/* =========================================================
+   3. LOBBY HEADER
+========================================================= */
+
+.lobby-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: var(--header-height);
+  padding:
+    max(10px, env(safe-area-inset-top))
+    clamp(16px, 4vw, 46px)
+    10px;
+  border-bottom: 1px solid rgba(255, 218, 115, 0.18);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(72, 0, 10, 0.96),
+      rgba(25, 1, 5, 0.91)
+    );
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.32),
+    inset 0 -1px rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.lobby-header-left,
+.lobby-header-right,
+.lobby-header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.lobby-header-left {
+  min-width: 0;
+  gap: 13px;
+}
+
+.lobby-header-right,
+.lobby-header-actions {
+  gap: 10px;
+}
+
+.lobby-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.lobby-logo {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 5px 10px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 9px rgba(255, 209, 77, 0.28));
+}
+
+.lobby-brand-text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.12;
+}
+
+.lobby-brand-title {
+  overflow: hidden;
+  color: var(--white);
+  font-size: clamp(0.92rem, 1.8vw, 1.18rem);
+  font-weight: 1000;
+  letter-spacing: 0.05em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.lobby-brand-subtitle {
+  overflow: hidden;
+  margin-top: 4px;
+  color: var(--gold-400);
+  font-size: clamp(0.61rem, 1.3vw, 0.72rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   4. HEADER PLAYER INFO
+========================================================= */
+
+.header-player-info,
+.lobby-player-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 6px 12px 6px 7px;
+  border: 1px solid rgba(255, 218, 115, 0.18);
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.09),
+      rgba(255, 255, 255, 0.035)
+    );
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.08),
+    0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.header-player-avatar,
+.lobby-mini-avatar {
+  display: grid;
+  width: 39px;
+  height: 39px;
+  flex: 0 0 39px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid var(--gold-500);
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      #ffd97a,
+      #a45400 75%
+    );
+  color: #2a1000;
+  font-size: 1.1rem;
+  box-shadow: var(--gold-glow);
+}
+
+.header-player-avatar img,
+.lobby-mini-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header-player-text,
+.lobby-mini-user {
+  display: grid;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.header-player-greeting {
+  color: var(--white-50);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.header-player-name,
+.lobby-mini-name {
+  overflow: hidden;
+  max-width: 130px;
+  color: var(--white);
+  font-size: 0.79rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   5. LOBBY MAIN CONTAINER
+========================================================= */
+
+.lobby-main,
+.lobby-content {
+  position: relative;
+  z-index: 2;
+  width: min(100%, var(--content-width));
+  margin: 0 auto;
+  padding:
+    clamp(22px, 4vw, 46px)
+    clamp(15px, 4vw, 42px)
+    clamp(95px, 9vw, 135px);
+}
+
+.lobby-content-inner {
+  display: grid;
+  gap: clamp(20px, 3vw, 34px);
+}
+
+
+/* =========================================================
+   6. LOBBY HERO
+========================================================= */
+
+.lobby-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  min-height: 270px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 220, 125, 0.34);
+  border-radius: var(--radius-extra);
+  background:
+    linear-gradient(
+      120deg,
+      rgba(129, 5, 21, 0.94),
+      rgba(57, 1, 10, 0.94) 50%,
+      rgba(19, 1, 5, 0.97)
+    );
+  box-shadow:
+    var(--shadow-large),
+    inset 0 1px rgba(255, 255, 255, 0.14),
+    inset 0 -1px rgba(0, 0, 0, 0.35),
+    0 0 40px rgba(218, 153, 26, 0.09);
+}
+
+.lobby-hero::before {
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 390px;
+  height: 390px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 214, 91, 0.28),
+      transparent 68%
+    );
+  filter: blur(10px);
+  pointer-events: none;
+  content: "";
+}
+
+.lobby-hero::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      105deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.035) 47%,
+      transparent 48%
+    );
+  pointer-events: none;
+  content: "";
+}
+
+.lobby-hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(26px, 5vw, 58px);
+}
+
+.lobby-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  margin-bottom: 15px;
+  padding: 7px 13px;
+  border: 1px solid rgba(255, 224, 135, 0.48);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 206, 69, 0.1);
+  color: var(--gold-400);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.09);
+}
+
+.lobby-hero-title {
+  max-width: 800px;
+  color: var(--white);
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  font-weight: 1000;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  text-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.44),
+    0 0 25px rgba(255, 210, 86, 0.1);
+}
+
+.lobby-hero-title span {
+  display: block;
+  background:
+    linear-gradient(
+      180deg,
+      #fff9e8 0%,
+      #ffe17d 32%,
+      #eaa11d 70%,
+      #a95f00 100%
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lobby-hero-description {
+  max-width: 660px;
+  margin-top: 18px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(0.86rem, 1.7vw, 1.02rem);
+  line-height: 1.75;
+}
+
+.lobby-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin-top: 24px;
+}
+
+.lobby-hero-visual {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 260px;
+  padding: 20px 20px 0;
+}
+
+.lobby-hero-character {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 330px);
+  max-height: 330px;
+  object-fit: contain;
+  object-position: center bottom;
+  filter:
+    drop-shadow(0 22px 24px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 0 20px rgba(255, 209, 77, 0.12));
+  animation: lobbyCharacterFloat 4s ease-in-out infinite;
+}
+
+@keyframes lobbyCharacterFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.5deg);
+  }
+
+  50% {
+    transform: translateY(-9px) rotate(0.5deg);
+  }
+}
+
+.lobby-hero-visual::before {
+  position: absolute;
+  right: 50%;
+  bottom: -70px;
+  width: 340px;
+  height: 190px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255, 205, 58, 0.35),
+      rgba(210, 33, 47, 0.08) 56%,
+      transparent 70%
+    );
+  filter: blur(12px);
+  content: "";
+  transform: translateX(50%);
+}
+
+
+/* =========================================================
+   7. LOBBY SECTION HEADER
+========================================================= */
+
+.lobby-section {
+  position: relative;
+}
+
+.lobby-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.lobby-section-heading {
+  min-width: 0;
+}
+
+.lobby-section-title {
+  margin-top: 5px;
+  color: var(--white);
+  font-size: clamp(1.25rem, 2.7vw, 1.85rem);
+  font-weight: 1000;
+  letter-spacing: -0.025em;
+}
+
+.lobby-section-description {
+  margin-top: 5px;
+  color: var(--white-50);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.lobby-section-action {
+  flex: 0 0 auto;
+}
+
+
+/* =========================================================
+   8. LOBBY GRID DASAR
+========================================================= */
+
+.lobby-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
+  gap: clamp(16px, 2.4vw, 25px);
+}
+
+.lobby-main-column,
+.lobby-side-column {
+  display: grid;
+  align-content: start;
+  gap: clamp(16px, 2.4vw, 25px);
+  min-width: 0;
+}
+
+.lobby-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.lobby-games-grid,
+.game-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(15px, 2.5vw, 24px);
+}
+
+
+/* =========================================================
+   9. LOBBY LOADING SHIMMER
+========================================================= */
+
+.lobby-skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-medium);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.lobby-skeleton::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      100deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.1) 48%,
+      transparent 75%
+    );
+  content: "";
+  transform: translateX(-100%);
+  animation: lobbyShimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes lobbyShimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+
+/* =========================================================
+   10. RESPONSIVE LOBBY
+========================================================= */
+
+@media (max-width: 1100px) {
+  .lobby-hero {
+    grid-template-columns: minmax(0, 1.2fr) minmax(250px, 0.8fr);
+  }
+
+  .lobby-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lobby-side-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lobby-games-grid,
+  .game-selection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .lobby-header {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .header-player-info,
+  .lobby-player-mini {
+    padding-right: 7px;
+  }
+
+  .header-player-text,
+  .lobby-mini-user {
+    display: none;
+  }
+
+  .lobby-brand-subtitle {
+    display: none;
+  }
+
+  .lobby-main,
+  .lobby-content {
+    padding-top: 20px;
+  }
+
+  .lobby-hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .lobby-hero-content {
+    padding-bottom: 15px;
+    text-align: center;
+  }
+
+  .lobby-hero-badge {
+    align-self: center;
+  }
+
+  .lobby-hero-description {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .lobby-hero-actions {
+    justify-content: center;
+  }
+
+  .lobby-hero-visual {
+    min-height: 190px;
+    padding-top: 0;
+  }
+
+  .lobby-hero-character {
+    width: min(72%, 270px);
+    max-height: 260px;
+  }
+
+  .lobby-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lobby-side-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 580px) {
+  .lobby-header-left {
+    gap: 8px;
+  }
+
+  .lobby-logo {
+    width: 43px;
+    height: 43px;
+    flex-basis: 43px;
+  }
+
+  .lobby-brand-title {
+    max-width: 140px;
+    font-size: 0.78rem;
+  }
+
+  .lobby-header-right,
+  .lobby-header-actions {
+    gap: 6px;
+  }
+
+  .lobby-main,
+  .lobby-content {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .lobby-hero {
+    border-radius: 22px;
+  }
+
+  .lobby-hero-content {
+    padding: 27px 18px 10px;
+  }
+
+  .lobby-hero-title {
+    font-size: clamp(1.85rem, 11vw, 2.8rem);
+  }
+
+  .lobby-hero-description {
+    font-size: 0.8rem;
+    line-height: 1.65;
+  }
+
+  .lobby-hero-actions {
+    display: grid;
+    width: 100%;
+  }
+
+  .lobby-hero-actions > button,
+  .lobby-hero-actions > a {
+    width: 100%;
+  }
+
+  .lobby-section-header {
+    align-items: flex-start;
+  }
+
+  .lobby-section-description {
+    font-size: 0.76rem;
+  }
+
+  .lobby-stats-grid,
+  .lobby-games-grid,
+  .game-selection-grid {
+    grid-template-columns: 1fr;
+  }
+}
