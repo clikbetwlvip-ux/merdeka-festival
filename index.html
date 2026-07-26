@@ -2317,3 +2317,626 @@
       </p>
 
     </div>
+    <!-- =========================================
+         GAME MAKAN KERUPUK
+    ========================================== -->
+    <section
+      id="kerupukScreen"
+      class="screen game-screen kerupuk-game-screen"
+      aria-hidden="true"
+    >
+
+      <!-- Background arena -->
+      <div class="kerupuk-game-background">
+
+        <div class="kerupuk-sky"></div>
+        <div class="kerupuk-sun-glow"></div>
+
+        <div class="kerupuk-cloud cloud-kerupuk-one"></div>
+        <div class="kerupuk-cloud cloud-kerupuk-two"></div>
+
+        <div class="kerupuk-flag-line flag-line-one"></div>
+        <div class="kerupuk-flag-line flag-line-two"></div>
+
+        <div class="kerupuk-lampion kerupuk-lampion-left">
+          <span>🏮</span>
+          <span>🏮</span>
+        </div>
+
+        <div class="kerupuk-lampion kerupuk-lampion-right">
+          <span>🏮</span>
+          <span>🏮</span>
+        </div>
+
+        <div class="kerupuk-crowd-background"></div>
+        <div class="kerupuk-ground-background"></div>
+
+      </div>
+
+
+      <!-- Header -->
+      <header class="game-header">
+
+        <div class="game-header-left">
+
+          <button
+            id="kerupukBackButton"
+            class="game-back-button"
+            type="button"
+            aria-label="Kembali ke lobby"
+          >
+            <span>←</span>
+          </button>
+
+          <div class="game-header-title">
+
+            <span class="game-header-label">
+              GAME 02
+            </span>
+
+            <h1>Makan Kerupuk</h1>
+
+          </div>
+
+        </div>
+
+
+        <div class="game-header-center">
+
+          <div class="game-header-brand">
+            CLICKBET<span>88</span>
+          </div>
+
+          <small>FESTIVAL KEMERDEKAAN 2026</small>
+
+        </div>
+
+
+        <div class="game-header-actions">
+
+          <button
+            id="kerupukPauseButton"
+            class="game-header-icon-button"
+            type="button"
+            aria-label="Jeda permainan"
+          >
+            <span>Ⅱ</span>
+          </button>
+
+          <button
+            id="kerupukSoundButton"
+            class="game-header-icon-button"
+            type="button"
+            aria-label="Aktifkan atau matikan suara"
+          >
+            <span id="kerupukSoundIcon">🔊</span>
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- Layout utama -->
+      <div class="kerupuk-game-layout">
+
+
+        <!-- Panel status kiri -->
+        <aside class="kerupuk-status-panel">
+
+          <div class="game-status-card timer-status-card">
+
+            <span class="status-card-label">
+              SISA WAKTU
+            </span>
+
+            <strong id="kerupukTimerValue">
+              00:10
+            </strong>
+
+            <div class="timer-progress-track">
+
+              <div
+                id="kerupukTimerProgress"
+                class="timer-progress-fill"
+                style="width: 100%;"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-status-card kerupuk-progress-card">
+
+            <span class="status-card-label">
+              KERUPUK TERSISA
+            </span>
+
+            <div class="kerupuk-counter-display">
+
+              <span class="counter-icon">🍘</span>
+
+              <strong id="kerupukRemainingValue">
+                100%
+              </strong>
+
+            </div>
+
+
+            <div class="horizontal-progress-track">
+
+              <div
+                id="kerupukEatingProgress"
+                class="horizontal-progress-fill"
+                style="width: 0%;"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-status-card tap-status-card">
+
+            <span class="status-card-label">
+              TOTAL TAP
+            </span>
+
+            <strong id="kerupukTapCount">
+              0
+            </strong>
+
+            <small>
+              Target: 35 tap
+            </small>
+
+          </div>
+
+        </aside>
+
+
+
+        <!-- Arena tengah -->
+        <main class="kerupuk-main-arena">
+
+          <div class="kerupuk-arena-banner">
+
+            <span class="banner-wing banner-wing-left"></span>
+
+            <div>
+              <small>PERLOMBAAN DIMULAI</small>
+              <strong>MAKAN KERUPUK</strong>
+            </div>
+
+            <span class="banner-wing banner-wing-right"></span>
+
+          </div>
+
+
+          <div class="kerupuk-stage">
+
+
+            <!-- Dekorasi belakang -->
+            <div class="kerupuk-stage-glow"></div>
+
+            <div class="kerupuk-stage-banner-left">
+              🇮🇩
+            </div>
+
+            <div class="kerupuk-stage-banner-right">
+              🇮🇩
+            </div>
+
+
+            <!-- Tiang gantungan -->
+            <div class="kerupuk-pole-left"></div>
+            <div class="kerupuk-pole-right"></div>
+
+            <div class="kerupuk-hanging-bar"></div>
+
+
+            <!-- Tali kerupuk -->
+            <div
+              id="kerupukRope"
+              class="kerupuk-main-rope"
+            ></div>
+
+
+            <!-- Kerupuk utama -->
+            <div
+              id="mainKerupuk"
+              class="main-kerupuk-object"
+            >
+
+              <div class="kerupuk-object-shadow"></div>
+
+              <div class="kerupuk-object-body">
+
+                <span class="kerupuk-hole kerupuk-hole-one"></span>
+                <span class="kerupuk-hole kerupuk-hole-two"></span>
+                <span class="kerupuk-hole kerupuk-hole-three"></span>
+                <span class="kerupuk-hole kerupuk-hole-four"></span>
+
+              </div>
+
+              <div
+                id="kerupukBiteMask"
+                class="kerupuk-bite-mask"
+              ></div>
+
+            </div>
+
+
+            <!-- Karakter -->
+            <div
+              id="kerupukPlayer"
+              class="kerupuk-player-character"
+            >
+
+              <div class="kerupuk-player-shadow"></div>
+
+              <!-- Placeholder, nanti diganti aset HD -->
+              <div class="kerupuk-player-placeholder">
+
+                <div class="kerupuk-player-head">
+
+                  <span
+                    id="kerupukPlayerFace"
+                    class="kerupuk-player-face"
+                  >
+                    😋
+                  </span>
+
+                  <span class="kerupuk-player-headband"></span>
+
+                </div>
+
+                <div class="kerupuk-player-body">
+
+                  <span class="kerupuk-shirt-logo">
+                    88
+                  </span>
+
+                </div>
+
+                <div class="kerupuk-player-arm arm-left"></div>
+                <div class="kerupuk-player-arm arm-right"></div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Efek remah -->
+            <div
+              id="kerupukCrumbEffect"
+              class="kerupuk-crumb-effect"
+            >
+
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+
+            </div>
+
+
+            <!-- Meja kecil -->
+            <div class="kerupuk-stage-table">
+
+              <div class="table-top"></div>
+
+              <div class="table-leg table-leg-left"></div>
+              <div class="table-leg table-leg-right"></div>
+
+              <div class="table-decoration">
+                <span class="table-red"></span>
+                <span class="table-white"></span>
+              </div>
+
+            </div>
+
+
+            <!-- Penonton -->
+            <div class="kerupuk-spectator-row">
+
+              <div class="spectator kerupuk-spectator-one">
+                <span class="spectator-head">😁</span>
+                <span class="spectator-body">👕</span>
+              </div>
+
+              <div class="spectator kerupuk-spectator-two">
+                <span class="spectator-head">🤩</span>
+                <span class="spectator-body">👚</span>
+              </div>
+
+              <div class="spectator kerupuk-spectator-three">
+                <span class="spectator-head">🥳</span>
+                <span class="spectator-body">👕</span>
+              </div>
+
+              <div class="spectator kerupuk-spectator-four">
+                <span class="spectator-head">😆</span>
+                <span class="spectator-body">👚</span>
+              </div>
+
+            </div>
+
+
+            <div class="kerupuk-stage-ground"></div>
+
+          </div>
+
+        </main>
+
+
+
+        <!-- Panel misi kanan -->
+        <aside class="kerupuk-mission-panel">
+
+          <div class="mission-card">
+
+            <div class="mission-card-header">
+
+              <span class="mission-icon">🍘</span>
+
+              <div>
+                <small>MISI PERMAINAN</small>
+                <strong>Habiskan Kerupuk!</strong>
+              </div>
+
+            </div>
+
+
+            <p>
+              Tekan tombol secepat mungkin untuk menghabiskan
+              kerupuk sebelum waktu permainan berakhir.
+            </p>
+
+
+            <div class="mission-target-list">
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">⏱️</span>
+
+                <div>
+                  <small>Waktu</small>
+                  <strong>10 Detik</strong>
+                </div>
+
+              </div>
+
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">👆</span>
+
+                <div>
+                  <small>Target</small>
+                  <strong>35 Tap</strong>
+                </div>
+
+              </div>
+
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">🎁</span>
+
+                <div>
+                  <small>Hadiah</small>
+                  <strong>Mystery Box</strong>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="kerupuk-player-mini-card">
+
+            <span class="mini-card-label">
+              PEMAIN
+            </span>
+
+            <div class="mini-player-information">
+
+              <div class="mini-player-avatar">
+                😎
+              </div>
+
+              <div>
+
+                <strong id="kerupukMemberName">
+                  PLAYER123
+                </strong>
+
+                <small>
+                  Tiket tersisa:
+                  <span id="kerupukRemainingTicket">8</span>
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-tip-card">
+
+            <span class="tip-icon">💡</span>
+
+            <div>
+
+              <strong>Tips</strong>
+
+              <p>
+                Gunakan dua jari bergantian atau tekan tombol
+                Space dengan cepat.
+              </p>
+
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+
+
+      <!-- Kontrol bawah -->
+      <div class="kerupuk-control-area">
+
+        <div
+          id="kerupukReadyMessage"
+          class="game-ready-message"
+        >
+          Tekan mulai untuk bersiap makan kerupuk!
+        </div>
+
+
+        <button
+          id="kerupukStartButton"
+          class="kerupuk-start-button"
+          type="button"
+        >
+
+          <span class="start-button-glow"></span>
+
+          <span class="start-button-icon">
+            🚩
+          </span>
+
+          <span class="start-button-text">
+            MULAI PERMAINAN
+          </span>
+
+        </button>
+
+
+        <button
+          id="kerupukTapButton"
+          class="kerupuk-tap-button"
+          type="button"
+          disabled
+        >
+
+          <span class="tap-button-glow"></span>
+
+          <span class="tap-hand-icon">
+            👆
+          </span>
+
+          <span class="tap-button-copy">
+
+            <strong>MAKAN CEPAT!</strong>
+
+            <small>
+              Klik atau tekan tombol Space
+            </small>
+
+          </span>
+
+        </button>
+
+
+        <div class="keyboard-control-hint">
+
+          <span class="keyboard-key">
+            SPACE
+          </span>
+
+          <small>
+            Bisa dimainkan menggunakan keyboard
+          </small>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Countdown -->
+      <div
+        id="kerupukCountdownOverlay"
+        class="game-countdown-overlay"
+        aria-hidden="true"
+      >
+
+        <div class="countdown-content">
+
+          <small>
+            PERMAINAN DIMULAI DALAM
+          </small>
+
+          <strong id="kerupukCountdownValue">
+            3
+          </strong>
+
+          <span id="kerupukCountdownMessage">
+            Bersiap!
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Pause -->
+      <div
+        id="kerupukPauseOverlay"
+        class="game-pause-overlay"
+        aria-hidden="true"
+      >
+
+        <div class="pause-modal">
+
+          <div class="pause-icon">
+            Ⅱ
+          </div>
+
+          <span class="section-label">
+            PERMAINAN DIJEDA
+          </span>
+
+          <h2>
+            Istirahat Sebentar
+          </h2>
+
+          <p>
+            Timer berhenti selama permainan dijeda.
+          </p>
+
+
+          <button
+            id="kerupukResumeButton"
+            class="primary-button gold-button"
+            type="button"
+          >
+            <span class="button-icon">▶</span>
+            <span class="button-text">LANJUTKAN</span>
+          </button>
+
+
+          <button
+            id="kerupukQuitButton"
+            class="secondary-button"
+            type="button"
+          >
+            Keluar ke Lobby
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
