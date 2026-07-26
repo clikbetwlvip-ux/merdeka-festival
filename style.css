@@ -5759,3 +5759,867 @@ height:15px;
     }
 
 }
+/* =========================================================
+   CSS PART 3C-2 — SPECIAL GAME ANIMATIONS
+========================================================= */
+
+
+/* =========================================================
+   SHARED GAME DECORATIONS
+========================================================= */
+
+.game-card-decoration{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    overflow:hidden;
+    pointer-events:none;
+}
+
+.game-floating-particle{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    opacity:.55;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff7ca 0%,
+            #ffd55c 42%,
+            transparent 72%
+        );
+
+    box-shadow:
+        0 0 8px rgba(255,214,89,.75),
+        0 0 16px rgba(255,194,40,.28);
+
+    animation:gameParticleFloat 4.5s ease-in-out infinite;
+}
+
+.game-floating-particle:nth-child(1){
+    left:12%;
+    top:26%;
+    animation-delay:0s;
+}
+
+.game-floating-particle:nth-child(2){
+    right:14%;
+    top:18%;
+    animation-delay:.9s;
+}
+
+.game-floating-particle:nth-child(3){
+    left:22%;
+    bottom:25%;
+    animation-delay:1.7s;
+}
+
+.game-floating-particle:nth-child(4){
+    right:20%;
+    bottom:18%;
+    animation-delay:2.4s;
+}
+
+@keyframes gameParticleFloat{
+    0%,
+    100%{
+        opacity:.15;
+        transform:translateY(8px) scale(.55);
+    }
+
+    50%{
+        opacity:.8;
+        transform:translateY(-12px) scale(1.15);
+    }
+}
+
+
+/* =========================================================
+   CARD ENTRANCE
+========================================================= */
+
+.game-card{
+    animation:gameCardEntrance .7s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.game-card:nth-child(1){
+    animation-delay:.08s;
+}
+
+.game-card:nth-child(2){
+    animation-delay:.18s;
+}
+
+.game-card:nth-child(3){
+    animation-delay:.28s;
+}
+
+@keyframes gameCardEntrance{
+    from{
+        opacity:0;
+        transform:translateY(28px) scale(.96);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   PANJAT PINANG
+========================================================= */
+
+.game-card.panjat-pinang .game-card-image,
+.game-card[data-game="panjat-pinang"] .game-card-image,
+.game-card.panjat-pinang .game-card-media img,
+.game-card[data-game="panjat-pinang"] .game-card-media img{
+    transform-origin:center bottom;
+}
+
+.panjat-pinang-tree,
+.pinang-tree{
+    position:absolute;
+    left:50%;
+    bottom:0;
+    z-index:3;
+    width:52px;
+    height:180px;
+    transform:translateX(-50%);
+    transform-origin:center bottom;
+
+    background:
+        linear-gradient(
+            90deg,
+            #714014,
+            #b27632 35%,
+            #e0a65d 52%,
+            #8b511e 78%,
+            #54300f
+        );
+
+    border-radius:50% 50% 18px 18px;
+    box-shadow:
+        inset 5px 0 8px rgba(255,255,255,.12),
+        inset -7px 0 10px rgba(0,0,0,.22);
+
+    animation:pinangTreeSway 4s ease-in-out infinite;
+}
+
+.panjat-pinang-tree::before,
+.pinang-tree::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:-35px;
+    width:115px;
+    height:70px;
+    transform:translateX(-50%);
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #7bcf48 0 18%,
+            #338d31 42%,
+            transparent 70%
+        );
+
+    filter:drop-shadow(0 8px 8px rgba(0,0,0,.2));
+}
+
+.panjat-pinang-tree::after,
+.pinang-tree::after{
+    content:"";
+    position:absolute;
+    inset:18px 9px;
+
+    background:
+        repeating-linear-gradient(
+            175deg,
+            transparent 0 18px,
+            rgba(255,255,255,.18) 19px 21px,
+            transparent 22px 38px
+        );
+}
+
+@keyframes pinangTreeSway{
+    0%,
+    100%{
+        transform:translateX(-50%) rotate(-1deg);
+    }
+
+    50%{
+        transform:translateX(-50%) rotate(1.4deg);
+    }
+}
+
+
+/* =========================================================
+   PANJAT PINANG CHARACTER
+========================================================= */
+
+.panjat-character,
+.pinang-character{
+    position:absolute;
+    left:50%;
+    bottom:34px;
+    z-index:5;
+    width:56px;
+    transform:translateX(-50%);
+
+    filter:
+        drop-shadow(0 10px 8px rgba(0,0,0,.35));
+
+    animation:pinangCharacterClimb 2.4s ease-in-out infinite;
+}
+
+@keyframes pinangCharacterClimb{
+    0%,
+    100%{
+        transform:translateX(-50%) translateY(6px) rotate(-1deg);
+    }
+
+    50%{
+        transform:translateX(-50%) translateY(-10px) rotate(1deg);
+    }
+}
+
+
+/* =========================================================
+   PANJAT PINANG REWARD
+========================================================= */
+
+.pinang-reward,
+.panjat-reward{
+    position:absolute;
+    top:20px;
+    left:50%;
+    z-index:6;
+    display:grid;
+    place-items:center;
+    width:62px;
+    height:62px;
+    transform:translateX(-50%);
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,244,164,.95),
+            rgba(255,190,39,.32) 42%,
+            transparent 72%
+        );
+
+    filter:drop-shadow(0 0 14px rgba(255,213,74,.6));
+    animation:pinangRewardGlow 1.8s ease-in-out infinite;
+}
+
+.pinang-reward::before,
+.panjat-reward::before{
+    content:"🎁";
+    font-size:2rem;
+}
+
+@keyframes pinangRewardGlow{
+    0%,
+    100%{
+        transform:translateX(-50%) scale(.9) rotate(-3deg);
+        opacity:.75;
+    }
+
+    50%{
+        transform:translateX(-50%) scale(1.1) rotate(3deg);
+        opacity:1;
+    }
+}
+
+
+/* =========================================================
+   PANJAT PINANG HOVER
+========================================================= */
+
+@media(hover:hover){
+
+    .game-card.panjat-pinang:hover .panjat-pinang-tree,
+    .game-card.panjat-pinang:hover .pinang-tree,
+    .game-card[data-game="panjat-pinang"]:hover .panjat-pinang-tree,
+    .game-card[data-game="panjat-pinang"]:hover .pinang-tree{
+        animation-duration:1.7s;
+    }
+
+    .game-card.panjat-pinang:hover .panjat-character,
+    .game-card.panjat-pinang:hover .pinang-character,
+    .game-card[data-game="panjat-pinang"]:hover .panjat-character,
+    .game-card[data-game="panjat-pinang"]:hover .pinang-character{
+        animation-duration:1.1s;
+    }
+
+}
+
+
+/* =========================================================
+   MAKAN KERUPUK
+========================================================= */
+
+.kerupuk-rope{
+    position:absolute;
+    top:-8px;
+    left:50%;
+    z-index:4;
+    width:2px;
+    height:115px;
+    transform:translateX(-50%);
+    transform-origin:center top;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f7e0aa,
+            #a47a45
+        );
+
+    box-shadow:0 0 5px rgba(255,255,255,.15);
+    animation:kerupukRopeSwing 3s ease-in-out infinite;
+}
+
+.kerupuk-rope::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-26px;
+    width:54px;
+    height:54px;
+    transform:translateX(-50%);
+    border-radius:46% 54% 48% 52%;
+
+    background:
+        radial-gradient(
+            circle at 38% 30%,
+            #fff6d0,
+            #e7c780 48%,
+            #bc934e 78%
+        );
+
+    border:3px dashed rgba(138,90,32,.45);
+
+    box-shadow:
+        0 10px 12px rgba(0,0,0,.26),
+        inset 0 0 12px rgba(255,255,255,.45);
+
+    animation:kerupukSpin 5s linear infinite;
+}
+
+@keyframes kerupukRopeSwing{
+    0%,
+    100%{
+        transform:translateX(-50%) rotate(-4deg);
+    }
+
+    50%{
+        transform:translateX(-50%) rotate(4deg);
+    }
+}
+
+@keyframes kerupukSpin{
+    to{
+        rotate:360deg;
+    }
+}
+
+
+/* =========================================================
+   KERUPUK CHARACTER
+========================================================= */
+
+.kerupuk-character,
+.makan-kerupuk-character{
+    position:absolute;
+    left:50%;
+    bottom:18px;
+    z-index:3;
+    width:94px;
+    transform:translateX(-50%);
+
+    filter:
+        drop-shadow(0 12px 9px rgba(0,0,0,.34));
+
+    animation:kerupukCharacterMove 2.2s ease-in-out infinite;
+}
+
+@keyframes kerupukCharacterMove{
+    0%,
+    100%{
+        transform:translateX(-50%) translateY(1px);
+    }
+
+    50%{
+        transform:translateX(-50%) translateY(-5px);
+    }
+}
+
+
+/* =========================================================
+   KERUPUK CRUMBS
+========================================================= */
+
+.kerupuk-crumb{
+    position:absolute;
+    z-index:6;
+    width:6px;
+    height:6px;
+    border-radius:2px;
+
+    background:#f2d18b;
+    box-shadow:0 0 5px rgba(255,225,155,.4);
+
+    opacity:0;
+}
+
+.kerupuk-crumb:nth-child(1){
+    left:42%;
+    top:47%;
+}
+
+.kerupuk-crumb:nth-child(2){
+    left:55%;
+    top:42%;
+}
+
+.kerupuk-crumb:nth-child(3){
+    left:61%;
+    top:51%;
+}
+
+.kerupuk-crumb:nth-child(4){
+    left:37%;
+    top:54%;
+}
+
+@media(hover:hover){
+
+    .game-card.makan-kerupuk:hover .kerupuk-crumb,
+    .game-card[data-game="makan-kerupuk"]:hover .kerupuk-crumb{
+        animation:kerupukCrumbBurst 1.15s ease-out infinite;
+    }
+
+    .game-card.makan-kerupuk:hover .kerupuk-crumb:nth-child(2),
+    .game-card[data-game="makan-kerupuk"]:hover .kerupuk-crumb:nth-child(2){
+        animation-delay:.15s;
+    }
+
+    .game-card.makan-kerupuk:hover .kerupuk-crumb:nth-child(3),
+    .game-card[data-game="makan-kerupuk"]:hover .kerupuk-crumb:nth-child(3){
+        animation-delay:.3s;
+    }
+
+    .game-card.makan-kerupuk:hover .kerupuk-crumb:nth-child(4),
+    .game-card[data-game="makan-kerupuk"]:hover .kerupuk-crumb:nth-child(4){
+        animation-delay:.45s;
+    }
+
+}
+
+@keyframes kerupukCrumbBurst{
+    0%{
+        opacity:0;
+        transform:translate(0,0) rotate(0) scale(.4);
+    }
+
+    25%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        transform:translate(
+            calc((var(--crumb-x, 1)) * 25px),
+            34px
+        )
+        rotate(160deg)
+        scale(1);
+    }
+}
+
+.kerupuk-crumb:nth-child(1){
+    --crumb-x:-1;
+}
+
+.kerupuk-crumb:nth-child(2){
+    --crumb-x:.5;
+}
+
+.kerupuk-crumb:nth-child(3){
+    --crumb-x:1.3;
+}
+
+.kerupuk-crumb:nth-child(4){
+    --crumb-x:-.5;
+}
+
+
+/* =========================================================
+   LOMBA KELERENG
+========================================================= */
+
+.kelereng-track{
+    position:absolute;
+    left:7%;
+    right:7%;
+    bottom:26px;
+    z-index:3;
+    height:52px;
+    overflow:hidden;
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.25),
+            rgba(104,71,31,.14)
+        );
+
+    border-bottom:4px solid rgba(255,224,156,.26);
+
+    transform:perspective(200px) rotateX(50deg);
+
+    box-shadow:
+        inset 0 -10px 16px rgba(0,0,0,.18),
+        0 8px 15px rgba(0,0,0,.18);
+}
+
+.kelereng-track::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 34px,
+            rgba(255,255,255,.18) 35px 37px,
+            transparent 38px 70px
+        );
+
+    animation:kelerengTrackMove 2.4s linear infinite;
+}
+
+@keyframes kelerengTrackMove{
+    to{
+        transform:translateX(-70px);
+    }
+}
+
+
+/* =========================================================
+   MARBLE
+========================================================= */
+
+.kelereng-ball,
+.marble-ball{
+    position:absolute;
+    left:20%;
+    bottom:43px;
+    z-index:6;
+    width:37px;
+    height:37px;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 24%,
+            #fff 0 7%,
+            #90e9ff 12%,
+            #398bdb 42%,
+            #182775 72%,
+            #080d35 100%
+        );
+
+    border:1px solid rgba(255,255,255,.65);
+
+    box-shadow:
+        inset -8px -9px 12px rgba(0,0,0,.34),
+        inset 5px 5px 9px rgba(255,255,255,.35),
+        0 9px 12px rgba(0,0,0,.32),
+        0 0 14px rgba(92,191,255,.38);
+
+    animation:kelerengRoll 2.8s ease-in-out infinite;
+}
+
+.kelereng-ball::before,
+.marble-ball::before{
+    content:"";
+    position:absolute;
+    width:9px;
+    height:16px;
+    left:8px;
+    top:5px;
+    border-radius:50%;
+
+    background:rgba(255,255,255,.62);
+    transform:rotate(35deg);
+    filter:blur(.3px);
+}
+
+@keyframes kelerengRoll{
+    0%{
+        left:13%;
+        transform:rotate(0deg) translateY(0);
+    }
+
+    45%{
+        transform:rotate(540deg) translateY(-4px);
+    }
+
+    100%{
+        left:76%;
+        transform:rotate(1080deg) translateY(0);
+    }
+}
+
+
+/* =========================================================
+   KELERENG CHARACTER
+========================================================= */
+
+.kelereng-character,
+.lomba-kelereng-character{
+    position:absolute;
+    left:50%;
+    bottom:20px;
+    z-index:5;
+    width:104px;
+    transform:translateX(-50%);
+
+    filter:
+        drop-shadow(0 11px 9px rgba(0,0,0,.34));
+
+    animation:kelerengCharacterBalance 2.1s ease-in-out infinite;
+}
+
+@keyframes kelerengCharacterBalance{
+    0%,
+    100%{
+        transform:translateX(-50%) rotate(-1.5deg);
+    }
+
+    50%{
+        transform:translateX(-50%) rotate(1.5deg) translateY(-3px);
+    }
+}
+
+
+/* =========================================================
+   KELERENG LIGHT TRAIL
+========================================================= */
+
+.kelereng-light-trail{
+    position:absolute;
+    left:12%;
+    bottom:48px;
+    z-index:4;
+    width:72%;
+    height:10px;
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(107,210,255,.18),
+            rgba(255,255,255,.5),
+            transparent
+        );
+
+    filter:blur(4px);
+    opacity:.5;
+    animation:kelerengTrailPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes kelerengTrailPulse{
+    0%,
+    100%{
+        opacity:.22;
+        transform:scaleX(.82);
+    }
+
+    50%{
+        opacity:.7;
+        transform:scaleX(1);
+    }
+}
+
+
+/* =========================================================
+   SPECIAL CARD GLOW
+========================================================= */
+
+.game-card.panjat-pinang:hover,
+.game-card[data-game="panjat-pinang"]:hover{
+    box-shadow:
+        0 28px 58px rgba(0,0,0,.38),
+        0 0 34px rgba(255,185,40,.18),
+        inset 0 1px rgba(255,255,255,.12);
+}
+
+.game-card.makan-kerupuk:hover,
+.game-card[data-game="makan-kerupuk"]:hover{
+    box-shadow:
+        0 28px 58px rgba(0,0,0,.38),
+        0 0 34px rgba(255,84,69,.15),
+        inset 0 1px rgba(255,255,255,.12);
+}
+
+.game-card.lomba-kelereng:hover,
+.game-card[data-game="lomba-kelereng"]:hover{
+    box-shadow:
+        0 28px 58px rgba(0,0,0,.38),
+        0 0 34px rgba(75,188,255,.18),
+        inset 0 1px rgba(255,255,255,.12);
+}
+
+
+/* =========================================================
+   PLAYING STATE
+========================================================= */
+
+.game-card.playing{
+    pointer-events:none;
+    animation:gameCardPlayingPulse 1.25s ease-in-out infinite;
+}
+
+.game-card.playing .game-card-button,
+.game-card.playing .play-game-button{
+    color:#fff5cc;
+
+    background:
+        linear-gradient(
+            90deg,
+            #a76500,
+            #efb638,
+            #a76500
+        );
+
+    background-size:200% 100%;
+    animation:gamePlayingButton 1.2s linear infinite;
+}
+
+.game-card.playing .game-card-button::before,
+.game-card.playing .play-game-button::before{
+    display:none;
+}
+
+@keyframes gameCardPlayingPulse{
+    0%,
+    100%{
+        filter:brightness(1);
+    }
+
+    50%{
+        filter:brightness(1.12);
+    }
+}
+
+@keyframes gamePlayingButton{
+    to{
+        background-position:-200% 0;
+    }
+}
+
+
+/* =========================================================
+   COMPLETED STATE
+========================================================= */
+
+.game-card.completed{
+    border-color:rgba(104,255,152,.45);
+}
+
+.game-card.completed .game-card-badge,
+.game-card.completed .game-status-badge{
+    color:#063c1d;
+
+    background:
+        linear-gradient(
+            180deg,
+            #c5ffd7,
+            #59df8c 52%,
+            #1e9e54
+        );
+
+    border-color:rgba(214,255,225,.75);
+
+    box-shadow:
+        0 8px 17px rgba(0,0,0,.23),
+        0 0 19px rgba(73,232,126,.25);
+}
+
+.game-card.completed .game-card-badge::before,
+.game-card.completed .game-status-badge::before{
+    background:#e2ffeb;
+    box-shadow:
+        0 0 7px #fff,
+        0 0 12px rgba(100,255,151,.85);
+}
+
+
+/* =========================================================
+   MOBILE PERFORMANCE
+========================================================= */
+
+@media(max-width:680px){
+
+    .game-floating-particle:nth-child(n+3){
+        display:none;
+    }
+
+    .panjat-pinang-tree,
+    .pinang-tree{
+        height:145px;
+    }
+
+    .kerupuk-rope{
+        height:92px;
+    }
+
+    .kelereng-ball,
+    .marble-ball{
+        width:31px;
+        height:31px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    .game-card,
+    .game-floating-particle,
+    .panjat-pinang-tree,
+    .pinang-tree,
+    .panjat-character,
+    .pinang-character,
+    .pinang-reward,
+    .panjat-reward,
+    .kerupuk-rope,
+    .kerupuk-rope::after,
+    .kerupuk-character,
+    .makan-kerupuk-character,
+    .kerupuk-crumb,
+    .kelereng-track::before,
+    .kelereng-ball,
+    .marble-ball,
+    .kelereng-character,
+    .lomba-kelereng-character,
+    .kelereng-light-trail{
+        animation:none !important;
+    }
+
+}
