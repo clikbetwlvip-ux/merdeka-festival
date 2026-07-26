@@ -3333,3 +3333,653 @@
       </p>
 
     </div>
+    <!-- =========================================
+         GAME LOMBA KELERENG
+    ========================================== -->
+    <section
+      id="kelerengScreen"
+      class="screen game-screen kelereng-game-screen"
+      aria-hidden="true"
+    >
+
+      <!-- Background arena -->
+      <div class="kelereng-game-background">
+
+        <div class="kelereng-sky"></div>
+        <div class="kelereng-sun-glow"></div>
+
+        <div class="kelereng-cloud kelereng-cloud-one"></div>
+        <div class="kelereng-cloud kelereng-cloud-two"></div>
+
+        <div class="kelereng-flag-line kelereng-flag-line-one"></div>
+        <div class="kelereng-flag-line kelereng-flag-line-two"></div>
+
+        <div class="kelereng-decoration-left">
+          🇮🇩
+        </div>
+
+        <div class="kelereng-decoration-right">
+          🇮🇩
+        </div>
+
+        <div class="kelereng-crowd-background"></div>
+        <div class="kelereng-ground-background"></div>
+
+      </div>
+
+
+      <!-- Header -->
+      <header class="game-header">
+
+        <div class="game-header-left">
+
+          <button
+            id="kelerengBackButton"
+            class="game-back-button"
+            type="button"
+            aria-label="Kembali ke lobby"
+          >
+            <span>←</span>
+          </button>
+
+          <div class="game-header-title">
+
+            <span class="game-header-label">
+              GAME 03
+            </span>
+
+            <h1>Lomba Kelereng</h1>
+
+          </div>
+
+        </div>
+
+
+        <div class="game-header-center">
+
+          <div class="game-header-brand">
+            CLICKBET<span>88</span>
+          </div>
+
+          <small>FESTIVAL KEMERDEKAAN 2026</small>
+
+        </div>
+
+
+        <div class="game-header-actions">
+
+          <button
+            id="kelerengPauseButton"
+            class="game-header-icon-button"
+            type="button"
+            aria-label="Jeda permainan"
+          >
+            <span>Ⅱ</span>
+          </button>
+
+          <button
+            id="kelerengSoundButton"
+            class="game-header-icon-button"
+            type="button"
+            aria-label="Aktifkan atau matikan suara"
+          >
+            <span id="kelerengSoundIcon">🔊</span>
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- Layout utama -->
+      <div class="kelereng-game-layout">
+
+
+        <!-- Panel kiri -->
+        <aside class="kelereng-status-panel">
+
+          <div class="game-status-card timer-status-card">
+
+            <span class="status-card-label">
+              SISA WAKTU
+            </span>
+
+            <strong id="kelerengTimerValue">
+              00:20
+            </strong>
+
+            <div class="timer-progress-track">
+
+              <div
+                id="kelerengTimerProgress"
+                class="timer-progress-fill"
+                style="width: 100%;"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-status-card progress-status-card">
+
+            <span class="status-card-label">
+              JARAK TEMPUH
+            </span>
+
+            <strong id="kelerengProgressValue">
+              0%
+            </strong>
+
+            <div class="horizontal-progress-track">
+
+              <div
+                id="kelerengProgressBar"
+                class="horizontal-progress-fill"
+                style="width: 0%;"
+              ></div>
+
+            </div>
+
+            <small>
+              Capai garis finis
+            </small>
+
+          </div>
+
+
+          <div class="game-status-card balance-status-card">
+
+            <span class="status-card-label">
+              KESEIMBANGAN
+            </span>
+
+            <div class="balance-meter">
+
+              <div class="balance-zone balance-danger-left"></div>
+              <div class="balance-zone balance-safe-zone"></div>
+              <div class="balance-zone balance-danger-right"></div>
+
+              <div
+                id="kelerengBalanceMarker"
+                class="balance-marker"
+                style="left: 50%;"
+              ></div>
+
+            </div>
+
+            <strong id="kelerengBalanceValue">
+              STABIL
+            </strong>
+
+          </div>
+
+        </aside>
+
+
+
+        <!-- Arena tengah -->
+        <main class="kelereng-main-arena">
+
+          <div class="kelereng-arena-banner">
+
+            <span class="banner-wing banner-wing-left"></span>
+
+            <div>
+              <small>PERLOMBAAN DIMULAI</small>
+              <strong>LOMBA KELERENG</strong>
+            </div>
+
+            <span class="banner-wing banner-wing-right"></span>
+
+          </div>
+
+
+          <div class="kelereng-stage">
+
+
+            <!-- Cahaya -->
+            <div class="kelereng-stage-glow"></div>
+
+
+            <!-- Jalur lomba -->
+            <div class="kelereng-race-track">
+
+              <div class="race-track-border race-track-border-top"></div>
+              <div class="race-track-border race-track-border-bottom"></div>
+
+              <div class="race-track-lane lane-one"></div>
+              <div class="race-track-lane lane-two"></div>
+              <div class="race-track-lane lane-three"></div>
+
+              <div class="race-track-start-line">
+                <span>START</span>
+              </div>
+
+              <div class="race-track-finish-line">
+
+                <div class="finish-checker-pattern"></div>
+
+                <span>FINISH</span>
+
+                <div class="finish-flag-left">🏁</div>
+                <div class="finish-flag-right">🏁</div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Karakter pemain -->
+            <div
+              id="kelerengPlayer"
+              class="kelereng-player-character"
+              style="left: 5%;"
+            >
+
+              <div class="kelereng-player-shadow"></div>
+
+              <!-- Placeholder karakter, nanti diganti aset HD -->
+              <div class="kelereng-player-placeholder">
+
+                <div class="kelereng-player-head">
+
+                  <span
+                    id="kelerengPlayerFace"
+                    class="kelereng-player-face"
+                  >
+                    😬
+                  </span>
+
+                  <span class="kelereng-player-headband"></span>
+
+                </div>
+
+                <div class="kelereng-player-body">
+
+                  <span class="kelereng-shirt-logo">
+                    88
+                  </span>
+
+                </div>
+
+                <div class="kelereng-player-arm arm-left"></div>
+                <div class="kelereng-player-arm arm-right"></div>
+
+                <div class="kelereng-player-leg leg-left"></div>
+                <div class="kelereng-player-leg leg-right"></div>
+
+              </div>
+
+
+              <!-- Sendok -->
+              <div
+                id="kelerengSpoon"
+                class="kelereng-spoon-wrapper"
+              >
+
+                <div class="kelereng-spoon-handle"></div>
+
+                <div class="kelereng-spoon-head"></div>
+
+
+                <!-- Kelereng -->
+                <div
+                  id="kelerengMarble"
+                  class="kelereng-marble"
+                  style="left: 50%;"
+                >
+
+                  <div class="marble-highlight"></div>
+                  <div class="marble-shadow"></div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Efek langkah -->
+            <div
+              id="kelerengStepEffect"
+              class="kelereng-step-effect"
+            >
+
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+
+            </div>
+
+
+            <!-- Penonton -->
+            <div class="kelereng-spectator-row">
+
+              <div class="spectator kelereng-spectator-one">
+                <span class="spectator-head">😁</span>
+                <span class="spectator-body">👕</span>
+              </div>
+
+              <div class="spectator kelereng-spectator-two">
+                <span class="spectator-head">🤩</span>
+                <span class="spectator-body">👚</span>
+              </div>
+
+              <div class="spectator kelereng-spectator-three">
+                <span class="spectator-head">🥳</span>
+                <span class="spectator-body">👕</span>
+              </div>
+
+              <div class="spectator kelereng-spectator-four">
+                <span class="spectator-head">😆</span>
+                <span class="spectator-body">👚</span>
+              </div>
+
+            </div>
+
+
+            <div class="kelereng-stage-ground"></div>
+
+          </div>
+
+        </main>
+
+
+
+        <!-- Panel kanan -->
+        <aside class="kelereng-mission-panel">
+
+          <div class="mission-card">
+
+            <div class="mission-card-header">
+
+              <span class="mission-icon">🔵</span>
+
+              <div>
+                <small>MISI PERMAINAN</small>
+                <strong>Jaga Keseimbangan!</strong>
+              </div>
+
+            </div>
+
+
+            <p>
+              Gerakkan karakter menuju garis finis sambil menjaga
+              kelereng tetap berada di atas sendok.
+            </p>
+
+
+            <div class="mission-target-list">
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">⏱️</span>
+
+                <div>
+                  <small>Waktu</small>
+                  <strong>20 Detik</strong>
+                </div>
+
+              </div>
+
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">↔️</span>
+
+                <div>
+                  <small>Kontrol</small>
+                  <strong>Kiri / Kanan</strong>
+                </div>
+
+              </div>
+
+
+              <div class="mission-target-item">
+
+                <span class="target-icon">🎁</span>
+
+                <div>
+                  <small>Hadiah</small>
+                  <strong>Mystery Box</strong>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="kelereng-player-mini-card">
+
+            <span class="mini-card-label">
+              PEMAIN
+            </span>
+
+            <div class="mini-player-information">
+
+              <div class="mini-player-avatar">
+                😎
+              </div>
+
+              <div>
+
+                <strong id="kelerengMemberName">
+                  PLAYER123
+                </strong>
+
+                <small>
+                  Tiket tersisa:
+                  <span id="kelerengRemainingTicket">8</span>
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="game-tip-card">
+
+            <span class="tip-icon">💡</span>
+
+            <div>
+
+              <strong>Tips</strong>
+
+              <p>
+                Jangan menekan tombol terlalu lama. Gunakan sentuhan
+                pendek agar kelereng tetap stabil.
+              </p>
+
+            </div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+
+
+      <!-- Kontrol bawah -->
+      <div class="kelereng-control-area">
+
+        <div
+          id="kelerengReadyMessage"
+          class="game-ready-message"
+        >
+          Tekan mulai dan bersiap menjaga keseimbangan!
+        </div>
+
+
+        <button
+          id="kelerengStartButton"
+          class="kelereng-start-button"
+          type="button"
+        >
+
+          <span class="start-button-glow"></span>
+
+          <span class="start-button-icon">
+            🚩
+          </span>
+
+          <span class="start-button-text">
+            MULAI PERMAINAN
+          </span>
+
+        </button>
+
+
+        <div
+          id="kelerengControlButtons"
+          class="kelereng-direction-controls"
+        >
+
+          <button
+            id="kelerengLeftButton"
+            class="kelereng-direction-button"
+            type="button"
+            disabled
+          >
+            <span class="direction-icon">←</span>
+            <span class="direction-text">KIRI</span>
+          </button>
+
+
+          <button
+            id="kelerengForwardButton"
+            class="kelereng-forward-button"
+            type="button"
+            disabled
+          >
+
+            <span class="forward-button-glow"></span>
+
+            <span class="forward-button-icon">
+              👣
+            </span>
+
+            <span class="forward-button-copy">
+
+              <strong>JALAN!</strong>
+
+              <small>
+                Tap untuk maju
+              </small>
+
+            </span>
+
+          </button>
+
+
+          <button
+            id="kelerengRightButton"
+            class="kelereng-direction-button"
+            type="button"
+            disabled
+          >
+            <span class="direction-icon">→</span>
+            <span class="direction-text">KANAN</span>
+          </button>
+
+        </div>
+
+
+        <div class="keyboard-control-hint">
+
+          <span class="keyboard-key">←</span>
+          <span class="keyboard-key">SPACE</span>
+          <span class="keyboard-key">→</span>
+
+          <small>
+            Gunakan tombol arah dan Space
+          </small>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Countdown -->
+      <div
+        id="kelerengCountdownOverlay"
+        class="game-countdown-overlay"
+        aria-hidden="true"
+      >
+
+        <div class="countdown-content">
+
+          <small>
+            PERMAINAN DIMULAI DALAM
+          </small>
+
+          <strong id="kelerengCountdownValue">
+            3
+          </strong>
+
+          <span id="kelerengCountdownMessage">
+            Bersiap!
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Pause -->
+      <div
+        id="kelerengPauseOverlay"
+        class="game-pause-overlay"
+        aria-hidden="true"
+      >
+
+        <div class="pause-modal">
+
+          <div class="pause-icon">
+            Ⅱ
+          </div>
+
+          <span class="section-label">
+            PERMAINAN DIJEDA
+          </span>
+
+          <h2>
+            Istirahat Sebentar
+          </h2>
+
+          <p>
+            Timer dan pergerakan berhenti selama permainan dijeda.
+          </p>
+
+
+          <button
+            id="kelerengResumeButton"
+            class="primary-button gold-button"
+            type="button"
+          >
+            <span class="button-icon">▶</span>
+            <span class="button-text">LANJUTKAN</span>
+          </button>
+
+
+          <button
+            id="kelerengQuitButton"
+            class="secondary-button"
+            type="button"
+          >
+            Keluar ke Lobby
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
