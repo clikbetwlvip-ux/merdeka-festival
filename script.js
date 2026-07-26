@@ -6321,3 +6321,1690 @@
     initialize();
 
 })();
+/* =========================================================
+   JAVASCRIPT PART 5
+   MYSTERY BOX & SISTEM HADIAH
+========================================================= */
+
+(() => {
+    "use strict";
+
+    /* =====================================================
+       KONFIGURASI HADIAH
+
+       weight = peluang relatif.
+       Semakin besar weight, semakin sering didapat.
+    ===================================================== */
+
+    const MYSTERY_CONFIG = {
+        countdownStart: 3,
+        countdownInterval: 850,
+        openingDuration: 2800,
+        resultDelay: 500,
+
+        storageKey: "clickbet88_mystery_data_v1",
+
+        rewards: [
+            {
+                amount: 5000,
+                weight: 35,
+                level: "lucky",
+                label: "LUCKY",
+                message: "Awal yang bagus!"
+            },
+            {
+                amount: 10000,
+                weight: 25,
+                level: "nice",
+                label: "NICE",
+                message: "Hadiah menarik untukmu!"
+            },
+            {
+                amount: 25000,
+                weight: 17,
+                level: "great",
+                label: "GREAT",
+                message: "Keberuntungan berpihak kepadamu!"
+            },
+            {
+                amount: 50000,
+                weight: 10,
+                level: "excellent",
+                label: "EXCELLENT",
+                message: "Hadiah spesial berhasil ditemukan!"
+            },
+            {
+                amount: 100000,
+                weight: 7,
+                level: "amazing",
+                label: "AMAZING",
+                message: "Kemenangan yang luar biasa!"
+            },
+            {
+                amount: 250000,
+                weight: 3.5,
+                level: "epic",
+                label: "EPIC",
+                message: "Hadiah besar berhasil kamu dapatkan!"
+            },
+            {
+                amount: 350000,
+                weight: 2,
+                level: "legendary",
+                label: "LEGENDARY",
+                message: "Kemenangan legendaris!"
+            },
+            {
+                amount: 500000,
+                weight: 0.5,
+                level: "jackpot",
+                label: "JACKPOT",
+                message: "Kamu mendapatkan hadiah tertinggi!"
+            }
+        ]
+    };
+
+
+    /* =====================================================
+       ELEMEN HTML
+    ===================================================== */
+
+    const elements = {
+        screen:
+            document.getElementById("mysteryScreen"),
+
+        backButton:
+            document.getElementById("mysteryBackButton"),
+
+        helpButton:
+            document.getElementById("mysteryHelpButton"),
+
+        soundButton:
+            document.getElementById("mysterySoundButton"),
+
+        soundIcon:
+            document.getElementById("mysterySoundIcon"),
+
+        openButton:
+            document.getElementById("openMysteryBoxButton"),
+
+        returnLobbyButton:
+            document.getElementById("mysteryReturnLobbyButton"),
+
+        processStatus:
+            document.getElementById("mysteryProcessStatus"),
+
+        processIcon:
+            document.getElementById("mysteryProcessIcon"),
+
+        processText:
+            document.getElementById("mysteryProcessText"),
+
+        mainBox:
+            document.getElementById("mainMysteryBox"),
+
+        boxLid:
+            document.getElementById("mainMysteryBoxLid"),
+
+        boxBody:
+            document.getElementById("mainMysteryBoxBody"),
+
+        insideLight:
+            document.getElementById("mysteryInsideLight"),
+
+        explosionEffect:
+            document.getElementById("mysteryExplosionEffect"),
+
+        coinEffect:
+            document.getElementById("mysteryCoinEffect"),
+
+        countdownOverlay:
+            document.getElementById("mysteryCountdownOverlay"),
+
+        countdownValue:
+            document.getElementById("mysteryCountdownValue"),
+
+        countdownText:
+            document.getElementById("mysteryCountdownText"),
+
+        openingOverlay:
+            document.getElementById("mysteryOpeningOverlay"),
+
+        openingProgress:
+            document.getElementById("mysteryOpeningProgress"),
+
+        openingProgressBar:
+            document.getElementById("mysteryOpeningProgressBar"),
+
+        openingText:
+            document.getElementById("mysteryOpeningText"),
+
+        resultOverlay:
+            document.getElementById("mysteryResultOverlay"),
+
+        resultCard:
+            document.getElementById("mysteryResultCard"),
+
+        resultLabel:
+            document.getElementById("mysteryResultLabel"),
+
+        resultAmount:
+            document.getElementById("mysteryRewardAmount"),
+
+        resultMessage:
+            document.getElementById("mysteryResultMessage"),
+
+        resultMember:
+            document.getElementById("mysteryResultMember"),
+
+        claimButton:
+            document.getElementById("claimMysteryRewardButton"),
+
+        resultLobbyButton:
+            document.getElementById("mysteryResultLobbyButton"),
+
+        closeResultButton:
+            document.getElementById("closeMysteryResultButton"),
+
+        jackpotOverlay:
+            document.getElementById("jackpotOverlay"),
+
+        jackpotAmount:
+            document.getElementById("jackpotRewardAmount"),
+
+        continueJackpotButton:
+            document.getElementById("continueJackpotButton"),
+
+        claimConfirmOverlay:
+            document.getElementById("claimRewardConfirmOverlay"),
+
+        claimPreviewAmount:
+            document.getElementById("claimRewardPreviewAmount"),
+
+        cancelClaimButton:
+            document.getElementById("cancelClaimRewardButton"),
+
+        confirmClaimButton:
+            document.getElementById("confirmClaimRewardButton"),
+
+        toast:
+            document.getElementById("rewardToast"),
+
+        toastIcon:
+            document.getElementById("rewardToastIcon"),
+
+        toastMessage:
+            document.getElementById("rewardToastMessage"),
+
+        lobbyReward:
+            document.getElementById("todayRewardValue"),
+
+        historyList:
+            document.getElementById("rewardHistoryList"),
+
+        playerNames:
+            document.querySelectorAll("[data-user-name]")
+    };
+
+
+    if (!elements.screen) {
+        console.warn(
+            "[CLICKBET88] Mystery Screen tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    const state = {
+        status: "idle",
+        selectedReward: null,
+        rewardClaimed: false,
+        soundEnabled: true,
+
+        countdownTimer: null,
+        openingTimer: null,
+        progressTimer: null,
+        toastTimer: null
+    };
+
+
+    /* =====================================================
+       UTILITAS
+    ===================================================== */
+
+    function getAPI() {
+        return window.ClickbetGame || null;
+    }
+
+
+    function formatRupiah(value) {
+        return new Intl.NumberFormat(
+            "id-ID",
+            {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }
+        ).format(Number(value) || 0);
+    }
+
+
+    function getTodayKey() {
+        const date = new Date();
+
+        return [
+            date.getFullYear(),
+            String(date.getMonth() + 1).padStart(2, "0"),
+            String(date.getDate()).padStart(2, "0")
+        ].join("-");
+    }
+
+
+    function getMemberName() {
+        const api = getAPI();
+
+        if (
+            api &&
+            typeof api.getPlayerData === "function"
+        ) {
+            const player = api.getPlayerData();
+
+            if (player?.username) {
+                return player.username;
+            }
+
+            if (player?.memberId) {
+                return player.memberId;
+            }
+        }
+
+        const displayedName =
+            document.querySelector("[data-user-name]")
+                ?.textContent
+                ?.trim();
+
+        return displayedName || "PLAYER";
+    }
+
+
+    function clearTimers() {
+        clearInterval(state.countdownTimer);
+        clearInterval(state.openingTimer);
+        clearInterval(state.progressTimer);
+
+        state.countdownTimer = null;
+        state.openingTimer = null;
+        state.progressTimer = null;
+    }
+
+
+    function isBusy() {
+        return [
+            "countdown",
+            "opening"
+        ].includes(state.status);
+    }
+
+
+    /* =====================================================
+       LOCAL STORAGE
+    ===================================================== */
+
+    function createDefaultData() {
+        return {
+            date: getTodayKey(),
+            totalReward: 0,
+            totalOpened: 0,
+            history: []
+        };
+    }
+
+
+    function readStorage() {
+        try {
+            const raw =
+                localStorage.getItem(
+                    MYSTERY_CONFIG.storageKey
+                );
+
+            if (!raw) {
+                return createDefaultData();
+            }
+
+            const parsed = JSON.parse(raw);
+
+            if (
+                !parsed ||
+                parsed.date !== getTodayKey()
+            ) {
+                const fresh = createDefaultData();
+
+                saveStorage(fresh);
+
+                return fresh;
+            }
+
+            return {
+                date: parsed.date,
+                totalReward:
+                    Number(parsed.totalReward) || 0,
+                totalOpened:
+                    Number(parsed.totalOpened) || 0,
+                history:
+                    Array.isArray(parsed.history)
+                        ? parsed.history
+                        : []
+            };
+        } catch (error) {
+            console.error(
+                "[CLICKBET88] Gagal membaca data Mystery Box:",
+                error
+            );
+
+            return createDefaultData();
+        }
+    }
+
+
+    function saveStorage(data) {
+        try {
+            localStorage.setItem(
+                MYSTERY_CONFIG.storageKey,
+                JSON.stringify(data)
+            );
+        } catch (error) {
+            console.error(
+                "[CLICKBET88] Gagal menyimpan data Mystery Box:",
+                error
+            );
+        }
+    }
+
+
+    function saveReward(reward) {
+        const data = readStorage();
+
+        const record = {
+            id:
+                `reward-${Date.now()}-${Math.random()
+                    .toString(16)
+                    .slice(2)}`,
+
+            member: getMemberName(),
+            amount: reward.amount,
+            level: reward.level,
+            label: reward.label,
+            claimed: false,
+            createdAt: new Date().toISOString()
+        };
+
+        data.totalReward += reward.amount;
+        data.totalOpened += 1;
+        data.history.unshift(record);
+
+        if (data.history.length > 50) {
+            data.history =
+                data.history.slice(0, 50);
+        }
+
+        saveStorage(data);
+
+        return record;
+    }
+
+
+    function markLatestRewardClaimed() {
+        const data = readStorage();
+
+        const reward =
+            data.history.find(
+                (item) => !item.claimed
+            );
+
+        if (reward) {
+            reward.claimed = true;
+            reward.claimedAt =
+                new Date().toISOString();
+
+            saveStorage(data);
+        }
+
+        return reward || null;
+    }
+
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    function showOverlay(element) {
+        if (!element) return;
+
+        element.hidden = false;
+        element.setAttribute("aria-hidden", "false");
+
+        requestAnimationFrame(() => {
+            element.classList.add(
+                "active",
+                "show",
+                "visible"
+            );
+        });
+    }
+
+
+    function hideOverlay(element) {
+        if (!element) return;
+
+        element.classList.remove(
+            "active",
+            "show",
+            "visible"
+        );
+
+        element.setAttribute("aria-hidden", "true");
+
+        window.setTimeout(() => {
+            const visible =
+                element.classList.contains("active") ||
+                element.classList.contains("show") ||
+                element.classList.contains("visible");
+
+            if (!visible) {
+                element.hidden = true;
+            }
+        }, 300);
+    }
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    function showToast(
+        message,
+        type = "success",
+        duration = 2600
+    ) {
+        clearTimeout(state.toastTimer);
+
+        const icons = {
+            success: "🏆",
+            info: "ℹ️",
+            warning: "⚠️",
+            error: "❌"
+        };
+
+        if (
+            !elements.toast ||
+            !elements.toastMessage
+        ) {
+            getAPI()?.notify?.(message, type);
+            return;
+        }
+
+        if (elements.toastIcon) {
+            elements.toastIcon.textContent =
+                icons[type] || icons.success;
+        }
+
+        elements.toastMessage.textContent =
+            message;
+
+        elements.toast.className =
+            `game-toast ${type} show`;
+
+        state.toastTimer =
+            window.setTimeout(() => {
+                elements.toast.classList.remove(
+                    "show"
+                );
+            }, duration);
+    }
+
+
+    /* =====================================================
+       PEMILIHAN HADIAH
+    ===================================================== */
+
+    function selectWeightedReward() {
+        const rewards =
+            MYSTERY_CONFIG.rewards;
+
+        const totalWeight =
+            rewards.reduce(
+                (total, reward) =>
+                    total + reward.weight,
+                0
+            );
+
+        let random =
+            Math.random() * totalWeight;
+
+        for (const reward of rewards) {
+            random -= reward.weight;
+
+            if (random <= 0) {
+                return {
+                    ...reward
+                };
+            }
+        }
+
+        return {
+            ...rewards[0]
+        };
+    }
+
+
+    /* =====================================================
+       RESET VISUAL
+    ===================================================== */
+
+    function clearPrizeClasses() {
+        const classes = [
+            "prize-lucky",
+            "prize-nice",
+            "prize-great",
+            "prize-excellent",
+            "prize-amazing",
+            "prize-epic",
+            "prize-legendary",
+            "prize-jackpot"
+        ];
+
+        elements.screen.classList.remove(
+            ...classes
+        );
+
+        elements.resultCard?.classList.remove(
+            "lucky",
+            "nice",
+            "great",
+            "excellent",
+            "amazing",
+            "epic",
+            "legendary",
+            "jackpot"
+        );
+    }
+
+
+    function resetBoxVisual() {
+        clearPrizeClasses();
+
+        elements.mainBox?.classList.remove(
+            "opening",
+            "opened",
+            "shaking",
+            "reward-ready"
+        );
+
+        elements.boxLid?.classList.remove(
+            "opening",
+            "opened"
+        );
+
+        elements.boxBody?.classList.remove(
+            "opening",
+            "opened"
+        );
+
+        elements.insideLight?.classList.remove(
+            "active",
+            "show"
+        );
+
+        elements.explosionEffect?.classList.remove(
+            "active",
+            "show"
+        );
+
+        elements.coinEffect?.classList.remove(
+            "active",
+            "show"
+        );
+    }
+
+
+    function resetMystery() {
+        clearTimers();
+
+        state.status = "idle";
+        state.selectedReward = null;
+        state.rewardClaimed = false;
+
+        resetBoxVisual();
+
+        hideOverlay(elements.countdownOverlay);
+        hideOverlay(elements.openingOverlay);
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.jackpotOverlay);
+        hideOverlay(elements.claimConfirmOverlay);
+
+        if (elements.processIcon) {
+            elements.processIcon.textContent = "✨";
+        }
+
+        if (elements.processText) {
+            elements.processText.textContent =
+                "Mystery Box menunggumu.";
+        }
+
+        if (elements.openButton) {
+            elements.openButton.disabled = false;
+
+            const text =
+                elements.openButton.querySelector(
+                    ".button-text"
+                );
+
+            if (text) {
+                text.textContent =
+                    "BUKA MYSTERY BOX";
+            }
+        }
+    }
+
+
+    /* =====================================================
+       COUNTDOWN
+    ===================================================== */
+
+    function startMysteryBox() {
+        if (isBusy()) return;
+
+        resetBoxVisual();
+
+        state.status = "countdown";
+        state.rewardClaimed = false;
+        state.selectedReward = null;
+
+        if (elements.openButton) {
+            elements.openButton.disabled = true;
+        }
+
+        if (elements.processIcon) {
+            elements.processIcon.textContent = "⏳";
+        }
+
+        if (elements.processText) {
+            elements.processText.textContent =
+                "Bersiap membuka Mystery Box...";
+        }
+
+        let countdown =
+            MYSTERY_CONFIG.countdownStart;
+
+        if (elements.countdownValue) {
+            elements.countdownValue.textContent =
+                countdown;
+        }
+
+        if (elements.countdownText) {
+            elements.countdownText.textContent =
+                "Bersiap menemukan hadiahmu!";
+        }
+
+        showOverlay(elements.countdownOverlay);
+
+        state.countdownTimer =
+            window.setInterval(() => {
+                countdown -= 1;
+
+                if (countdown > 0) {
+                    if (elements.countdownValue) {
+                        elements.countdownValue.textContent =
+                            countdown;
+                    }
+
+                    if (elements.countdownText) {
+                        elements.countdownText.textContent =
+                            countdown === 1
+                                ? "Mystery Box hampir dibuka!"
+                                : "Bersiap menemukan hadiahmu!";
+                    }
+
+                    return;
+                }
+
+                clearInterval(
+                    state.countdownTimer
+                );
+
+                state.countdownTimer = null;
+
+                if (elements.countdownValue) {
+                    elements.countdownValue.textContent =
+                        "GO!";
+                }
+
+                if (elements.countdownText) {
+                    elements.countdownText.textContent =
+                        "Buka kotaknya!";
+                }
+
+                window.setTimeout(() => {
+                    hideOverlay(
+                        elements.countdownOverlay
+                    );
+
+                    startOpening();
+                }, 450);
+            }, MYSTERY_CONFIG.countdownInterval);
+    }
+
+
+    /* =====================================================
+       PROSES PEMBUKAAN
+    ===================================================== */
+
+    function startOpening() {
+        state.status = "opening";
+        state.selectedReward =
+            selectWeightedReward();
+
+        showOverlay(elements.openingOverlay);
+
+        if (elements.processIcon) {
+            elements.processIcon.textContent = "⚡";
+        }
+
+        if (elements.processText) {
+            elements.processText.textContent =
+                "Mystery Box sedang dibuka...";
+        }
+
+        elements.mainBox?.classList.add(
+            "opening",
+            "shaking"
+        );
+
+        if (elements.openingText) {
+            elements.openingText.textContent =
+                "Mencari hadiah keberuntunganmu...";
+        }
+
+        let progress = 0;
+
+        if (elements.openingProgress) {
+            elements.openingProgress.textContent =
+                "0%";
+        }
+
+        if (elements.openingProgressBar) {
+            elements.openingProgressBar.style.width =
+                "0%";
+        }
+
+        state.progressTimer =
+            window.setInterval(() => {
+                progress +=
+                    Math.floor(
+                        Math.random() * 9
+                    ) + 4;
+
+                progress =
+                    Math.min(progress, 96);
+
+                if (elements.openingProgress) {
+                    elements.openingProgress.textContent =
+                        `${progress}%`;
+                }
+
+                if (elements.openingProgressBar) {
+                    elements.openingProgressBar.style.width =
+                        `${progress}%`;
+                }
+
+                if (progress >= 96) {
+                    clearInterval(
+                        state.progressTimer
+                    );
+
+                    state.progressTimer = null;
+                }
+            }, 160);
+
+
+        window.setTimeout(() => {
+            elements.mainBox?.classList.remove(
+                "shaking"
+            );
+
+            elements.mainBox?.classList.add(
+                "opened"
+            );
+
+            elements.boxLid?.classList.add(
+                "opened"
+            );
+
+            elements.boxBody?.classList.add(
+                "opened"
+            );
+
+            elements.insideLight?.classList.add(
+                "active",
+                "show"
+            );
+
+            elements.explosionEffect?.classList.add(
+                "active",
+                "show"
+            );
+
+            elements.coinEffect?.classList.add(
+                "active",
+                "show"
+            );
+        }, 1750);
+
+
+        state.openingTimer =
+            window.setTimeout(() => {
+                if (elements.openingProgress) {
+                    elements.openingProgress.textContent =
+                        "100%";
+                }
+
+                if (elements.openingProgressBar) {
+                    elements.openingProgressBar.style.width =
+                        "100%";
+                }
+
+                if (elements.openingText) {
+                    elements.openingText.textContent =
+                        "Hadiah ditemukan!";
+                }
+
+                saveSelectedReward();
+
+                window.setTimeout(() => {
+                    hideOverlay(
+                        elements.openingOverlay
+                    );
+
+                    showRewardResult();
+                }, MYSTERY_CONFIG.resultDelay);
+            }, MYSTERY_CONFIG.openingDuration);
+    }
+
+
+    /* =====================================================
+       SIMPAN HADIAH
+    ===================================================== */
+
+    function saveSelectedReward() {
+        if (!state.selectedReward) return;
+
+        const record =
+            saveReward(state.selectedReward);
+
+        state.selectedReward.recordId =
+            record.id;
+
+        updateLobbyReward();
+        renderHistory();
+
+        const api = getAPI();
+
+        if (
+            api &&
+            typeof api.addReward === "function"
+        ) {
+            api.addReward(
+                state.selectedReward.amount,
+                {
+                    source: "mystery-box",
+                    level:
+                        state.selectedReward.level
+                }
+            );
+        }
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:rewardwon",
+                {
+                    detail: {
+                        amount:
+                            state.selectedReward.amount,
+                        reward:
+                            state.selectedReward
+                    }
+                }
+            )
+        );
+    }
+
+
+    /* =====================================================
+       HASIL HADIAH
+    ===================================================== */
+
+    function showRewardResult() {
+        const reward =
+            state.selectedReward;
+
+        if (!reward) {
+            showToast(
+                "Hadiah gagal diproses.",
+                "error"
+            );
+
+            resetMystery();
+            return;
+        }
+
+        state.status = "result";
+
+        clearPrizeClasses();
+
+        elements.screen.classList.add(
+            `prize-${reward.level}`
+        );
+
+        elements.resultCard?.classList.add(
+            reward.level
+        );
+
+        if (elements.resultLabel) {
+            elements.resultLabel.textContent =
+                reward.label;
+        }
+
+        if (elements.resultAmount) {
+            animateAmount(
+                elements.resultAmount,
+                reward.amount
+            );
+        }
+
+        if (elements.resultMessage) {
+            elements.resultMessage.textContent =
+                reward.message;
+        }
+
+        if (elements.resultMember) {
+            elements.resultMember.textContent =
+                getMemberName();
+        }
+
+        if (elements.processIcon) {
+            elements.processIcon.textContent =
+                reward.level === "jackpot"
+                    ? "👑"
+                    : "🏆";
+        }
+
+        if (elements.processText) {
+            elements.processText.textContent =
+                `Hadiah ${formatRupiah(
+                    reward.amount
+                )} berhasil ditemukan!`;
+        }
+
+        if (reward.level === "jackpot") {
+            showJackpot();
+            return;
+        }
+
+        createCelebrationParticles(
+            reward.level
+        );
+
+        showOverlay(elements.resultOverlay);
+    }
+
+
+    function showJackpot() {
+        if (elements.jackpotAmount) {
+            animateAmount(
+                elements.jackpotAmount,
+                state.selectedReward.amount
+            );
+        }
+
+        createCelebrationParticles("jackpot");
+
+        showOverlay(elements.jackpotOverlay);
+    }
+
+
+    function continueFromJackpot() {
+        hideOverlay(elements.jackpotOverlay);
+
+        window.setTimeout(() => {
+            showOverlay(elements.resultOverlay);
+        }, 250);
+    }
+
+
+    /* =====================================================
+       ANIMASI NOMINAL
+    ===================================================== */
+
+    function animateAmount(
+        element,
+        targetAmount
+    ) {
+        if (!element) return;
+
+        const duration = 1400;
+        const startTime =
+            performance.now();
+
+        function update(currentTime) {
+            const elapsed =
+                currentTime - startTime;
+
+            const progress =
+                Math.min(
+                    elapsed / duration,
+                    1
+                );
+
+            const eased =
+                1 -
+                Math.pow(
+                    1 - progress,
+                    3
+                );
+
+            const currentAmount =
+                Math.floor(
+                    targetAmount * eased
+                );
+
+            element.textContent =
+                formatRupiah(currentAmount);
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                element.textContent =
+                    formatRupiah(targetAmount);
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+
+    /* =====================================================
+       CONFETTI
+    ===================================================== */
+
+    function createCelebrationParticles(
+        level = "lucky"
+    ) {
+        const container =
+            elements.resultOverlay ||
+            document.body;
+
+        const amounts = {
+            lucky: 25,
+            nice: 30,
+            great: 40,
+            excellent: 50,
+            amazing: 60,
+            epic: 75,
+            legendary: 95,
+            jackpot: 130
+        };
+
+        const particleAmount =
+            amounts[level] || 30;
+
+        container
+            .querySelectorAll(
+                ".mystery-js-confetti"
+            )
+            .forEach((item) =>
+                item.remove()
+            );
+
+        const fragment =
+            document.createDocumentFragment();
+
+        for (
+            let index = 0;
+            index < particleAmount;
+            index += 1
+        ) {
+            const particle =
+                document.createElement("span");
+
+            particle.className =
+                "mystery-js-confetti";
+
+            particle.style.left =
+                `${Math.random() * 100}%`;
+
+            particle.style.animationDelay =
+                `${Math.random() * 0.9}s`;
+
+            particle.style.animationDuration =
+                `${1.8 + Math.random() * 2}s`;
+
+            particle.style.setProperty(
+                "--mystery-hue",
+                String(
+                    Math.floor(
+                        Math.random() * 360
+                    )
+                )
+            );
+
+            particle.style.setProperty(
+                "--mystery-rotate",
+                `${Math.random() * 1080}deg`
+            );
+
+            fragment.appendChild(particle);
+        }
+
+        container.appendChild(fragment);
+
+        window.setTimeout(() => {
+            container
+                .querySelectorAll(
+                    ".mystery-js-confetti"
+                )
+                .forEach((item) =>
+                    item.remove()
+                );
+        }, 5000);
+    }
+
+
+    /* =====================================================
+       AMBIL HADIAH
+    ===================================================== */
+
+    function requestClaimReward() {
+        if (
+            !state.selectedReward ||
+            state.rewardClaimed
+        ) {
+            showToast(
+                "Hadiah ini sudah diproses.",
+                "info"
+            );
+
+            return;
+        }
+
+        if (elements.claimPreviewAmount) {
+            elements.claimPreviewAmount.textContent =
+                formatRupiah(
+                    state.selectedReward.amount
+                );
+        }
+
+        showOverlay(
+            elements.claimConfirmOverlay
+        );
+    }
+
+
+    function cancelClaimReward() {
+        hideOverlay(
+            elements.claimConfirmOverlay
+        );
+    }
+
+
+    function confirmClaimReward() {
+        if (
+            !state.selectedReward ||
+            state.rewardClaimed
+        ) {
+            hideOverlay(
+                elements.claimConfirmOverlay
+            );
+
+            return;
+        }
+
+        state.rewardClaimed = true;
+
+        markLatestRewardClaimed();
+
+        hideOverlay(
+            elements.claimConfirmOverlay
+        );
+
+        if (elements.claimButton) {
+            elements.claimButton.disabled = true;
+
+            const text =
+                elements.claimButton.querySelector(
+                    ".button-text"
+                );
+
+            if (text) {
+                text.textContent =
+                    "HADIAH SUDAH DIAMBIL";
+            }
+        }
+
+        renderHistory();
+
+        showToast(
+            `${formatRupiah(
+                state.selectedReward.amount
+            )} berhasil dicatat ke riwayat.`,
+            "success",
+            3200
+        );
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:rewardclaimed",
+                {
+                    detail: {
+                        amount:
+                            state.selectedReward.amount
+                    }
+                }
+            )
+        );
+    }
+
+
+    /* =====================================================
+       LOBBY DAN RIWAYAT
+    ===================================================== */
+
+    function updateLobbyReward() {
+        const data = readStorage();
+
+        if (elements.lobbyReward) {
+            elements.lobbyReward.textContent =
+                formatRupiah(
+                    data.totalReward
+                );
+        }
+
+        const api = getAPI();
+
+        if (
+            api &&
+            typeof api.refreshUI === "function"
+        ) {
+            api.refreshUI();
+        }
+    }
+
+
+    function renderHistory() {
+        if (!elements.historyList) return;
+
+        const data = readStorage();
+
+        if (!data.history.length) {
+            elements.historyList.innerHTML = `
+                <div class="reward-history-empty">
+                    Belum ada hadiah hari ini.
+                </div>
+            `;
+
+            return;
+        }
+
+        elements.historyList.innerHTML =
+            data.history
+                .slice(0, 10)
+                .map((item) => {
+                    const time =
+                        new Date(
+                            item.createdAt
+                        ).toLocaleTimeString(
+                            "id-ID",
+                            {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            }
+                        );
+
+                    return `
+                        <div class="reward-history-item">
+                            <div>
+                                <strong>
+                                    ${formatRupiah(
+                                        item.amount
+                                    )}
+                                </strong>
+
+                                <small>
+                                    ${item.label} • ${time}
+                                </small>
+                            </div>
+
+                            <span class="${
+                                item.claimed
+                                    ? "claimed"
+                                    : "pending"
+                            }">
+                                ${
+                                    item.claimed
+                                        ? "Sudah Diambil"
+                                        : "Belum Diambil"
+                                }
+                            </span>
+                        </div>
+                    `;
+                })
+                .join("");
+    }
+
+
+    /* =====================================================
+       KEMBALI KE LOBBY
+    ===================================================== */
+
+    function returnToLobby() {
+        if (isBusy()) {
+            showToast(
+                "Tunggu proses pembukaan selesai.",
+                "warning"
+            );
+
+            return;
+        }
+
+        clearTimers();
+
+        hideOverlay(elements.countdownOverlay);
+        hideOverlay(elements.openingOverlay);
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.jackpotOverlay);
+        hideOverlay(elements.claimConfirmOverlay);
+
+        updateLobbyReward();
+
+        const api = getAPI();
+
+        if (
+            api &&
+            typeof api.backToLobby === "function"
+        ) {
+            api.backToLobby();
+        } else if (
+            api &&
+            typeof api.showScreen === "function"
+        ) {
+            api.showScreen("lobby");
+        } else {
+            document
+                .querySelectorAll(".screen")
+                .forEach((screen) => {
+                    screen.classList.remove(
+                        "active"
+                    );
+                });
+
+            document
+                .getElementById("lobbyScreen")
+                ?.classList.add("active");
+        }
+
+        window.setTimeout(
+            resetMystery,
+            350
+        );
+    }
+
+
+    /* =====================================================
+       HELP & SUARA
+    ===================================================== */
+
+    function showHelp() {
+        showToast(
+            "Tekan Buka Mystery Box, tunggu hitungan mundur, lalu hadiah akan dipilih secara otomatis.",
+            "info",
+            4200
+        );
+    }
+
+
+    function toggleSound() {
+        state.soundEnabled =
+            !state.soundEnabled;
+
+        if (elements.soundIcon) {
+            elements.soundIcon.textContent =
+                state.soundEnabled
+                    ? "🔊"
+                    : "🔇";
+        }
+
+        getAPI()?.setSound?.(
+            state.soundEnabled
+        );
+
+        showToast(
+            state.soundEnabled
+                ? "Suara diaktifkan."
+                : "Suara dimatikan.",
+            "info"
+        );
+    }
+
+
+    /* =====================================================
+       SCREEN CHANGE
+    ===================================================== */
+
+    function handleScreenChange(event) {
+        const screenName =
+            event.detail?.screen || "";
+
+        const enteringMystery =
+            screenName === "mystery" ||
+            screenName === "mystery-box" ||
+            screenName === "mysteryBox";
+
+        if (enteringMystery) {
+            updateLobbyReward();
+            renderHistory();
+
+            if (state.status === "idle") {
+                resetMystery();
+            }
+
+            return;
+        }
+
+        if (isBusy()) {
+            clearTimers();
+        }
+    }
+
+
+    /* =====================================================
+       EVENT LISTENER
+    ===================================================== */
+
+    function bindEvents() {
+        elements.openButton?.addEventListener(
+            "click",
+            startMysteryBox
+        );
+
+        elements.returnLobbyButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.backButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.helpButton?.addEventListener(
+            "click",
+            showHelp
+        );
+
+        elements.soundButton?.addEventListener(
+            "click",
+            toggleSound
+        );
+
+        elements.continueJackpotButton?.addEventListener(
+            "click",
+            continueFromJackpot
+        );
+
+        elements.claimButton?.addEventListener(
+            "click",
+            requestClaimReward
+        );
+
+        elements.cancelClaimButton?.addEventListener(
+            "click",
+            cancelClaimReward
+        );
+
+        elements.confirmClaimButton?.addEventListener(
+            "click",
+            confirmClaimReward
+        );
+
+        elements.resultLobbyButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.closeResultButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.claimConfirmOverlay?.addEventListener(
+            "click",
+            (event) => {
+                if (
+                    event.target ===
+                    elements.claimConfirmOverlay
+                ) {
+                    cancelClaimReward();
+                }
+            }
+        );
+
+        document.addEventListener(
+            "clickbet:screenchange",
+            handleScreenChange
+        );
+    }
+
+
+    /* =====================================================
+       PUBLIC API
+    ===================================================== */
+
+    window.ClickbetMystery = {
+        open: startMysteryBox,
+        reset: resetMystery,
+        returnLobby,
+        updateLobbyReward,
+        renderHistory,
+
+        getData() {
+            return readStorage();
+        },
+
+        getState() {
+            return {
+                status: state.status,
+                rewardClaimed:
+                    state.rewardClaimed,
+                selectedReward:
+                    state.selectedReward
+                        ? {
+                            ...state.selectedReward
+                        }
+                        : null
+            };
+        },
+
+        /*
+         * Untuk testing hadiah tertentu.
+         * Contoh:
+         * ClickbetMystery.testReward(500000)
+         */
+        testReward(amount) {
+            const reward =
+                MYSTERY_CONFIG.rewards.find(
+                    (item) =>
+                        item.amount ===
+                        Number(amount)
+                );
+
+            if (!reward) {
+                console.warn(
+                    "Nominal hadiah tidak ditemukan."
+                );
+
+                return false;
+            }
+
+            clearTimers();
+
+            state.selectedReward = {
+                ...reward
+            };
+
+            saveSelectedReward();
+            showRewardResult();
+
+            return true;
+        },
+
+        /*
+         * Hapus riwayat Mystery Box.
+         */
+        clearData() {
+            const fresh =
+                createDefaultData();
+
+            saveStorage(fresh);
+            updateLobbyReward();
+            renderHistory();
+            resetMystery();
+
+            return fresh;
+        }
+    };
+
+
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
+
+    function initialize() {
+        bindEvents();
+        resetMystery();
+        updateLobbyReward();
+        renderHistory();
+
+        console.info(
+            "[CLICKBET88] JavaScript Part 5 Mystery Box aktif."
+        );
+    }
+
+
+    initialize();
+
+})();
