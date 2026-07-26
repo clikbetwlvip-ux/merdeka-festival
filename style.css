@@ -19499,3 +19499,336 @@ font-size:1.45rem;
     height: 178px;
   }
 }
+/* =========================================================
+   FIX 07 — RIWAYAT HADIAH & FOOTER LOBBY
+========================================================= */
+
+/* =========================================================
+   SECTION RIWAYAT HADIAH
+========================================================= */
+
+.reward-history-section {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin-top: 48px;
+  padding: clamp(22px, 4vw, 34px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 219, 117, 0.22);
+  border-radius: 25px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(91, 6, 18, 0.93),
+      rgba(28, 2, 7, 0.97)
+    );
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.34),
+    inset 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.reward-history-section > .section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.reward-history-section .section-heading > div {
+  min-width: 0;
+}
+
+.reward-history-section .section-heading h2 {
+  margin-top: 7px;
+  color: #ffffff;
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+  line-height: 1.15;
+}
+
+.reward-history-section .section-heading p {
+  max-width: 620px;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+/* Tombol hapus */
+.history-clear-button {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 215, 112, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 210, 80, 0.08);
+  color: #ffd66a;
+  font-size: 0.72rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.history-clear-button:hover {
+  background: rgba(255, 210, 80, 0.15);
+  border-color: rgba(255, 215, 112, 0.5);
+}
+
+/* Daftar riwayat */
+.reward-history-list {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: 100%;
+  min-height: 170px;
+}
+
+/* Item riwayat dari JavaScript */
+.reward-history-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  padding: 15px 17px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.025)
+    );
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.reward-history-icon,
+.history-item-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  place-items: center;
+  border: 1px solid rgba(255, 215, 92, 0.26);
+  border-radius: 14px;
+  background: rgba(255, 210, 75, 0.1);
+  font-size: 1.45rem;
+}
+
+.reward-history-copy,
+.history-item-copy {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.reward-history-copy strong,
+.history-item-copy strong {
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reward-history-copy span,
+.reward-history-copy small,
+.history-item-copy span,
+.history-item-copy small {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.67rem;
+  line-height: 1.4;
+}
+
+.reward-history-amount,
+.history-item-amount {
+  justify-self: end;
+  color: #ffd963;
+  font-size: clamp(0.9rem, 2vw, 1.12rem);
+  font-weight: 1000;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   KONDISI RIWAYAT KOSONG
+========================================================= */
+
+.empty-history-state {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  min-height: 210px;
+  padding: 30px 20px;
+  border: 1px dashed rgba(255, 216, 104, 0.22);
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(255, 211, 71, 0.08),
+      transparent 44%
+    ),
+    rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.empty-history-icon {
+  display: grid;
+  width: 68px;
+  height: 68px;
+  margin-bottom: 15px;
+  place-items: center;
+  border: 1px solid rgba(255, 219, 113, 0.2);
+  border-radius: 50%;
+  background: rgba(255, 215, 91, 0.08);
+  font-size: 2rem;
+  box-shadow:
+    0 0 25px rgba(255, 206, 62, 0.08);
+}
+
+.empty-history-state h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.02rem;
+}
+
+.empty-history-state p {
+  max-width: 420px;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+/* Hilangkan kondisi kosong saat JS menyembunyikannya */
+.empty-history-state[hidden] {
+  display: none !important;
+}
+
+/* =========================================================
+   FOOTER LOBBY
+========================================================= */
+
+.lobby-footer {
+  position: relative;
+  z-index: 2;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  margin-top: 38px;
+  padding:
+    24px
+    4px
+    max(24px, env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(255, 217, 104, 0.17);
+}
+
+.footer-logo {
+  flex: 0 0 auto;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 1000;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.footer-logo span {
+  margin-left: 2px;
+  color: #ffd358;
+}
+
+.lobby-footer > p {
+  flex: 1;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lobby-footer .footer-link-button {
+  flex: 0 0 auto;
+  padding: 5px 0;
+  border: 0;
+  background: transparent;
+  color: #ffd260;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lobby-footer .footer-link-button:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 680px) {
+  .reward-history-section {
+    margin-top: 34px;
+    padding: 20px 16px;
+    border-radius: 21px;
+  }
+
+  .reward-history-section > .section-heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .history-clear-button {
+    align-self: flex-start;
+  }
+
+  .reward-history-item {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 13px;
+  }
+
+  .reward-history-amount,
+  .history-item-amount {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .lobby-footer {
+    align-items: center;
+    flex-direction: column;
+    margin-top: 30px;
+    padding-top: 22px;
+    text-align: center;
+  }
+
+  .lobby-footer > p {
+    flex: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .reward-history-icon,
+  .history-item-icon {
+    width: 43px;
+    height: 43px;
+    flex-basis: 43px;
+    font-size: 1.25rem;
+  }
+
+  .empty-history-state {
+    min-height: 190px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .footer-logo {
+    font-size: 1.1rem;
+  }
+}
