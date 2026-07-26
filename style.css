@@ -4951,3 +4951,811 @@ height:15px;
     }
 
 }
+/* =========================================================
+   CSS PART 3C-1 — PREMIUM GAME CARDS
+========================================================= */
+
+
+/* =========================================================
+   GAME SECTION
+========================================================= */
+
+.games-section,
+.game-selection-section{
+    position:relative;
+    z-index:2;
+    display:grid;
+    gap:22px;
+}
+
+.games-grid,
+.game-cards-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:20px;
+    align-items:stretch;
+}
+
+
+/* =========================================================
+   GAME CARD
+========================================================= */
+
+.game-card{
+    --mouse-x:50%;
+    --mouse-y:50%;
+
+    position:relative;
+    min-width:0;
+    min-height:430px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    isolation:isolate;
+    border-radius:26px;
+
+    border:1px solid rgba(255,218,111,.24);
+
+    background:
+        radial-gradient(
+            circle at var(--mouse-x) var(--mouse-y),
+            rgba(255,218,105,.12),
+            transparent 34%
+        ),
+        linear-gradient(
+            155deg,
+            rgba(255,255,255,.09),
+            rgba(255,255,255,.025)
+        );
+
+    box-shadow:
+        0 18px 44px rgba(0,0,0,.28),
+        inset 0 1px rgba(255,255,255,.09);
+
+    transform-style:preserve-3d;
+
+    transition:
+        transform .35s cubic-bezier(.2,.8,.2,1),
+        border-color .35s ease,
+        box-shadow .35s ease;
+}
+
+
+/* =========================================================
+   CARD BACKGROUND EFFECT
+========================================================= */
+
+.game-card::before{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    z-index:-3;
+    border-radius:inherit;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,236,154,.5),
+            transparent 25%,
+            transparent 70%,
+            rgba(255,175,32,.28)
+        );
+
+    opacity:.22;
+    transition:opacity .35s ease;
+}
+
+.game-card::after{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    right:-130px;
+    bottom:-140px;
+    z-index:-2;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,191,46,.2),
+            rgba(255,191,46,.04) 45%,
+            transparent 72%
+        );
+
+    filter:blur(8px);
+    transition:
+        transform .5s ease,
+        opacity .35s ease;
+}
+
+
+/* =========================================================
+   IMAGE AREA
+========================================================= */
+
+.game-card-image-wrap,
+.game-card-media{
+    position:relative;
+    width:100%;
+    height:225px;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.04),
+            rgba(0,0,0,.15)
+        );
+}
+
+.game-card-image,
+.game-card-media img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    object-position:center;
+    user-select:none;
+    pointer-events:none;
+
+    filter:
+        saturate(1.04)
+        contrast(1.03)
+        brightness(.94);
+
+    transform:scale(1.01);
+
+    transition:
+        transform .7s cubic-bezier(.2,.8,.2,1),
+        filter .4s ease;
+}
+
+.game-card-image-wrap::after,
+.game-card-media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent 40%,
+            rgba(10,5,0,.18) 65%,
+            rgba(10,5,0,.86) 100%
+        );
+
+    pointer-events:none;
+}
+
+
+/* =========================================================
+   IMAGE SHINE
+========================================================= */
+
+.game-card-shine{
+    position:absolute;
+    top:-55%;
+    left:-60%;
+    z-index:4;
+    width:34%;
+    height:220%;
+    pointer-events:none;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.42),
+            transparent
+        );
+
+    transform:rotate(22deg);
+    opacity:0;
+}
+
+
+/* =========================================================
+   GAME BADGE
+========================================================= */
+
+.game-card-badge,
+.game-status-badge{
+    position:absolute;
+    top:14px;
+    left:14px;
+    z-index:6;
+
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    min-height:30px;
+    padding:0 11px;
+    border-radius:999px;
+
+    color:#3d2100;
+    font-size:.65rem;
+    font-weight:1000;
+    letter-spacing:.055em;
+    text-transform:uppercase;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff1a6,
+            #ffc943 55%,
+            #d88c0d
+        );
+
+    border:1px solid rgba(255,247,192,.72);
+
+    box-shadow:
+        0 8px 16px rgba(0,0,0,.24),
+        0 0 16px rgba(255,201,52,.2),
+        inset 0 1px rgba(255,255,255,.72);
+}
+
+.game-card-badge::before,
+.game-status-badge::before{
+    content:"";
+    width:7px;
+    height:7px;
+    flex-shrink:0;
+    border-radius:50%;
+    background:#fff9ce;
+
+    box-shadow:
+        0 0 7px #fff,
+        0 0 12px rgba(255,244,167,.9);
+
+    animation:gameBadgePulse 1.7s ease-in-out infinite;
+}
+
+@keyframes gameBadgePulse{
+    0%,
+    100%{
+        opacity:.55;
+        transform:scale(.8);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.15);
+    }
+}
+
+
+/* =========================================================
+   GAME NUMBER / TYPE
+========================================================= */
+
+.game-card-number,
+.game-card-type{
+    position:absolute;
+    top:15px;
+    right:14px;
+    z-index:6;
+
+    display:grid;
+    place-items:center;
+    min-width:34px;
+    height:34px;
+    padding:0 9px;
+    border-radius:12px;
+
+    color:#fff4c1;
+    font-size:.67rem;
+    font-weight:1000;
+
+    background:rgba(10,6,0,.52);
+    border:1px solid rgba(255,230,145,.22);
+    backdrop-filter:blur(9px);
+
+    box-shadow:
+        0 8px 17px rgba(0,0,0,.2),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.game-card-content{
+    position:relative;
+    z-index:3;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    padding:20px;
+}
+
+.game-card-title{
+    margin:0;
+    color:#fff;
+    font-size:1.28rem;
+    font-weight:1000;
+    line-height:1.15;
+    letter-spacing:-.02em;
+
+    text-shadow:
+        0 3px 12px rgba(0,0,0,.35);
+}
+
+.game-card-description{
+    margin:0;
+    color:rgba(255,255,255,.62);
+    font-size:.75rem;
+    line-height:1.6;
+}
+
+.game-card-info{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+}
+
+.game-card-info-item{
+    min-width:0;
+    padding:10px;
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.065),
+            rgba(255,255,255,.025)
+        );
+
+    border:1px solid rgba(255,255,255,.075);
+}
+
+.game-card-info-item span{
+    display:block;
+    margin-bottom:4px;
+    color:rgba(255,255,255,.46);
+    font-size:.58rem;
+    font-weight:800;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+}
+
+.game-card-info-item strong{
+    display:block;
+    overflow:hidden;
+    color:#ffe18a;
+    font-size:.78rem;
+    font-weight:900;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   REWARD LABEL
+========================================================= */
+
+.game-card-reward{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:11px 12px;
+    border-radius:15px;
+
+    color:#ffe7a3;
+    font-size:.7rem;
+    font-weight:800;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,188,34,.09),
+            rgba(255,221,110,.04)
+        );
+
+    border:1px solid rgba(255,213,93,.14);
+}
+
+.game-card-reward-icon{
+    flex-shrink:0;
+    font-size:1rem;
+    filter:drop-shadow(0 0 8px rgba(255,205,69,.35));
+}
+
+
+/* =========================================================
+   PLAY BUTTON
+========================================================= */
+
+.game-card-button,
+.play-game-button{
+    position:relative;
+    width:100%;
+    min-height:48px;
+    margin-top:auto;
+    overflow:hidden;
+    border:0;
+    border-radius:16px;
+    cursor:pointer;
+
+    color:#402400;
+    font-size:.75rem;
+    font-weight:1000;
+    letter-spacing:.055em;
+    text-transform:uppercase;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff1a9 0%,
+            #ffd256 43%,
+            #e69a13 100%
+        );
+
+    border:1px solid rgba(255,244,185,.75);
+
+    box-shadow:
+        0 10px 22px rgba(0,0,0,.26),
+        0 0 16px rgba(255,194,41,.18),
+        inset 0 1px rgba(255,255,255,.75),
+        inset 0 -2px rgba(128,65,0,.18);
+
+    transition:
+        transform .22s ease,
+        filter .22s ease,
+        box-shadow .22s ease;
+}
+
+.game-card-button::before,
+.play-game-button::before{
+    content:"";
+    position:absolute;
+    top:-65%;
+    left:-38%;
+    width:30%;
+    height:230%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.82),
+            transparent
+        );
+
+    transform:rotate(22deg);
+    animation:gameButtonShine 3.4s ease-in-out infinite;
+}
+
+.game-card-button:hover,
+.play-game-button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.07);
+
+    box-shadow:
+        0 13px 28px rgba(0,0,0,.29),
+        0 0 24px rgba(255,198,48,.3),
+        inset 0 1px rgba(255,255,255,.82);
+}
+
+.game-card-button:active,
+.play-game-button:active{
+    transform:translateY(0) scale(.98);
+}
+
+.game-card-button:disabled,
+.play-game-button:disabled{
+    cursor:not-allowed;
+    color:rgba(255,255,255,.4);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.11),
+            rgba(255,255,255,.045)
+        );
+
+    border-color:rgba(255,255,255,.08);
+    box-shadow:none;
+    filter:none;
+}
+
+.game-card-button:disabled::before,
+.play-game-button:disabled::before{
+    display:none;
+}
+
+@keyframes gameButtonShine{
+    0%,
+    66%{
+        left:-38%;
+    }
+
+    100%{
+        left:135%;
+    }
+}
+
+
+/* =========================================================
+   LOCKED CARD
+========================================================= */
+
+.game-card.locked{
+    border-color:rgba(255,255,255,.09);
+}
+
+.game-card.locked .game-card-image,
+.game-card.locked .game-card-media img{
+    filter:
+        grayscale(.55)
+        brightness(.52);
+}
+
+.game-card.locked .game-card-content{
+    opacity:.72;
+}
+
+.game-card-lock{
+    position:absolute;
+    inset:0;
+    z-index:8;
+    display:grid;
+    place-items:center;
+    pointer-events:none;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(5,3,0,.1),
+            rgba(5,3,0,.38)
+        );
+}
+
+.game-card-lock-icon{
+    display:grid;
+    place-items:center;
+    width:58px;
+    height:58px;
+    border-radius:20px;
+
+    color:#ffe29a;
+    font-size:1.55rem;
+
+    background:rgba(12,7,0,.68);
+    border:1px solid rgba(255,222,126,.22);
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+        0 15px 30px rgba(0,0,0,.35),
+        0 0 20px rgba(255,201,58,.1);
+}
+
+
+/* =========================================================
+   ACTIVE / SELECTED CARD
+========================================================= */
+
+.game-card.active,
+.game-card.selected{
+    border-color:rgba(255,224,122,.68);
+
+    box-shadow:
+        0 22px 52px rgba(0,0,0,.34),
+        0 0 25px rgba(255,200,55,.15),
+        inset 0 1px rgba(255,255,255,.11);
+}
+
+.game-card.active::before,
+.game-card.selected::before{
+    opacity:.58;
+}
+
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
+@media(hover:hover){
+
+    .game-card:hover{
+        transform:
+            perspective(1000px)
+            translateY(-8px)
+            rotateX(1.5deg);
+
+        border-color:rgba(255,221,117,.48);
+
+        box-shadow:
+            0 28px 58px rgba(0,0,0,.37),
+            0 0 30px rgba(255,197,48,.13),
+            inset 0 1px rgba(255,255,255,.12);
+    }
+
+    .game-card:hover::before{
+        opacity:.55;
+    }
+
+    .game-card:hover::after{
+        opacity:1;
+        transform:scale(1.18);
+    }
+
+    .game-card:hover .game-card-image,
+    .game-card:hover .game-card-media img{
+        transform:scale(1.085);
+        filter:
+            saturate(1.14)
+            contrast(1.04)
+            brightness(1.02);
+    }
+
+    .game-card:hover .game-card-shine{
+        opacity:1;
+        animation:gameCardShine .85s ease forwards;
+    }
+
+}
+
+@keyframes gameCardShine{
+    from{
+        left:-60%;
+    }
+
+    to{
+        left:135%;
+    }
+}
+
+
+/* =========================================================
+   INDIVIDUAL GAME ACCENTS
+========================================================= */
+
+.game-card.panjat-pinang,
+.game-card[data-game="panjat-pinang"]{
+    background:
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(255,190,51,.14),
+            transparent 38%
+        ),
+        linear-gradient(
+            155deg,
+            rgba(119,62,5,.34),
+            rgba(255,255,255,.025)
+        );
+}
+
+.game-card.makan-kerupuk,
+.game-card[data-game="makan-kerupuk"]{
+    background:
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(255,87,71,.12),
+            transparent 38%
+        ),
+        linear-gradient(
+            155deg,
+            rgba(109,20,14,.3),
+            rgba(255,255,255,.025)
+        );
+}
+
+.game-card.lomba-kelereng,
+.game-card[data-game="lomba-kelereng"]{
+    background:
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(78,187,255,.13),
+            transparent 38%
+        ),
+        linear-gradient(
+            155deg,
+            rgba(11,57,88,.32),
+            rgba(255,255,255,.025)
+        );
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+
+@media(max-width:1020px){
+
+    .games-grid,
+    .game-cards-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .game-card{
+        min-height:410px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+
+@media(max-width:680px){
+
+    .games-grid,
+    .game-cards-grid{
+        grid-template-columns:1fr;
+        gap:16px;
+    }
+
+    .game-card{
+        min-height:0;
+        border-radius:22px;
+    }
+
+    .game-card-image-wrap,
+    .game-card-media{
+        height:205px;
+    }
+
+    .game-card-content{
+        padding:17px;
+    }
+
+    .game-card-title{
+        font-size:1.15rem;
+    }
+
+    .game-card-description{
+        font-size:.72rem;
+    }
+
+    .game-card-button,
+    .play-game-button{
+        min-height:46px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width:390px){
+
+    .game-card-info{
+        grid-template-columns:1fr;
+    }
+
+    .game-card-image-wrap,
+    .game-card-media{
+        height:185px;
+    }
+
+    .game-card-content{
+        padding:15px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    .game-card,
+    .game-card-image,
+    .game-card-media img,
+    .game-card-badge::before,
+    .game-status-badge::before,
+    .game-card-button::before,
+    .play-game-button::before,
+    .game-card-shine{
+        animation:none !important;
+        transition:none !important;
+    }
+
+}
