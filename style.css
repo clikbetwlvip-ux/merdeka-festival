@@ -2470,3 +2470,642 @@ font-size:16px;
     grid-template-columns: 1fr;
   }
 }
+/* =========================================================
+   CSS PART 3B-1 — PLAYER PROFILE CARD
+========================================================= */
+
+
+/* =========================================================
+   1. PROFILE CARD UTAMA
+========================================================= */
+
+.player-profile-card,
+.lobby-profile-card,
+.profile-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  min-width: 0;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 220, 125, 0.3);
+  border-radius: var(--radius-large);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 214, 91, 0.14),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(104, 5, 18, 0.94),
+      rgba(39, 2, 8, 0.96) 55%,
+      rgba(13, 1, 4, 0.98)
+    );
+  box-shadow:
+    var(--shadow-large),
+    inset 0 1px rgba(255, 255, 255, 0.12),
+    0 0 28px rgba(242, 189, 67, 0.08);
+}
+
+.player-profile-card::before,
+.lobby-profile-card::before,
+.profile-card::before {
+  position: absolute;
+  top: -95px;
+  right: -75px;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(255, 220, 125, 0.11);
+  border-radius: 50%;
+  box-shadow:
+    0 0 30px rgba(242, 189, 67, 0.06),
+    inset 0 0 30px rgba(242, 189, 67, 0.035);
+  content: "";
+  pointer-events: none;
+}
+
+.player-profile-card::after,
+.lobby-profile-card::after,
+.profile-card::after {
+  position: absolute;
+  right: 20px;
+  bottom: -55px;
+  width: 170px;
+  height: 110px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(242, 189, 67, 0.14),
+      transparent 68%
+    );
+  filter: blur(8px);
+  content: "";
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   2. AVATAR PEMAIN
+========================================================= */
+
+.player-profile-avatar,
+.profile-avatar,
+.lobby-profile-avatar {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 92px;
+  height: 92px;
+  flex: 0 0 92px;
+  place-items: center;
+  overflow: hidden;
+  border: 3px solid var(--gold-500);
+  border-radius: 28px;
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      #ffe18b,
+      #cd8410 48%,
+      #6c3500 100%
+    );
+  color: #321500;
+  font-size: 2.35rem;
+  font-weight: 1000;
+  box-shadow:
+    0 13px 26px rgba(0, 0, 0, 0.38),
+    inset 0 2px rgba(255, 255, 255, 0.48),
+    var(--gold-glow);
+}
+
+.player-profile-avatar img,
+.profile-avatar img,
+.lobby-profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-avatar-level,
+.profile-level-badge {
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+  z-index: 4;
+  display: grid;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 7px;
+  place-items: center;
+  border: 2px solid #ffe49a;
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(
+      180deg,
+      #ffdf7a,
+      #c9810d
+    );
+  color: #361700;
+  font-size: 0.68rem;
+  font-weight: 1000;
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.42),
+    var(--gold-glow);
+}
+
+
+/* =========================================================
+   3. INFORMASI PEMAIN
+========================================================= */
+
+.player-profile-info,
+.profile-information,
+.lobby-profile-info {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  min-width: 0;
+}
+
+.player-profile-top,
+.profile-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.player-profile-identity,
+.profile-identity {
+  min-width: 0;
+}
+
+.player-profile-label,
+.profile-small-label {
+  color: var(--gold-400);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.player-profile-name,
+.profile-player-name {
+  overflow: hidden;
+  margin-top: 3px;
+  color: var(--white);
+  font-size: clamp(1.15rem, 2.6vw, 1.55rem);
+  font-weight: 1000;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-profile-username,
+.profile-username {
+  overflow: hidden;
+  margin-top: 5px;
+  color: var(--white-50);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-status-badge,
+.profile-status-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid rgba(80, 231, 130, 0.3);
+  border-radius: var(--radius-pill);
+  background: rgba(19, 172, 73, 0.11);
+  color: #72ef9c;
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.player-status-badge::before,
+.profile-status-badge::before {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4de781;
+  box-shadow:
+    0 0 7px #4de781,
+    0 0 13px rgba(77, 231, 129, 0.55);
+  content: "";
+  animation: playerOnlinePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes playerOnlinePulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+
+/* =========================================================
+   4. PROFILE META
+========================================================= */
+
+.player-profile-meta,
+.profile-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.player-meta-item,
+.profile-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.055);
+  color: var(--white-70);
+  font-size: 0.69rem;
+  font-weight: 800;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.055);
+}
+
+.player-meta-item strong,
+.profile-meta-item strong {
+  color: var(--gold-400);
+  font-size: 0.71rem;
+}
+
+.player-meta-icon,
+.profile-meta-icon {
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   5. PROGRESS LEVEL
+========================================================= */
+
+.player-level-progress,
+.profile-level-progress {
+  display: grid;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.player-level-header,
+.profile-level-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.player-level-title,
+.profile-level-title {
+  color: var(--white-70);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.player-level-value,
+.profile-level-value {
+  color: var(--gold-400);
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.player-level-track,
+.profile-level-track {
+  position: relative;
+  height: 9px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.38);
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.55),
+    0 1px rgba(255, 255, 255, 0.04);
+}
+
+.player-level-fill,
+.profile-level-fill {
+  position: relative;
+  width: 0%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      #a35d00,
+      #e9a920 48%,
+      #ffe57f
+    );
+  box-shadow:
+    0 0 10px rgba(242, 189, 67, 0.55),
+    inset 0 1px rgba(255, 255, 255, 0.4);
+  transition: width 700ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.player-level-fill::after,
+.profile-level-fill::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      100deg,
+      transparent 15%,
+      rgba(255, 255, 255, 0.48) 48%,
+      transparent 74%
+    );
+  content: "";
+  transform: translateX(-100%);
+  animation: profileProgressShine 2.4s ease-in-out infinite;
+}
+
+@keyframes profileProgressShine {
+  55%,
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+
+/* =========================================================
+   6. PROFILE ACTION BUTTON
+========================================================= */
+
+.player-profile-action,
+.profile-edit-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  gap: 7px;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 218, 115, 0.28);
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 218, 115, 0.11),
+      rgba(255, 218, 115, 0.04)
+    );
+  color: var(--gold-400);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.24);
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.player-profile-action:hover,
+.profile-edit-button:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold-400);
+  background: rgba(242, 189, 67, 0.14);
+  box-shadow: var(--gold-glow);
+}
+
+
+/* =========================================================
+   7. PROFILE SUMMARY MINI CARDS
+========================================================= */
+
+.player-profile-summary,
+.profile-summary-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 3px;
+}
+
+.profile-summary-item,
+.player-summary-item {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.025)
+    );
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.07),
+    0 5px 14px rgba(0, 0, 0, 0.19);
+}
+
+.profile-summary-item::after,
+.player-summary-item::after {
+  position: absolute;
+  top: -25px;
+  right: -22px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(242, 189, 67, 0.1),
+      transparent 68%
+    );
+  content: "";
+}
+
+.profile-summary-label,
+.player-summary-label {
+  overflow: hidden;
+  color: var(--white-50);
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.profile-summary-value,
+.player-summary-value {
+  overflow: hidden;
+  color: var(--white);
+  font-size: clamp(0.88rem, 2vw, 1.08rem);
+  font-weight: 1000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-summary-value.gold,
+.player-summary-value.gold {
+  color: var(--gold-400);
+}
+
+.profile-summary-value.green,
+.player-summary-value.green {
+  color: #62e990;
+}
+
+
+/* =========================================================
+   8. PROFILE CARD HOVER
+========================================================= */
+
+@media (hover: hover) {
+  .player-profile-card,
+  .lobby-profile-card,
+  .profile-card {
+    transition:
+      transform var(--transition-normal),
+      border-color var(--transition-normal),
+      box-shadow var(--transition-normal);
+  }
+
+  .player-profile-card:hover,
+  .lobby-profile-card:hover,
+  .profile-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 220, 125, 0.48);
+    box-shadow:
+      0 23px 55px rgba(0, 0, 0, 0.5),
+      inset 0 1px rgba(255, 255, 255, 0.14),
+      var(--gold-glow);
+  }
+}
+
+
+/* =========================================================
+   9. RESPONSIVE PROFILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .player-profile-card,
+  .lobby-profile-card,
+  .profile-card {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 14px;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .player-profile-avatar,
+  .profile-avatar,
+  .lobby-profile-avatar {
+    width: 72px;
+    height: 72px;
+    flex-basis: 72px;
+    border-radius: 21px;
+    font-size: 1.8rem;
+  }
+
+  .player-profile-top,
+  .profile-heading-row {
+    align-items: center;
+  }
+
+  .player-status-badge,
+  .profile-status-badge {
+    padding: 5px 8px;
+    font-size: 0.57rem;
+  }
+
+  .player-profile-summary,
+  .profile-summary-grid {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-profile-card,
+  .lobby-profile-card,
+  .profile-card {
+    grid-template-columns: 62px minmax(0, 1fr);
+    padding: 15px;
+  }
+
+  .player-profile-avatar,
+  .profile-avatar,
+  .lobby-profile-avatar {
+    width: 62px;
+    height: 62px;
+    flex-basis: 62px;
+    border-radius: 18px;
+    font-size: 1.55rem;
+  }
+
+  .player-profile-name,
+  .profile-player-name {
+    font-size: 1rem;
+  }
+
+  .player-profile-username,
+  .profile-username {
+    font-size: 0.67rem;
+  }
+
+  .player-status-badge,
+  .profile-status-badge {
+    display: none;
+  }
+
+  .player-profile-meta,
+  .profile-meta-row {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .player-meta-item,
+  .profile-meta-item {
+    min-height: 29px;
+    padding: 5px 8px;
+    font-size: 0.61rem;
+  }
+
+  .player-profile-summary,
+  .profile-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-summary-item,
+  .player-summary-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+}
