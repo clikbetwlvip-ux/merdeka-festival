@@ -5264,3 +5264,454 @@
       </p>
 
     </div>
+    <!-- =========================================
+         POPUP HADIAH FINAL
+    ========================================== -->
+    <div
+      id="rewardResultOverlay"
+      class="reward-result-overlay"
+      aria-hidden="true"
+    >
+
+      <div
+        id="rewardResultModal"
+        class="reward-result-modal"
+      >
+
+        <!-- Background efek -->
+        <div class="reward-result-background">
+
+          <div class="reward-result-gradient"></div>
+
+          <div class="reward-result-light light-left"></div>
+          <div class="reward-result-light light-right"></div>
+
+          <div class="reward-result-firework firework-left">✦</div>
+          <div class="reward-result-firework firework-right">✦</div>
+
+          <span class="reward-result-particle particle-one">◆</span>
+          <span class="reward-result-particle particle-two">●</span>
+          <span class="reward-result-particle particle-three">✦</span>
+          <span class="reward-result-particle particle-four">◆</span>
+          <span class="reward-result-particle particle-five">●</span>
+          <span class="reward-result-particle particle-six">✦</span>
+
+        </div>
+
+
+        <!-- Tombol tutup -->
+        <button
+          id="closeRewardResultButton"
+          class="reward-result-close-button"
+          type="button"
+          aria-label="Tutup popup hadiah"
+        >
+          ×
+        </button>
+
+
+        <!-- Ribbon atas -->
+        <div class="reward-result-ribbon">
+
+          <span class="reward-ribbon-wing reward-ribbon-left"></span>
+
+          <strong>
+            HADIAH KAMU
+          </strong>
+
+          <span class="reward-ribbon-wing reward-ribbon-right"></span>
+
+        </div>
+
+
+        <!-- Header popup -->
+        <div class="reward-result-heading">
+
+          <span
+            id="rewardResultLabel"
+            class="reward-result-label"
+          >
+            SELAMAT!
+          </span>
+
+          <h2 id="rewardResultTitle">
+            Kamu Mendapatkan Hadiah
+          </h2>
+
+          <p id="rewardResultDescription">
+            Hadiah berhasil ditemukan dari Mystery Box.
+          </p>
+
+        </div>
+
+
+        <!-- Ikon hadiah -->
+        <div class="reward-result-icon-stage">
+
+          <div class="reward-result-icon-glow"></div>
+
+          <div
+            id="rewardResultBox"
+            class="reward-result-box"
+          >
+
+            <div class="reward-result-box-lid">
+
+              <div class="reward-result-bow">
+
+                <span class="reward-bow-left"></span>
+                <span class="reward-bow-center"></span>
+                <span class="reward-bow-right"></span>
+
+              </div>
+
+            </div>
+
+
+            <div class="reward-result-box-body">
+
+              <span class="reward-result-ribbon-vertical"></span>
+              <span class="reward-result-ribbon-horizontal"></span>
+
+            </div>
+
+          </div>
+
+
+          <div class="reward-result-coin-stack">
+
+            <span class="reward-coin coin-one"></span>
+            <span class="reward-coin coin-two"></span>
+            <span class="reward-coin coin-three"></span>
+            <span class="reward-coin coin-four"></span>
+            <span class="reward-coin coin-five"></span>
+            <span class="reward-coin coin-six"></span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Nominal hadiah -->
+        <div class="reward-amount-panel">
+
+          <small>
+            NOMINAL HADIAH
+          </small>
+
+          <strong id="finalRewardAmount">
+            Rp350.000
+          </strong>
+
+          <span
+            id="rewardJackpotBadge"
+            class="reward-jackpot-badge"
+            hidden
+          >
+            👑 JACKPOT
+          </span>
+
+        </div>
+
+
+        <!-- Informasi hadiah -->
+        <div class="reward-detail-grid">
+
+          <div class="reward-detail-item">
+
+            <span class="reward-detail-icon">
+              👤
+            </span>
+
+            <div>
+
+              <small>MEMBER ID</small>
+
+              <strong id="rewardMemberName">
+                PLAYER123
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="reward-detail-item">
+
+            <span class="reward-detail-icon">
+              🎮
+            </span>
+
+            <div>
+
+              <small>GAME ASAL</small>
+
+              <strong id="rewardSourceGame">
+                Panjat Pinang
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="reward-detail-item">
+
+            <span class="reward-detail-icon">
+              🕒
+            </span>
+
+            <div>
+
+              <small>WAKTU DIPEROLEH</small>
+
+              <strong id="rewardReceivedTime">
+                00:00
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Status pencatatan -->
+        <div
+          id="rewardSaveStatus"
+          class="reward-save-status"
+        >
+
+          <span id="rewardSaveStatusIcon">
+            ✅
+          </span>
+
+          <div>
+
+            <strong>
+              Hadiah Berhasil Dicatat
+            </strong>
+
+            <p>
+              Hadiah telah ditambahkan ke riwayat permainan hari ini.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- Tombol aksi -->
+        <div class="reward-result-actions">
+
+          <button
+            id="claimRewardButton"
+            class="primary-button gold-button reward-claim-button"
+            type="button"
+          >
+
+            <span class="button-glow"></span>
+
+            <span class="button-icon">
+              💰
+            </span>
+
+            <span class="button-text">
+              AMBIL HADIAH
+            </span>
+
+            <span class="button-arrow">
+              ➜
+            </span>
+
+          </button>
+
+
+          <button
+            id="rewardReturnLobbyButton"
+            class="secondary-button reward-lobby-button"
+            type="button"
+          >
+            Kembali ke Lobby
+          </button>
+
+        </div>
+
+
+        <!-- Catatan -->
+        <div class="reward-result-note">
+
+          <span>🛡️</span>
+
+          <p>
+            Simpan bukti kemenangan ini. Validasi hadiah mengikuti
+            Syarat &amp; Ketentuan event.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         POPUP JACKPOT
+    ========================================== -->
+    <div
+      id="jackpotOverlay"
+      class="jackpot-overlay"
+      aria-hidden="true"
+    >
+
+      <div class="jackpot-background">
+
+        <div class="jackpot-gradient"></div>
+
+        <div class="jackpot-light-beam jackpot-beam-left"></div>
+        <div class="jackpot-light-beam jackpot-beam-right"></div>
+
+        <div class="jackpot-firework jackpot-firework-one">✦</div>
+        <div class="jackpot-firework jackpot-firework-two">✦</div>
+        <div class="jackpot-firework jackpot-firework-three">✦</div>
+
+      </div>
+
+
+      <div class="jackpot-content">
+
+        <span class="jackpot-crown">
+          👑
+        </span>
+
+        <span class="jackpot-label">
+          CONGRATULATIONS
+        </span>
+
+        <h2>
+          JACKPOT!
+        </h2>
+
+        <strong id="jackpotRewardAmount">
+          Rp500.000
+        </strong>
+
+        <p>
+          Kamu berhasil mendapatkan hadiah tertinggi
+          dari Mystery Box.
+        </p>
+
+
+        <button
+          id="continueJackpotButton"
+          class="primary-button gold-button jackpot-continue-button"
+          type="button"
+        >
+
+          <span class="button-glow"></span>
+
+          <span class="button-icon">
+            🎉
+          </span>
+
+          <span class="button-text">
+            LANJUTKAN
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         KONFIRMASI AMBIL HADIAH
+    ========================================== -->
+    <div
+      id="claimRewardConfirmOverlay"
+      class="confirmation-overlay"
+      aria-hidden="true"
+    >
+
+      <div class="confirmation-modal">
+
+        <div class="confirmation-icon">
+          💰
+        </div>
+
+        <span class="section-label">
+          KONFIRMASI HADIAH
+        </span>
+
+        <h2>
+          Ambil Hadiah Sekarang?
+        </h2>
+
+        <p>
+          Hadiah akan ditandai sebagai sudah diambil dan tetap
+          tersimpan di riwayat permainan.
+        </p>
+
+
+        <div class="confirmation-reward-preview">
+
+          <small>
+            HADIAH
+          </small>
+
+          <strong id="claimRewardPreviewAmount">
+            Rp350.000
+          </strong>
+
+        </div>
+
+
+        <div class="confirmation-actions">
+
+          <button
+            id="cancelClaimRewardButton"
+            class="secondary-button"
+            type="button"
+          >
+            Batal
+          </button>
+
+
+          <button
+            id="confirmClaimRewardButton"
+            class="primary-button gold-button"
+            type="button"
+          >
+            Ya, Ambil Hadiah
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NOTIFIKASI HADIAH
+    ========================================== -->
+    <div
+      id="rewardToast"
+      class="game-toast"
+      role="status"
+      aria-live="polite"
+    >
+
+      <span id="rewardToastIcon">
+        🏆
+      </span>
+
+      <p id="rewardToastMessage">
+        Pesan hadiah
+      </p>
+
+    </div>
