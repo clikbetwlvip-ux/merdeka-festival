@@ -4348,3 +4348,516 @@
       </p>
 
     </div>
+    <!-- =========================================
+         MYSTERY BOX SCREEN
+    ========================================== -->
+    <section
+      id="mysteryScreen"
+      class="screen mystery-screen"
+      aria-hidden="true"
+    >
+
+      <!-- Background Mystery Box -->
+      <div class="mystery-background">
+
+        <div class="mystery-dark-gradient"></div>
+
+        <div class="mystery-light-beam mystery-light-beam-left"></div>
+        <div class="mystery-light-beam mystery-light-beam-right"></div>
+
+        <div class="mystery-firework mystery-firework-one">✦</div>
+        <div class="mystery-firework mystery-firework-two">✦</div>
+        <div class="mystery-firework mystery-firework-three">✦</div>
+
+        <div class="mystery-floating-particle particle-one">◆</div>
+        <div class="mystery-floating-particle particle-two">●</div>
+        <div class="mystery-floating-particle particle-three">✦</div>
+        <div class="mystery-floating-particle particle-four">◆</div>
+        <div class="mystery-floating-particle particle-five">●</div>
+        <div class="mystery-floating-particle particle-six">✦</div>
+
+        <div class="mystery-floor-glow"></div>
+
+      </div>
+
+
+      <!-- Header -->
+      <header class="mystery-header">
+
+        <div class="mystery-header-left">
+
+          <button
+            id="mysteryBackButton"
+            class="game-back-button"
+            type="button"
+            aria-label="Kembali ke lobby"
+          >
+            <span>←</span>
+          </button>
+
+          <div class="mystery-header-title">
+
+            <span class="game-header-label">
+              HADIAH SPESIAL
+            </span>
+
+            <h1>Mystery Box</h1>
+
+          </div>
+
+        </div>
+
+
+        <div class="mystery-header-center">
+
+          <div class="game-header-brand">
+            CLICKBET<span>88</span>
+          </div>
+
+          <small>
+            FESTIVAL KEMERDEKAAN 2026
+          </small>
+
+        </div>
+
+
+        <div class="mystery-header-actions">
+
+          <button
+            id="mysteryHelpButton"
+            class="game-header-icon-button"
+            type="button"
+            aria-label="Petunjuk Mystery Box"
+          >
+            <span>?</span>
+          </button>
+
+          <button
+            id="mysterySoundButton"
+            class="game-header-icon-button"
+            type="button"
+            aria-label="Aktifkan atau matikan suara"
+          >
+            <span id="mysterySoundIcon">🔊</span>
+          </button>
+
+        </div>
+
+      </header>
+
+
+
+      <!-- Layout utama -->
+      <div class="mystery-layout">
+
+
+        <!-- Panel pemain -->
+        <aside class="mystery-player-panel">
+
+          <div class="mystery-player-card">
+
+            <span class="mini-card-label">
+              INFORMASI PEMAIN
+            </span>
+
+            <div class="mini-player-information">
+
+              <div class="mini-player-avatar">
+                😎
+              </div>
+
+              <div>
+
+                <small>MEMBER ID</small>
+
+                <strong id="mysteryMemberName">
+                  PLAYER123
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="mystery-player-stat">
+
+              <span>🎁</span>
+
+              <div>
+                <small>BOX TERSEDIA</small>
+
+                <strong id="availableMysteryBoxValue">
+                  1
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="mystery-player-stat">
+
+              <span>🎮</span>
+
+              <div>
+                <small>DIPEROLEH DARI</small>
+
+                <strong id="mysterySourceGame">
+                  Panjat Pinang
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="mystery-information-card">
+
+            <span class="mystery-information-icon">
+              ℹ️
+            </span>
+
+            <div>
+
+              <strong>
+                Cara Membuka
+              </strong>
+
+              <p>
+                Tekan tombol buka, tunggu animasi selesai,
+                lalu hadiah akan ditampilkan.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="mystery-warning-card">
+
+            <span class="mystery-warning-icon">
+              ⚠️
+            </span>
+
+            <p>
+              Mystery Box hanya dapat dibuka satu kali.
+              Jangan menutup halaman saat proses berlangsung.
+            </p>
+
+          </div>
+
+        </aside>
+
+
+
+        <!-- Arena box utama -->
+        <main class="mystery-main-stage">
+
+
+          <!-- Judul -->
+          <div class="mystery-stage-heading">
+
+            <span
+              id="mysteryStatusLabel"
+              class="mystery-status-label"
+            >
+              BOX SIAP DIBUKA
+            </span>
+
+            <h2 id="mysteryStatusTitle">
+              Temukan Hadiahmu!
+            </h2>
+
+            <p id="mysteryStatusDescription">
+              Tekan tombol di bawah dan tunggu sampai hadiah berhenti.
+            </p>
+
+          </div>
+
+
+
+          <!-- Stage -->
+          <div class="mystery-box-stage">
+
+
+            <!-- Efek belakang -->
+            <div class="mystery-stage-glow"></div>
+
+            <div class="mystery-stage-ring ring-one"></div>
+            <div class="mystery-stage-ring ring-two"></div>
+            <div class="mystery-stage-ring ring-three"></div>
+
+
+            <!-- Sinar radial -->
+            <div class="mystery-box-rays">
+
+              <span class="ray-one"></span>
+              <span class="ray-two"></span>
+              <span class="ray-three"></span>
+              <span class="ray-four"></span>
+              <span class="ray-five"></span>
+              <span class="ray-six"></span>
+              <span class="ray-seven"></span>
+              <span class="ray-eight"></span>
+
+            </div>
+
+
+
+            <!-- Box utama -->
+            <div
+              id="mainMysteryBox"
+              class="main-mystery-box ready"
+            >
+
+              <div
+                id="mysteryBoxLid"
+                class="main-mystery-box-lid"
+              >
+
+                <div class="mystery-box-bow">
+
+                  <span class="bow-loop bow-loop-left"></span>
+                  <span class="bow-knot"></span>
+                  <span class="bow-loop bow-loop-right"></span>
+
+                </div>
+
+                <div class="box-lid-ribbon"></div>
+
+              </div>
+
+
+              <div
+                id="mysteryBoxBody"
+                class="main-mystery-box-body"
+              >
+
+                <span class="main-box-ribbon-vertical"></span>
+                <span class="main-box-ribbon-horizontal"></span>
+
+                <span class="main-box-question">
+                  ?
+                </span>
+
+                <span class="main-box-highlight"></span>
+
+              </div>
+
+
+              <div class="main-mystery-box-shadow"></div>
+
+            </div>
+
+
+
+            <!-- Cahaya keluar dari box -->
+            <div
+              id="mysteryInsideLight"
+              class="mystery-inside-light"
+            ></div>
+
+
+            <!-- Efek ledakan -->
+            <div
+              id="mysteryExplosionEffect"
+              class="mystery-explosion-effect"
+              aria-hidden="true"
+            >
+
+              <span class="explosion-particle explosion-one"></span>
+              <span class="explosion-particle explosion-two"></span>
+              <span class="explosion-particle explosion-three"></span>
+              <span class="explosion-particle explosion-four"></span>
+              <span class="explosion-particle explosion-five"></span>
+              <span class="explosion-particle explosion-six"></span>
+              <span class="explosion-particle explosion-seven"></span>
+              <span class="explosion-particle explosion-eight"></span>
+
+            </div>
+
+
+
+            <!-- Efek koin -->
+            <div
+              id="mysteryCoinEffect"
+              class="mystery-coin-effect"
+              aria-hidden="true"
+            >
+
+              <span class="mystery-coin coin-one">●</span>
+              <span class="mystery-coin coin-two">●</span>
+              <span class="mystery-coin coin-three">●</span>
+              <span class="mystery-coin coin-four">●</span>
+              <span class="mystery-coin coin-five">●</span>
+              <span class="mystery-coin coin-six">●</span>
+              <span class="mystery-coin coin-seven">●</span>
+              <span class="mystery-coin coin-eight">●</span>
+
+            </div>
+
+
+            <!-- Platform -->
+            <div class="mystery-box-platform">
+
+              <div class="platform-top"></div>
+              <div class="platform-front"></div>
+              <div class="platform-shadow"></div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Status proses -->
+          <div
+            id="mysteryProcessStatus"
+            class="mystery-process-status"
+          >
+
+            <span
+              id="mysteryProcessIcon"
+              class="mystery-process-icon"
+            >
+              ✨
+            </span>
+
+            <p id="mysteryProcessText">
+              Mystery Box menunggumu.
+            </p>
+
+          </div>
+
+
+
+          <!-- Tombol -->
+          <div class="mystery-action-area">
+
+            <button
+              id="openMysteryBoxButton"
+              class="primary-button gold-button mystery-open-button"
+              type="button"
+            >
+
+              <span class="button-glow"></span>
+
+              <span class="button-icon">
+                🎁
+              </span>
+
+              <span class="button-text">
+                BUKA MYSTERY BOX
+              </span>
+
+              <span class="button-arrow">
+                ➜
+              </span>
+
+            </button>
+
+
+            <button
+              id="mysteryReturnLobbyButton"
+              class="secondary-button mystery-return-button"
+              type="button"
+            >
+              Kembali ke Lobby
+            </button>
+
+          </div>
+
+        </main>
+
+
+
+        <!-- Panel hadiah -->
+        <aside class="mystery-reward-panel">
+
+          <span class="section-label">
+            DAFTAR HADIAH
+          </span>
+
+          <h3>
+            Hadiah Mystery Box
+          </h3>
+
+          <p>
+            Salah satu nominal berikut akan diperoleh setelah box dibuka.
+          </p>
+
+
+          <div class="mystery-reward-list">
+
+            <div class="mystery-reward-item">
+              <span class="reward-list-icon">🎁</span>
+              <strong>Rp5.000</strong>
+            </div>
+
+            <div class="mystery-reward-item">
+              <span class="reward-list-icon">🎁</span>
+              <strong>Rp10.000</strong>
+            </div>
+
+            <div class="mystery-reward-item">
+              <span class="reward-list-icon">🎁</span>
+              <strong>Rp25.000</strong>
+            </div>
+
+            <div class="mystery-reward-item">
+              <span class="reward-list-icon">🎁</span>
+              <strong>Rp50.000</strong>
+            </div>
+
+            <div class="mystery-reward-item">
+              <span class="reward-list-icon">🎁</span>
+              <strong>Rp100.000</strong>
+            </div>
+
+            <div class="mystery-reward-item">
+              <span class="reward-list-icon">🎁</span>
+              <strong>Rp250.000</strong>
+            </div>
+
+            <div class="mystery-reward-item">
+              <span class="reward-list-icon">🎁</span>
+              <strong>Rp350.000</strong>
+            </div>
+
+            <div class="mystery-reward-item mystery-jackpot-item">
+
+              <span class="reward-list-icon">
+                👑
+              </span>
+
+              <div>
+
+                <small>JACKPOT</small>
+
+                <strong>
+                  Rp500.000
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="mystery-security-note">
+
+            <span>🛡️</span>
+
+            <p>
+              Hadiah akan dicatat ke riwayat setelah proses
+              pembukaan selesai.
+            </p>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </section>
