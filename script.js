@@ -7145,11 +7145,11 @@
     ===================================================== */
 
     window.ClickbetMystery = {
-        open: startMysteryBox,
-        reset: resetMystery,
-        returnLobby,
-        updateLobbyReward,
-        renderHistory,
+    open: startMysteryBox,
+    reset: resetMystery,
+    returnLobby: returnToLobby,
+    updateLobbyReward,
+    renderHistory,
 
         getData() {
             return readStorage();
