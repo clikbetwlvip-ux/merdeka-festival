@@ -2349,3 +2349,1823 @@
     initialize();
   }
 })();
+/* =========================================================
+   CLICKBET88 FESTIVAL KEMERDEKAAN 2026
+   JAVASCRIPT BARU — PART 2
+   PREMIUM PANJAT PINANG ENGINE
+========================================================= */
+
+(() => {
+  "use strict";
+
+  /* =========================================================
+     1. KONFIGURASI GAME
+  ========================================================= */
+
+  const CONFIG = Object.freeze({
+    duration: 15,
+    countdown: 3,
+
+    startingProgress: 0,
+    winningProgress: 100,
+
+    minimumBottom: 7,
+    maximumBottom: 79,
+
+    maximumStamina: 100,
+    minimumStamina: 4,
+    staminaCost: 6.5,
+    staminaRecoveryPerSecond: 18,
+
+    normalClimbPower: 3.2,
+    perfectClimbPower: 4.8,
+    tiredClimbPower: 1.4,
+
+    minimumTapDelay: 70,
+    perfectTimingMinimum: 145,
+    perfectTimingMaximum: 390,
+    comboResetDelay: 850,
+    maximumCombo: 15,
+
+    normalSlipChance: 0.025,
+    tiredSlipChance: 0.13,
+    slipMinimum: 2,
+    slipMaximum: 6,
+
+    resultDelay: 600,
+    toastDuration: 1800
+  });
+
+
+  /* =========================================================
+     2. HELPER
+  ========================================================= */
+
+  const $ = (id) => document.getElementById(id);
+
+  const clamp = (value, minimum, maximum) =>
+    Math.min(
+      Math.max(Number(value) || 0, minimum),
+      maximum
+    );
+
+  const random = (minimum, maximum) =>
+    minimum + Math.random() * (maximum - minimum);
+
+  const api = () => window.ClickbetGame || null;
+
+  function setText(element, value) {
+    if (element) {
+      element.textContent = String(value);
+    }
+  }
+
+  function openOverlay(element) {
+    if (!element) {
+      return;
+    }
+
+    if (api()?.openOverlay) {
+      api().openOverlay(element);
+      return;
+    }
+
+    element.setAttribute("aria-hidden", "false");
+    document.body.classList.add("no-scroll");
+  }
+
+  function closeOverlay(element) {
+    if (!element) {
+      return;
+    }
+
+    if (api()?.closeOverlay) {
+      api().closeOverlay(element);
+      return;
+    }
+
+    element.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("no-scroll");
+  }
+
+  function playSound(type = "click") {
+    api()?.playSound?.(type);
+  }
+
+  function notify(message, type = "info") {
+    api()?.notify?.(message, type);
+  }
+
+  function isSoundEnabled() {
+    return api()?.isSoundEnabled?.() !== false;
+  }
+
+
+  /* =========================================================
+     3. ELEMEN HTML
+  ========================================================= */
+
+  const screen = $("panjatPinangScreen");
+
+  if (!screen) {
+    console.warn(
+      "[CLICKBET88 PART 2] Screen Panjat Pinang tidak ditemukan."
+    );
+
+    return;
+  }
+
+  const ELEMENTS = {
+    screen,
+
+    stage:
+      screen.querySelector(".pinang-stage") ||
+      screen.querySelector(".panjat-pinang-stage") ||
+      screen.querySelector(".game-stage"),
+
+    pole:
+      screen.querySelector(".pinang-pole") ||
+      screen.querySelector(".panjat-pinang-pole"),
+
+    player: $("pinangPlayer"),
+
+    playerFace:
+      screen.querySelector(
+        "#pinangPlayer .player-face"
+      ) ||
+      screen.querySelector(
+        ".pinang-player .player-face"
+      ),
+
+    dust: $("pinangDustEffect"),
+
+    timer: $("pinangTimerValue"),
+
+    progressFill:
+      $("pinangVerticalProgress"),
+
+    progressMarker:
+      $("pinangProgressMarker"),
+
+    progressText:
+      $("pinangProgressValue"),
+
+    tapCount:
+      $("pinangTapCount"),
+
+    readyMessage:
+      $("pinangReadyMessage"),
+
+    staminaFill:
+      $("pinangStaminaFill") ||
+      $("pinangStaminaBar"),
+
+    staminaText:
+      $("pinangStaminaValue"),
+
+    comboValue:
+      $("pinangComboValue"),
+
+    bestComboValue:
+      $("pinangBestComboValue"),
+
+    scoreValue:
+      $("pinangScoreValue"),
+
+    startButton:
+      $("pinangStartButton"),
+
+    tapButton:
+      $("pinangTapButton"),
+
+    backButton:
+      $("pinangBackButton"),
+
+    pauseButton:
+      $("pinangPauseButton"),
+
+    soundButton:
+      $("pinangSoundButton"),
+
+    soundIcon:
+      $("pinangSoundIcon"),
+
+    countdownOverlay:
+      $("pinangCountdownOverlay"),
+
+    countdownValue:
+      $("pinangCountdownValue"),
+
+    countdownMessage:
+      $("pinangCountdownMessage"),
+
+    pauseOverlay:
+      $("pinangPauseOverlay"),
+
+    resumeButton:
+      $("pinangResumeButton"),
+
+    quitButton:
+      $("pinangQuitButton"),
+
+    resultOverlay:
+      $("pinangResultOverlay"),
+
+    resultModal:
+      $("pinangResultModal"),
+
+    closeResultButton:
+      $("closePinangResultButton"),
+
+    winContent:
+      $("pinangWinContent"),
+
+    loseContent:
+      $("pinangLoseContent"),
+
+    resultRemainingTime:
+      $("pinangResultRemainingTime"),
+
+    resultTapCount:
+      $("pinangResultTapCount"),
+
+    loseTapCount:
+      $("pinangLoseTapCount"),
+
+    loseProgress:
+      $("pinangLoseProgress"),
+
+    loseTicket:
+      $("pinangLoseTicket"),
+
+    mysteryButton:
+      $("openPinangMysteryButton"),
+
+    winLobbyButton:
+      $("pinangWinLobbyButton"),
+
+    retryButton:
+      $("retryPinangButton"),
+
+    loseLobbyButton:
+      $("pinangLoseLobbyButton"),
+
+    exitOverlay:
+      $("pinangExitConfirmOverlay"),
+
+    cancelExitButton:
+      $("cancelPinangExitButton"),
+
+    confirmExitButton:
+      $("confirmPinangExitButton"),
+
+    toast:
+      $("pinangToast"),
+
+    toastIcon:
+      $("pinangToastIcon"),
+
+    toastMessage:
+      $("pinangToastMessage")
+  };
+
+
+  /* =========================================================
+     4. STATE GAME
+  ========================================================= */
+
+  const STATE = {
+    status: "idle",
+
+    progress: 0,
+    visualProgress: 0,
+
+    stamina: CONFIG.maximumStamina,
+
+    remainingTime: CONFIG.duration,
+
+    taps: 0,
+    combo: 0,
+    bestCombo: 0,
+    score: 0,
+
+    lastTapTime: 0,
+    lastFrameTime: 0,
+
+    ticketUsed: false,
+    resultRegistered: false,
+
+    animationFrame: 0,
+    countdownTimer: 0,
+    resultTimer: 0,
+    toastTimer: 0,
+    feedbackTimer: 0,
+
+    side: "left"
+  };
+
+
+  /* =========================================================
+     5. STATUS HELPER
+  ========================================================= */
+
+  function isPlaying() {
+    return STATE.status === "playing";
+  }
+
+  function isPaused() {
+    return STATE.status === "paused";
+  }
+
+  function isBusy() {
+    return [
+      "countdown",
+      "playing",
+      "paused"
+    ].includes(STATE.status);
+  }
+
+  function clearTimers() {
+    window.clearInterval(
+      STATE.countdownTimer
+    );
+
+    window.clearTimeout(
+      STATE.resultTimer
+    );
+
+    window.clearTimeout(
+      STATE.toastTimer
+    );
+
+    window.clearTimeout(
+      STATE.feedbackTimer
+    );
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    STATE.countdownTimer = 0;
+    STATE.resultTimer = 0;
+    STATE.animationFrame = 0;
+  }
+
+
+  /* =========================================================
+     6. TOAST KHUSUS GAME
+  ========================================================= */
+
+  function showGameToast(
+    message,
+    type = "info"
+  ) {
+    const icons = {
+      info: "ℹ️",
+      success: "✅",
+      warning: "⚠️",
+      error: "❌",
+      perfect: "⚡",
+      slip: "💦",
+      tired: "🥵",
+      combo: "🔥"
+    };
+
+    if (
+      !ELEMENTS.toast ||
+      !ELEMENTS.toastMessage
+    ) {
+      notify(message, type);
+      return;
+    }
+
+    window.clearTimeout(
+      STATE.toastTimer
+    );
+
+    setText(
+      ELEMENTS.toastIcon,
+      icons[type] || icons.info
+    );
+
+    setText(
+      ELEMENTS.toastMessage,
+      message
+    );
+
+    ELEMENTS.toast.classList.remove(
+      "show"
+    );
+
+    void ELEMENTS.toast.offsetWidth;
+
+    ELEMENTS.toast.classList.add(
+      "show"
+    );
+
+    STATE.toastTimer =
+      window.setTimeout(() => {
+        ELEMENTS.toast.classList.remove(
+          "show"
+        );
+      }, CONFIG.toastDuration);
+  }
+
+
+  /* =========================================================
+     7. RENDER GAME
+  ========================================================= */
+
+  function renderTimer() {
+    const seconds = Math.max(
+      0,
+      Math.ceil(STATE.remainingTime)
+    );
+
+    setText(
+      ELEMENTS.timer,
+      seconds
+    );
+
+    const timerContainer =
+      ELEMENTS.timer?.closest(
+        ".game-timer"
+      ) ||
+      ELEMENTS.timer?.parentElement;
+
+    timerContainer?.classList.toggle(
+      "danger",
+      seconds <= 5
+    );
+  }
+
+  function renderProgress() {
+    const progress = clamp(
+      STATE.visualProgress,
+      0,
+      100
+    );
+
+    setText(
+      ELEMENTS.progressText,
+      `${Math.floor(STATE.progress)}%`
+    );
+
+    if (ELEMENTS.progressFill) {
+      ELEMENTS.progressFill.style.height =
+        `${progress}%`;
+
+      ELEMENTS.progressFill.style.width =
+        `${progress}%`;
+
+      ELEMENTS.progressFill.setAttribute(
+        "aria-valuenow",
+        String(Math.floor(progress))
+      );
+    }
+
+    if (ELEMENTS.progressMarker) {
+      ELEMENTS.progressMarker.style.bottom =
+        `${progress}%`;
+    }
+
+    if (ELEMENTS.player) {
+      const bottom =
+        CONFIG.minimumBottom +
+        (
+          progress / 100
+        ) *
+        (
+          CONFIG.maximumBottom -
+          CONFIG.minimumBottom
+        );
+
+      ELEMENTS.player.style.bottom =
+        `${bottom}%`;
+
+      ELEMENTS.player.style.setProperty(
+        "--pinang-progress",
+        `${progress}%`
+      );
+    }
+  }
+
+  function renderStamina() {
+    const stamina = clamp(
+      STATE.stamina,
+      0,
+      CONFIG.maximumStamina
+    );
+
+    if (ELEMENTS.staminaFill) {
+      ELEMENTS.staminaFill.style.width =
+        `${stamina}%`;
+
+      ELEMENTS.staminaFill.style.height =
+        `${stamina}%`;
+
+      ELEMENTS.staminaFill.classList.toggle(
+        "low",
+        stamina <= 25
+      );
+    }
+
+    setText(
+      ELEMENTS.staminaText,
+      `${Math.round(stamina)}%`
+    );
+  }
+
+  function renderStatistics() {
+    setText(
+      ELEMENTS.tapCount,
+      STATE.taps
+    );
+
+    setText(
+      ELEMENTS.comboValue,
+      STATE.combo
+    );
+
+    setText(
+      ELEMENTS.bestComboValue,
+      STATE.bestCombo
+    );
+
+    setText(
+      ELEMENTS.scoreValue,
+      Math.floor(STATE.score)
+    );
+  }
+
+  function renderButtons() {
+    if (ELEMENTS.startButton) {
+      ELEMENTS.startButton.disabled =
+        isBusy();
+
+      ELEMENTS.startButton.hidden =
+        isBusy();
+    }
+
+    if (ELEMENTS.tapButton) {
+      ELEMENTS.tapButton.disabled =
+        !isPlaying();
+
+      ELEMENTS.tapButton.classList.toggle(
+        "active",
+        isPlaying()
+      );
+    }
+
+    if (ELEMENTS.pauseButton) {
+      ELEMENTS.pauseButton.disabled =
+        !isPlaying();
+    }
+  }
+
+  function renderReadyMessage() {
+    if (!ELEMENTS.readyMessage) {
+      return;
+    }
+
+    const messages = {
+      idle:
+        "Tekan MULAI untuk memulai permainan.",
+      countdown:
+        "Bersiap! Permainan segera dimulai.",
+      playing:
+        "Tap cepat dan atur ritme agar tidak kehabisan stamina!",
+      paused:
+        "Permainan sedang dijeda.",
+      win:
+        "Berhasil mencapai puncak!",
+      lose:
+        "Waktu habis. Coba lagi!"
+    };
+
+    ELEMENTS.readyMessage.textContent =
+      messages[STATE.status] ||
+      messages.idle;
+
+    ELEMENTS.readyMessage.dataset.status =
+      STATE.status;
+  }
+
+  function renderSound() {
+    setText(
+      ELEMENTS.soundIcon,
+      isSoundEnabled()
+        ? "🔊"
+        : "🔇"
+    );
+  }
+
+  function renderAll() {
+    renderTimer();
+    renderProgress();
+    renderStamina();
+    renderStatistics();
+    renderButtons();
+    renderReadyMessage();
+    renderSound();
+  }
+
+
+  /* =========================================================
+     8. RESET GAME
+  ========================================================= */
+
+  function resetGame(options = {}) {
+    const {
+      keepTicket = false
+    } = options;
+
+    clearTimers();
+
+    STATE.status = "idle";
+
+    STATE.progress =
+      CONFIG.startingProgress;
+
+    STATE.visualProgress =
+      CONFIG.startingProgress;
+
+    STATE.stamina =
+      CONFIG.maximumStamina;
+
+    STATE.remainingTime =
+      CONFIG.duration;
+
+    STATE.taps = 0;
+    STATE.combo = 0;
+    STATE.bestCombo = 0;
+    STATE.score = 0;
+
+    STATE.lastTapTime = 0;
+    STATE.lastFrameTime = 0;
+
+    STATE.resultRegistered = false;
+    STATE.side = "left";
+
+    if (!keepTicket) {
+      STATE.ticketUsed = false;
+    }
+
+    closeOverlay(
+      ELEMENTS.countdownOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.exitOverlay
+    );
+
+    ELEMENTS.player?.classList.remove(
+      "climbing",
+      "perfect",
+      "slipping",
+      "tired",
+      "winner",
+      "loser",
+      "left-step",
+      "right-step"
+    );
+
+    ELEMENTS.stage?.classList.remove(
+      "playing",
+      "paused",
+      "winning",
+      "losing",
+      "danger"
+    );
+
+    renderAll();
+  }
+
+
+  /* =========================================================
+     9. COUNTDOWN
+  ========================================================= */
+
+  function startCountdown() {
+    if (isBusy()) {
+      return;
+    }
+
+    if (!api()) {
+      notify(
+        "Core Part 1 belum aktif.",
+        "error"
+      );
+
+      return;
+    }
+
+    if (!api().hasTickets?.(1)) {
+      showGameToast(
+        "Tiket tidak cukup untuk bermain.",
+        "warning"
+      );
+
+      playSound("error");
+      return;
+    }
+
+    STATE.status = "countdown";
+
+    renderAll();
+
+    openOverlay(
+      ELEMENTS.countdownOverlay
+    );
+
+    let count = CONFIG.countdown;
+
+    setText(
+      ELEMENTS.countdownValue,
+      count
+    );
+
+    setText(
+      ELEMENTS.countdownMessage,
+      "BERSIAP!"
+    );
+
+    playSound("open");
+
+    STATE.countdownTimer =
+      window.setInterval(() => {
+        count -= 1;
+
+        if (count > 0) {
+          setText(
+            ELEMENTS.countdownValue,
+            count
+          );
+
+          setText(
+            ELEMENTS.countdownMessage,
+            count === 1
+              ? "SIAP!"
+              : "BERSIAP!"
+          );
+
+          playSound("click");
+          return;
+        }
+
+        window.clearInterval(
+          STATE.countdownTimer
+        );
+
+        setText(
+          ELEMENTS.countdownValue,
+          "GO!"
+        );
+
+        setText(
+          ELEMENTS.countdownMessage,
+          "PANJAT SEKARANG!"
+        );
+
+        playSound("success");
+
+        window.setTimeout(() => {
+          closeOverlay(
+            ELEMENTS.countdownOverlay
+          );
+
+          beginGame();
+        }, 500);
+      }, 800);
+  }
+
+
+  /* =========================================================
+     10. MULAI PERMAINAN
+  ========================================================= */
+
+  function beginGame() {
+    if (
+      !api()?.useTicket?.(
+        1,
+        "panjat-pinang"
+      )
+    ) {
+      STATE.status = "idle";
+      renderAll();
+      return;
+    }
+
+    STATE.ticketUsed = true;
+    STATE.status = "playing";
+
+    STATE.remainingTime =
+      CONFIG.duration;
+
+    STATE.lastFrameTime =
+      performance.now();
+
+    ELEMENTS.stage?.classList.add(
+      "playing"
+    );
+
+    renderAll();
+
+    showGameToast(
+      "Permainan dimulai! Tap dengan ritme yang tepat.",
+      "info"
+    );
+
+    STATE.animationFrame =
+      requestAnimationFrame(gameLoop);
+  }
+
+
+  /* =========================================================
+     11. GAME LOOP
+  ========================================================= */
+
+  function gameLoop(timestamp) {
+    if (!isPlaying()) {
+      return;
+    }
+
+    const deltaSeconds = clamp(
+      (
+        timestamp -
+        STATE.lastFrameTime
+      ) / 1000,
+      0,
+      0.08
+    );
+
+    STATE.lastFrameTime = timestamp;
+
+    STATE.remainingTime -=
+      deltaSeconds;
+
+    STATE.stamina = clamp(
+      STATE.stamina +
+      CONFIG.staminaRecoveryPerSecond *
+      deltaSeconds,
+      0,
+      CONFIG.maximumStamina
+    );
+
+    STATE.visualProgress +=
+      (
+        STATE.progress -
+        STATE.visualProgress
+      ) *
+      Math.min(
+        deltaSeconds * 12,
+        1
+      );
+
+    if (
+      STATE.combo > 0 &&
+      timestamp -
+        STATE.lastTapTime >
+        CONFIG.comboResetDelay
+    ) {
+      STATE.combo = 0;
+    }
+
+    ELEMENTS.player?.classList.toggle(
+      "tired",
+      STATE.stamina <= 22
+    );
+
+    ELEMENTS.stage?.classList.toggle(
+      "danger",
+      STATE.remainingTime <= 5
+    );
+
+    renderAll();
+
+    if (
+      STATE.progress >=
+      CONFIG.winningProgress
+    ) {
+      finishGame(true);
+      return;
+    }
+
+    if (
+      STATE.remainingTime <= 0
+    ) {
+      STATE.remainingTime = 0;
+      finishGame(false);
+      return;
+    }
+
+    STATE.animationFrame =
+      requestAnimationFrame(gameLoop);
+  }
+
+
+  /* =========================================================
+     12. AKSI MEMANJAT
+  ========================================================= */
+
+  function performClimb() {
+    if (!isPlaying()) {
+      return;
+    }
+
+    const now = performance.now();
+
+    const interval =
+      STATE.lastTapTime > 0
+        ? now - STATE.lastTapTime
+        : 300;
+
+    if (
+      interval <
+      CONFIG.minimumTapDelay
+    ) {
+      return;
+    }
+
+    STATE.lastTapTime = now;
+    STATE.taps += 1;
+
+    let climbPower =
+      CONFIG.normalClimbPower;
+
+    let feedbackType = "normal";
+
+    if (
+      interval >=
+        CONFIG.perfectTimingMinimum &&
+      interval <=
+        CONFIG.perfectTimingMaximum
+    ) {
+      STATE.combo = clamp(
+        STATE.combo + 1,
+        0,
+        CONFIG.maximumCombo
+      );
+
+      STATE.bestCombo = Math.max(
+        STATE.bestCombo,
+        STATE.combo
+      );
+
+      const comboBonus =
+        STATE.combo * 0.09;
+
+      climbPower =
+        CONFIG.perfectClimbPower +
+        comboBonus;
+
+      feedbackType = "perfect";
+    } else {
+      STATE.combo = Math.max(
+        STATE.combo - 1,
+        0
+      );
+    }
+
+    if (
+      STATE.stamina <
+      CONFIG.minimumStamina
+    ) {
+      climbPower =
+        CONFIG.tiredClimbPower;
+
+      feedbackType = "tired";
+    }
+
+    STATE.stamina = clamp(
+      STATE.stamina -
+        CONFIG.staminaCost,
+      0,
+      CONFIG.maximumStamina
+    );
+
+    const slipChance =
+      STATE.stamina <= 20
+        ? CONFIG.tiredSlipChance
+        : CONFIG.normalSlipChance;
+
+    const slipped =
+      Math.random() < slipChance;
+
+    if (slipped) {
+      const slipDistance =
+        random(
+          CONFIG.slipMinimum,
+          CONFIG.slipMaximum
+        );
+
+      STATE.progress = clamp(
+        STATE.progress -
+          slipDistance,
+        0,
+        CONFIG.winningProgress
+      );
+
+      STATE.combo = 0;
+
+      animateSlip();
+
+      showGameToast(
+        "Tiangnya licin! Kamu sedikit turun.",
+        "slip"
+      );
+
+      playSound("error");
+    } else {
+      STATE.progress = clamp(
+        STATE.progress +
+          climbPower,
+        0,
+        CONFIG.winningProgress
+      );
+
+      STATE.score +=
+        Math.round(
+          climbPower * 100 +
+          STATE.combo * 20
+        );
+
+      animateClimb(feedbackType);
+
+      if (feedbackType === "perfect") {
+        showTapFeedback(
+          STATE.combo >= 3
+            ? `COMBO x${STATE.combo}`
+            : "PERFECT!",
+          STATE.combo >= 3
+            ? "combo"
+            : "perfect"
+        );
+      } else if (
+        feedbackType === "tired"
+      ) {
+        showTapFeedback(
+          "STAMINA LEMAH",
+          "tired"
+        );
+      }
+
+      playSound(
+        feedbackType === "perfect"
+          ? "success"
+          : "click"
+      );
+    }
+
+    renderAll();
+
+    if (
+      STATE.progress >=
+      CONFIG.winningProgress
+    ) {
+      finishGame(true);
+    }
+  }
+
+
+  /* =========================================================
+     13. ANIMASI KARAKTER
+  ========================================================= */
+
+  function animateClimb(type) {
+    if (!ELEMENTS.player) {
+      return;
+    }
+
+    STATE.side =
+      STATE.side === "left"
+        ? "right"
+        : "left";
+
+    ELEMENTS.player.classList.remove(
+      "climbing",
+      "perfect",
+      "left-step",
+      "right-step"
+    );
+
+    void ELEMENTS.player.offsetWidth;
+
+    ELEMENTS.player.classList.add(
+      "climbing",
+      STATE.side === "left"
+        ? "left-step"
+        : "right-step"
+    );
+
+    if (type === "perfect") {
+      ELEMENTS.player.classList.add(
+        "perfect"
+      );
+    }
+
+    if (ELEMENTS.dust) {
+      ELEMENTS.dust.classList.remove(
+        "active"
+      );
+
+      void ELEMENTS.dust.offsetWidth;
+
+      ELEMENTS.dust.classList.add(
+        "active"
+      );
+    }
+
+    window.setTimeout(() => {
+      ELEMENTS.player?.classList.remove(
+        "climbing",
+        "perfect"
+      );
+
+      ELEMENTS.dust?.classList.remove(
+        "active"
+      );
+    }, 220);
+  }
+
+  function animateSlip() {
+    if (!ELEMENTS.player) {
+      return;
+    }
+
+    ELEMENTS.player.classList.remove(
+      "slipping"
+    );
+
+    void ELEMENTS.player.offsetWidth;
+
+    ELEMENTS.player.classList.add(
+      "slipping"
+    );
+
+    window.setTimeout(() => {
+      ELEMENTS.player?.classList.remove(
+        "slipping"
+      );
+    }, 500);
+  }
+
+  function showTapFeedback(
+    message,
+    type
+  ) {
+    if (!ELEMENTS.stage) {
+      return;
+    }
+
+    let feedback =
+      ELEMENTS.stage.querySelector(
+        ".pinang-live-feedback"
+      );
+
+    if (!feedback) {
+      feedback =
+        document.createElement("div");
+
+      feedback.className =
+        "pinang-live-feedback";
+
+      ELEMENTS.stage.appendChild(
+        feedback
+      );
+    }
+
+    window.clearTimeout(
+      STATE.feedbackTimer
+    );
+
+    feedback.textContent = message;
+    feedback.dataset.type = type;
+
+    feedback.classList.remove("show");
+
+    void feedback.offsetWidth;
+
+    feedback.classList.add("show");
+
+    STATE.feedbackTimer =
+      window.setTimeout(() => {
+        feedback.classList.remove(
+          "show"
+        );
+      }, 550);
+  }
+
+
+  /* =========================================================
+     14. PAUSE DAN RESUME
+  ========================================================= */
+
+  function pauseGame() {
+    if (!isPlaying()) {
+      return;
+    }
+
+    STATE.status = "paused";
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    ELEMENTS.stage?.classList.add(
+      "paused"
+    );
+
+    openOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    renderAll();
+    playSound("click");
+  }
+
+  function resumeGame() {
+    if (!isPaused()) {
+      return;
+    }
+
+    STATE.status = "playing";
+    STATE.lastFrameTime =
+      performance.now();
+
+    ELEMENTS.stage?.classList.remove(
+      "paused"
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    renderAll();
+    playSound("open");
+
+    STATE.animationFrame =
+      requestAnimationFrame(gameLoop);
+  }
+
+
+  /* =========================================================
+     15. SELESAI GAME
+  ========================================================= */
+
+  function finishGame(won) {
+    if (
+      STATE.status === "win" ||
+      STATE.status === "lose"
+    ) {
+      return;
+    }
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    STATE.status =
+      won ? "win" : "lose";
+
+    STATE.remainingTime = Math.max(
+      STATE.remainingTime,
+      0
+    );
+
+    if (won) {
+      STATE.progress = 100;
+      STATE.visualProgress = 100;
+
+      ELEMENTS.player?.classList.add(
+        "winner"
+      );
+
+      ELEMENTS.stage?.classList.add(
+        "winning"
+      );
+    } else {
+      ELEMENTS.player?.classList.add(
+        "loser"
+      );
+
+      ELEMENTS.stage?.classList.add(
+        "losing"
+      );
+    }
+
+    registerResult(won);
+
+    renderAll();
+
+    playSound(
+      won ? "success" : "error"
+    );
+
+    STATE.resultTimer =
+      window.setTimeout(() => {
+        showResult(won);
+      }, CONFIG.resultDelay);
+  }
+
+  function registerResult(won) {
+    if (STATE.resultRegistered) {
+      return;
+    }
+
+    STATE.resultRegistered = true;
+
+    api()?.registerGameResult?.(
+      "panjat-pinang",
+      won ? "win" : "lose",
+      {
+        progress:
+          Math.floor(STATE.progress),
+
+        taps:
+          STATE.taps,
+
+        bestCombo:
+          STATE.bestCombo,
+
+        score:
+          Math.floor(STATE.score),
+
+        remainingTime:
+          Math.ceil(
+            STATE.remainingTime
+          )
+      }
+    );
+  }
+
+
+  /* =========================================================
+     16. POPUP HASIL
+  ========================================================= */
+
+  function showResult(won) {
+    if (
+      ELEMENTS.winContent
+    ) {
+      ELEMENTS.winContent.hidden =
+        !won;
+
+      ELEMENTS.winContent.style.display =
+        won ? "" : "none";
+    }
+
+    if (
+      ELEMENTS.loseContent
+    ) {
+      ELEMENTS.loseContent.hidden =
+        won;
+
+      ELEMENTS.loseContent.style.display =
+        won ? "none" : "";
+    }
+
+    setText(
+      ELEMENTS.resultRemainingTime,
+      `${Math.ceil(
+        STATE.remainingTime
+      )} detik`
+    );
+
+    setText(
+      ELEMENTS.resultTapCount,
+      STATE.taps
+    );
+
+    setText(
+      ELEMENTS.loseTapCount,
+      STATE.taps
+    );
+
+    setText(
+      ELEMENTS.loseProgress,
+      `${Math.floor(
+        STATE.progress
+      )}%`
+    );
+
+    setText(
+      ELEMENTS.loseTicket,
+      api()?.getTickets?.() ?? 0
+    );
+
+    ELEMENTS.resultModal?.classList.toggle(
+      "win",
+      won
+    );
+
+    ELEMENTS.resultModal?.classList.toggle(
+      "lose",
+      !won
+    );
+
+    openOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    if (won) {
+      showGameToast(
+        "Menang! Satu Mystery Box berhasil dibuka.",
+        "success"
+      );
+    } else {
+      showGameToast(
+        "Waktu habis. Kamu bisa mencoba lagi.",
+        "warning"
+      );
+    }
+  }
+
+
+  /* =========================================================
+     17. KELUAR DAN KEMBALI KE LOBBY
+  ========================================================= */
+
+  function requestExit() {
+    if (
+      isPlaying() ||
+      isPaused() ||
+      STATE.status === "countdown"
+    ) {
+      if (ELEMENTS.exitOverlay) {
+        openOverlay(
+          ELEMENTS.exitOverlay
+        );
+      } else {
+        const confirmed =
+          window.confirm(
+            "Keluar dari permainan? Tiket yang sudah digunakan tidak dikembalikan."
+          );
+
+        if (confirmed) {
+          quitToLobby();
+        }
+      }
+
+      return;
+    }
+
+    quitToLobby();
+  }
+
+  function quitToLobby() {
+    clearTimers();
+
+    closeOverlay(
+      ELEMENTS.exitOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    resetGame();
+
+    api()?.returnToLobby?.();
+  }
+
+
+  /* =========================================================
+     18. RETRY
+  ========================================================= */
+
+  function retryGame() {
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    if (!api()?.hasTickets?.(1)) {
+      showGameToast(
+        "Tiket sudah habis.",
+        "warning"
+      );
+
+      window.setTimeout(() => {
+        api()?.returnToLobby?.();
+      }, 700);
+
+      return;
+    }
+
+    resetGame();
+    startCountdown();
+  }
+
+
+  /* =========================================================
+     19. BUKA MYSTERY BOX
+  ========================================================= */
+
+  function goToMysteryBox() {
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    if (!api()?.openMystery?.()) {
+      showGameToast(
+        "Mystery Box belum dapat dibuka.",
+        "warning"
+      );
+    }
+  }
+
+
+  /* =========================================================
+     20. SOUND BUTTON
+  ========================================================= */
+
+  function toggleGameSound() {
+    const enabled =
+      !isSoundEnabled();
+
+    api()?.setSound?.(enabled);
+
+    renderSound();
+  }
+
+
+  /* =========================================================
+     21. EVENT SCREEN
+  ========================================================= */
+
+  document.addEventListener(
+    "clickbet:screenchange",
+    (event) => {
+      if (
+        event.detail?.screen ===
+        "pinang"
+      ) {
+        resetGame();
+
+        setTimeout(() => {
+          ELEMENTS.startButton?.focus();
+        }, 300);
+      } else if (
+        isBusy()
+      ) {
+        clearTimers();
+        STATE.status = "idle";
+      }
+    }
+  );
+
+
+  /* =========================================================
+     22. EVENT BUTTON
+  ========================================================= */
+
+  ELEMENTS.startButton?.addEventListener(
+    "click",
+    startCountdown
+  );
+
+  ELEMENTS.tapButton?.addEventListener(
+    "click",
+    performClimb
+  );
+
+  ELEMENTS.pauseButton?.addEventListener(
+    "click",
+    pauseGame
+  );
+
+  ELEMENTS.resumeButton?.addEventListener(
+    "click",
+    resumeGame
+  );
+
+  ELEMENTS.backButton?.addEventListener(
+    "click",
+    requestExit
+  );
+
+  ELEMENTS.quitButton?.addEventListener(
+    "click",
+    requestExit
+  );
+
+  ELEMENTS.cancelExitButton?.addEventListener(
+    "click",
+    () => {
+      closeOverlay(
+        ELEMENTS.exitOverlay
+      );
+    }
+  );
+
+  ELEMENTS.confirmExitButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.closeResultButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.winLobbyButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.loseLobbyButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.retryButton?.addEventListener(
+    "click",
+    retryGame
+  );
+
+  ELEMENTS.mysteryButton?.addEventListener(
+    "click",
+    goToMysteryBox
+  );
+
+  ELEMENTS.soundButton?.addEventListener(
+    "click",
+    toggleGameSound
+  );
+
+
+  /* =========================================================
+     23. KEYBOARD CONTROL
+  ========================================================= */
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      const activeScreen =
+        document
+          .querySelector(
+            ".screen.active"
+          )
+          ?.id;
+
+      if (
+        activeScreen !==
+        "panjatPinangScreen"
+      ) {
+        return;
+      }
+
+      if (
+        event.code === "Space" ||
+        event.code === "Enter"
+      ) {
+        if (isPlaying()) {
+          event.preventDefault();
+          performClimb();
+        }
+      }
+
+      if (
+        event.code === "KeyP"
+      ) {
+        event.preventDefault();
+
+        if (isPlaying()) {
+          pauseGame();
+        } else if (isPaused()) {
+          resumeGame();
+        }
+      }
+
+      if (
+        event.code === "Escape"
+      ) {
+        event.preventDefault();
+
+        if (isPaused()) {
+          resumeGame();
+        } else {
+          requestExit();
+        }
+      }
+    }
+  );
+
+
+  /* =========================================================
+     24. TOUCH CONTROL
+  ========================================================= */
+
+  let lastTouchTime = 0;
+
+  ELEMENTS.stage?.addEventListener(
+    "pointerdown",
+    (event) => {
+      if (!isPlaying()) {
+        return;
+      }
+
+      if (
+        event.target.closest(
+          "button"
+        )
+      ) {
+        return;
+      }
+
+      const now = performance.now();
+
+      if (
+        now - lastTouchTime <
+        CONFIG.minimumTapDelay
+      ) {
+        return;
+      }
+
+      lastTouchTime = now;
+
+      performClimb();
+    }
+  );
+
+
+  /* =========================================================
+     25. VISIBILITY PAUSE
+  ========================================================= */
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (
+        document.hidden &&
+        isPlaying()
+      ) {
+        pauseGame();
+      }
+    }
+  );
+
+
+  /* =========================================================
+     26. PUBLIC API PANJAT PINANG
+  ========================================================= */
+
+  window.ClickbetPinang =
+    Object.freeze({
+      start: startCountdown,
+
+      tap: performClimb,
+
+      pause: pauseGame,
+
+      resume: resumeGame,
+
+      reset: resetGame,
+
+      returnLobby: quitToLobby,
+
+      getStatus() {
+        return {
+          status: STATE.status,
+          progress:
+            STATE.progress,
+          stamina:
+            STATE.stamina,
+          time:
+            STATE.remainingTime,
+          taps:
+            STATE.taps,
+          combo:
+            STATE.combo,
+          bestCombo:
+            STATE.bestCombo,
+          score:
+            STATE.score
+        };
+      }
+    });
+
+
+  /* =========================================================
+     27. INITIALIZATION
+  ========================================================= */
+
+  resetGame();
+  renderAll();
+
+  console.info(
+    "[CLICKBET88 PART 2] Premium Panjat Pinang aktif."
+  );
+})();
