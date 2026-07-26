@@ -10514,3 +10514,1109 @@ height:15px;
     }
 
 }
+/* =========================================================
+   CSS PART 4B-2 — KARAKTER & EFEK MAKAN KERUPUK
+========================================================= */
+
+
+/* =========================================================
+   CHARACTER WRAPPER
+========================================================= */
+
+.kerupuk-character{
+    position:absolute;
+    bottom:105px;
+    left:50%;
+    z-index:14;
+    width:150px;
+    height:235px;
+
+    transform:translateX(-50%);
+    transform-origin:center bottom;
+    pointer-events:none;
+
+    transition:
+        transform .25s ease,
+        filter .25s ease;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.kerupuk-character-body{
+    position:absolute;
+    inset:0;
+}
+
+.kerupuk-character-head{
+    position:absolute;
+    top:0;
+    left:50%;
+    z-index:7;
+    width:78px;
+    height:82px;
+
+    transform:translateX(-50%);
+    border-radius:48% 48% 44% 44%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            rgba(255,255,255,.38) 0 4%,
+            transparent 5%
+        ),
+        linear-gradient(
+            145deg,
+            #ffd7af,
+            #df955f
+        );
+
+    border:2px solid rgba(92,47,21,.22);
+
+    box-shadow:
+        inset -7px -7px 10px rgba(125,62,26,.14),
+        0 7px 12px rgba(0,0,0,.2);
+}
+
+.kerupuk-character-hair{
+    position:absolute;
+    top:-3px;
+    left:50%;
+    z-index:8;
+    width:79px;
+    height:38px;
+
+    transform:translateX(-50%);
+    border-radius:55% 55% 30% 30%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #24140d,
+            #4d2a1a
+        );
+}
+
+
+/* =========================================================
+   FACE
+========================================================= */
+
+.kerupuk-character-face{
+    position:absolute;
+    top:30px;
+    left:50%;
+    z-index:9;
+    width:52px;
+    height:35px;
+
+    transform:translateX(-50%);
+}
+
+.kerupuk-eye{
+    position:absolute;
+    top:2px;
+    width:7px;
+    height:8px;
+    border-radius:50%;
+    background:#382218;
+}
+
+.kerupuk-eye.eye-left{
+    left:8px;
+}
+
+.kerupuk-eye.eye-right{
+    right:8px;
+}
+
+.kerupuk-mouth{
+    position:absolute;
+    top:20px;
+    left:50%;
+    width:21px;
+    height:10px;
+
+    transform:translateX(-50%);
+    border-bottom:3px solid #8c4431;
+    border-radius:0 0 18px 18px;
+
+    transition:
+        width .15s ease,
+        height .15s ease,
+        background .15s ease;
+}
+
+
+/* =========================================================
+   TORSO
+========================================================= */
+
+.kerupuk-character-torso{
+    position:absolute;
+    top:76px;
+    left:50%;
+    z-index:5;
+    width:78px;
+    height:92px;
+
+    transform:translateX(-50%);
+    border-radius:23px 23px 15px 15px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #8a0b13,
+            #e42c35 42%,
+            #ff5258 52%,
+            #a70d17
+        );
+
+    border:2px solid rgba(94,7,13,.3);
+
+    box-shadow:
+        inset 8px 0 9px rgba(255,255,255,.13),
+        inset -8px 0 9px rgba(73,0,5,.2),
+        0 7px 12px rgba(0,0,0,.2);
+}
+
+.kerupuk-character-torso::after{
+    content:"88";
+    position:absolute;
+    top:30px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    color:#fff1b7;
+    font-size:1.15rem;
+    font-weight:1000;
+
+    text-shadow:
+        0 3px 4px rgba(0,0,0,.28);
+}
+
+
+/* =========================================================
+   ARMS
+========================================================= */
+
+.kerupuk-character-arm{
+    position:absolute;
+    top:88px;
+    z-index:4;
+    width:24px;
+    height:82px;
+
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #cb7746,
+            #ffd0a4 50%,
+            #bf683b
+        );
+
+    transform-origin:50% 8px;
+}
+
+.kerupuk-character-arm.arm-left{
+    left:24px;
+    transform:rotate(12deg);
+}
+
+.kerupuk-character-arm.arm-right{
+    right:24px;
+    transform:rotate(-12deg);
+}
+
+
+/* =========================================================
+   SHORTS & LEGS
+========================================================= */
+
+.kerupuk-character-shorts{
+    position:absolute;
+    top:153px;
+    left:50%;
+    z-index:6;
+    width:82px;
+    height:43px;
+
+    transform:translateX(-50%);
+    border-radius:8px 8px 16px 16px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #172747,
+            #315387 50%,
+            #12203b
+        );
+
+    border:2px solid rgba(4,15,34,.35);
+}
+
+.kerupuk-character-leg{
+    position:absolute;
+    top:184px;
+    z-index:3;
+    width:25px;
+    height:58px;
+
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #cc7746,
+            #ffd0a4 48%,
+            #c06b3d
+        );
+}
+
+.kerupuk-character-leg.leg-left{
+    left:42px;
+}
+
+.kerupuk-character-leg.leg-right{
+    right:42px;
+}
+
+
+/* =========================================================
+   IDLE
+========================================================= */
+
+.kerupuk-character.idle{
+    animation:kerupukCharacterIdle 1.6s ease-in-out infinite;
+}
+
+@keyframes kerupukCharacterIdle{
+    0%,
+    100%{
+        transform:translateX(-50%) translateY(0);
+    }
+
+    50%{
+        transform:translateX(-50%) translateY(-4px);
+    }
+}
+
+
+/* =========================================================
+   HEAD MOVE TOWARD KERUPUK
+========================================================= */
+
+.kerupuk-character.biting{
+    animation:kerupukCharacterBite .28s ease;
+}
+
+.kerupuk-character.biting .kerupuk-character-head{
+    animation:kerupukHeadBite .28s ease;
+}
+
+.kerupuk-character.biting .kerupuk-mouth{
+    animation:kerupukMouthBite .28s ease;
+}
+
+@keyframes kerupukCharacterBite{
+    0%,
+    100%{
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1);
+    }
+
+    50%{
+        transform:
+            translateX(-50%)
+            translateY(-10px)
+            scale(1.025);
+    }
+}
+
+@keyframes kerupukHeadBite{
+    0%,
+    100%{
+        transform:
+            translateX(-50%)
+            translateY(0);
+    }
+
+    50%{
+        transform:
+            translateX(-50%)
+            translateY(-18px)
+            scale(1.05);
+    }
+}
+
+@keyframes kerupukMouthBite{
+    0%,
+    100%{
+        width:21px;
+        height:10px;
+        background:transparent;
+    }
+
+    50%{
+        width:29px;
+        height:25px;
+        border:3px solid #813721;
+        border-radius:50%;
+        background:#4c1714;
+    }
+}
+
+
+/* =========================================================
+   FAST BITE
+========================================================= */
+
+.kerupuk-character.fast-bite{
+    animation:kerupukFastBite .16s linear;
+}
+
+@keyframes kerupukFastBite{
+    50%{
+        transform:
+            translateX(-50%)
+            translateY(-15px)
+            scale(1.04);
+    }
+}
+
+
+/* =========================================================
+   TIRED
+========================================================= */
+
+.kerupuk-character.tired{
+    animation:kerupukCharacterTired .7s ease-in-out infinite;
+}
+
+.kerupuk-character.tired .kerupuk-character-head{
+    transform:
+        translateX(-50%)
+        rotate(5deg);
+}
+
+@keyframes kerupukCharacterTired{
+    50%{
+        transform:
+            translateX(-50%)
+            translateY(4px)
+            scaleY(.97);
+    }
+}
+
+
+/* =========================================================
+   SWEAT
+========================================================= */
+
+.kerupuk-sweat{
+    position:absolute;
+    top:28px;
+    right:27px;
+    z-index:12;
+    width:10px;
+    height:17px;
+
+    border-radius:70% 30% 60% 40%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #e0fbff,
+            #42bee6
+        );
+
+    opacity:0;
+
+    box-shadow:
+        0 0 8px rgba(83,213,255,.6);
+}
+
+.kerupuk-character.tired .kerupuk-sweat{
+    animation:kerupukSweatDrop .85s ease-in infinite;
+}
+
+@keyframes kerupukSweatDrop{
+    0%{
+        opacity:0;
+        transform:translateY(-7px) scale(.7);
+    }
+
+    25%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        transform:translateY(30px) scale(1.1);
+    }
+}
+
+
+/* =========================================================
+   KERUPUK BITE STATES
+========================================================= */
+
+.kerupuk-target.bite-1{
+    clip-path:polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        0 100%,
+        0 62%,
+        15% 55%,
+        0 47%
+    );
+}
+
+.kerupuk-target.bite-2{
+    clip-path:polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        0 100%,
+        0 70%,
+        20% 61%,
+        4% 48%,
+        20% 36%,
+        0 24%
+    );
+}
+
+.kerupuk-target.bite-3{
+    clip-path:polygon(
+        7% 0,
+        100% 0,
+        100% 100%,
+        0 100%,
+        0 72%,
+        22% 61%,
+        5% 45%,
+        24% 30%,
+        0 14%
+    );
+}
+
+.kerupuk-target.bite-4{
+    clip-path:polygon(
+        20% 0,
+        100% 0,
+        100% 100%,
+        12% 100%,
+        0 80%,
+        24% 62%,
+        4% 44%,
+        30% 25%,
+        10% 9%
+    );
+}
+
+.kerupuk-target.almost-finished{
+    transform:
+        translateX(-50%)
+        scale(.58);
+
+    filter:saturate(.8);
+}
+
+.kerupuk-target.finished{
+    transform:
+        translateX(-50%)
+        scale(.05);
+
+    opacity:0;
+
+    transition:
+        transform .5s ease,
+        opacity .35s ease;
+}
+
+
+/* =========================================================
+   KERUPUK HIT
+========================================================= */
+
+.kerupuk-target.hit{
+    animation:kerupukTargetHit .25s ease;
+}
+
+@keyframes kerupukTargetHit{
+    0%,
+    100%{
+        scale:1;
+    }
+
+    50%{
+        scale:.84;
+        filter:brightness(1.25);
+    }
+}
+
+
+/* =========================================================
+   CRUMBS
+========================================================= */
+
+.kerupuk-crumbs{
+    position:absolute;
+    top:320px;
+    left:50%;
+    z-index:20;
+    width:130px;
+    height:100px;
+
+    transform:translateX(-50%);
+    pointer-events:none;
+}
+
+.kerupuk-crumb{
+    position:absolute;
+    top:0;
+    left:50%;
+    width:10px;
+    height:10px;
+
+    border-radius:45%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff0bf,
+            #c99650
+        );
+
+    opacity:0;
+}
+
+.kerupuk-crumb.active{
+    animation:kerupukCrumbFall .8s ease-out forwards;
+}
+
+.kerupuk-crumb:nth-child(1){
+    --crumb-x:-56px;
+    --crumb-r:-120deg;
+}
+
+.kerupuk-crumb:nth-child(2){
+    --crumb-x:-30px;
+    --crumb-r:90deg;
+}
+
+.kerupuk-crumb:nth-child(3){
+    --crumb-x:-8px;
+    --crumb-r:-75deg;
+}
+
+.kerupuk-crumb:nth-child(4){
+    --crumb-x:20px;
+    --crumb-r:130deg;
+}
+
+.kerupuk-crumb:nth-child(5){
+    --crumb-x:48px;
+    --crumb-r:-150deg;
+}
+
+.kerupuk-crumb:nth-child(6){
+    --crumb-x:67px;
+    --crumb-r:85deg;
+}
+
+@keyframes kerupukCrumbFall{
+    0%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translate(0,0)
+            rotate(0)
+            scale(.4);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            translate(var(--crumb-x),85px)
+            rotate(var(--crumb-r))
+            scale(1.1);
+    }
+}
+
+
+/* =========================================================
+   BITE IMPACT
+========================================================= */
+
+.kerupuk-bite-impact{
+    position:absolute;
+    top:250px;
+    left:50%;
+    z-index:21;
+    width:90px;
+    height:90px;
+
+    transform:translate(-50%,-50%);
+    border:3px solid rgba(255,241,171,.8);
+    border-radius:50%;
+
+    opacity:0;
+    pointer-events:none;
+}
+
+.kerupuk-bite-impact.active{
+    animation:kerupukImpactRing .42s ease-out;
+}
+
+@keyframes kerupukImpactRing{
+    0%{
+        opacity:.95;
+        transform:
+            translate(-50%,-50%)
+            scale(.2);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            scale(1.45);
+    }
+}
+
+
+/* =========================================================
+   COMBO
+========================================================= */
+
+.kerupuk-combo{
+    position:absolute;
+    top:42%;
+    left:20%;
+    z-index:24;
+
+    color:#fff3ac;
+    font-size:1.1rem;
+    font-weight:1000;
+    font-style:italic;
+
+    opacity:0;
+
+    text-shadow:
+        0 3px 0 #a35400,
+        0 0 14px rgba(255,210,53,.7);
+
+    pointer-events:none;
+}
+
+.kerupuk-combo strong{
+    display:block;
+    font-size:2.1rem;
+    line-height:.9;
+}
+
+.kerupuk-combo.show{
+    animation:kerupukComboShow .68s ease-out;
+}
+
+@keyframes kerupukComboShow{
+    0%{
+        opacity:0;
+        transform:
+            translateY(18px)
+            scale(.45)
+            rotate(-8deg);
+    }
+
+    35%{
+        opacity:1;
+        transform:
+            translateY(-5px)
+            scale(1.18)
+            rotate(3deg);
+    }
+
+    70%{
+        opacity:1;
+        transform:
+            translateY(-8px)
+            scale(1);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translateY(-28px)
+            scale(.86);
+    }
+}
+
+
+/* =========================================================
+   PERFECT / GREAT / MISS
+========================================================= */
+
+.kerupuk-feedback{
+    position:absolute;
+    top:31%;
+    left:50%;
+    z-index:25;
+
+    transform:translateX(-50%);
+
+    font-size:2rem;
+    font-weight:1000;
+    font-style:italic;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+
+    opacity:0;
+    pointer-events:none;
+}
+
+.kerupuk-feedback.perfect{
+    color:#fff5a8;
+
+    text-shadow:
+        0 3px 0 #c46a00,
+        0 0 14px rgba(255,221,74,.9),
+        0 0 32px rgba(255,165,31,.5);
+}
+
+.kerupuk-feedback.great{
+    color:#9ffaff;
+
+    text-shadow:
+        0 3px 0 #08768a,
+        0 0 14px rgba(67,221,255,.72);
+}
+
+.kerupuk-feedback.miss{
+    color:#ff9e8d;
+
+    text-shadow:
+        0 3px 0 #8b2114,
+        0 0 14px rgba(255,71,44,.52);
+}
+
+.kerupuk-feedback.show{
+    animation:kerupukFeedbackShow .78s ease-out;
+}
+
+@keyframes kerupukFeedbackShow{
+    0%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            translateY(18px)
+            scale(.4);
+    }
+
+    30%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(-5px)
+            scale(1.2);
+    }
+
+    68%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(-10px)
+            scale(1);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            translateY(-35px)
+            scale(.8);
+    }
+}
+
+
+/* =========================================================
+   CHEWING EFFECT
+========================================================= */
+
+.kerupuk-character.chewing .kerupuk-character-head{
+    animation:kerupukChewing .22s linear infinite;
+}
+
+@keyframes kerupukChewing{
+    0%,
+    100%{
+        transform:
+            translateX(-50%)
+            translateY(0);
+    }
+
+    50%{
+        transform:
+            translateX(-50%)
+            translateY(3px)
+            scaleY(.96);
+    }
+}
+
+
+/* =========================================================
+   WIN STATE
+========================================================= */
+
+.kerupuk-character.victory{
+    animation:kerupukVictoryJump .65s ease-in-out infinite alternate;
+    filter:
+        drop-shadow(0 0 10px rgba(255,235,116,.75))
+        drop-shadow(0 0 24px rgba(255,178,38,.5));
+}
+
+.kerupuk-character.victory .kerupuk-character-arm.arm-left{
+    transform:rotate(145deg);
+}
+
+.kerupuk-character.victory .kerupuk-character-arm.arm-right{
+    transform:rotate(-145deg);
+}
+
+@keyframes kerupukVictoryJump{
+    from{
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1.03);
+    }
+
+    to{
+        transform:
+            translateX(-50%)
+            translateY(-18px)
+            scale(1.08);
+    }
+}
+
+.kerupuk-arena.win,
+.makan-kerupuk-arena.win{
+    animation:kerupukArenaWin 1.2s ease-in-out infinite alternate;
+
+    box-shadow:
+        0 24px 55px rgba(0,0,0,.24),
+        0 0 44px rgba(255,215,65,.45),
+        inset 0 1px rgba(255,255,255,.18);
+}
+
+@keyframes kerupukArenaWin{
+    to{
+        filter:brightness(1.09);
+    }
+}
+
+
+/* =========================================================
+   LOSE STATE
+========================================================= */
+
+.kerupuk-character.lose{
+    transform:
+        translateX(-50%)
+        translateY(10px)
+        rotate(-5deg);
+
+    filter:grayscale(.35) brightness(.75);
+}
+
+.kerupuk-arena.lose,
+.makan-kerupuk-arena.lose{
+    filter:saturate(.7) brightness(.78);
+
+    box-shadow:
+        0 24px 55px rgba(0,0,0,.3),
+        0 0 30px rgba(255,57,36,.18);
+}
+
+
+/* =========================================================
+   SUCCESS LIGHT
+========================================================= */
+
+.kerupuk-success-light{
+    position:absolute;
+    top:0;
+    left:50%;
+    z-index:10;
+    width:430px;
+    height:610px;
+
+    transform:translateX(-50%);
+    clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,252,194,.78),
+            rgba(255,217,77,.12) 68%,
+            transparent
+        );
+
+    opacity:0;
+    filter:blur(5px);
+    pointer-events:none;
+}
+
+.kerupuk-success-light.active{
+    animation:kerupukSuccessLight 1.3s ease-out forwards;
+}
+
+@keyframes kerupukSuccessLight{
+    0%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            scaleX(.35);
+    }
+
+    35%{
+        opacity:.9;
+        transform:
+            translateX(-50%)
+            scaleX(1.1);
+    }
+
+    100%{
+        opacity:.3;
+        transform:
+            translateX(-50%)
+            scaleX(1);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:560px){
+
+    .kerupuk-character{
+        bottom:101px;
+        width:115px;
+        height:185px;
+    }
+
+    .kerupuk-character-head{
+        width:60px;
+        height:64px;
+    }
+
+    .kerupuk-character-hair{
+        width:61px;
+        height:30px;
+    }
+
+    .kerupuk-character-face{
+        top:23px;
+        transform:
+            translateX(-50%)
+            scale(.8);
+    }
+
+    .kerupuk-character-torso{
+        top:59px;
+        width:61px;
+        height:71px;
+    }
+
+    .kerupuk-character-torso::after{
+        top:23px;
+        font-size:.9rem;
+    }
+
+    .kerupuk-character-arm{
+        top:69px;
+        width:19px;
+        height:62px;
+    }
+
+    .kerupuk-character-arm.arm-left{
+        left:17px;
+    }
+
+    .kerupuk-character-arm.arm-right{
+        right:17px;
+    }
+
+    .kerupuk-character-shorts{
+        top:120px;
+        width:64px;
+        height:34px;
+    }
+
+    .kerupuk-character-leg{
+        top:144px;
+        width:20px;
+        height:46px;
+    }
+
+    .kerupuk-character-leg.leg-left{
+        left:31px;
+    }
+
+    .kerupuk-character-leg.leg-right{
+        right:31px;
+    }
+
+    .kerupuk-combo{
+        top:40%;
+        left:10%;
+        font-size:.82rem;
+    }
+
+    .kerupuk-combo strong{
+        font-size:1.55rem;
+    }
+
+    .kerupuk-feedback{
+        top:29%;
+        font-size:1.4rem;
+    }
+
+    .kerupuk-crumbs{
+        top:260px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    .kerupuk-character,
+    .kerupuk-character *,
+    .kerupuk-target,
+    .kerupuk-crumb,
+    .kerupuk-bite-impact,
+    .kerupuk-combo,
+    .kerupuk-feedback,
+    .kerupuk-success-light,
+    .kerupuk-arena.win,
+    .makan-kerupuk-arena.win{
+        animation:none !important;
+    }
+
+}
