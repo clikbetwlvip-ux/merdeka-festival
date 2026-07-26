@@ -8008,3 +8008,1954 @@
     initialize();
 
 })();
+/* =========================================================
+   CLICKBET88 FESTIVAL KEMERDEKAAN 2026
+   JAVASCRIPT PART 6
+   FINAL INTEGRATION, DAILY DATA, STATS & MYSTERY ACCESS
+========================================================= */
+
+(() => {
+    "use strict";
+
+    /* =====================================================
+       KONFIGURASI
+    ===================================================== */
+
+    const FINAL_CONFIG = {
+        version: "6.0.0",
+
+        maximumDailyTickets: 8,
+        ticketCostPerGame: 1,
+
+        storageKey:
+            "clickbet88_final_integration_v1",
+
+        mysteryStorageKey:
+            "clickbet88_mystery_data_v1",
+
+        games: {
+            "panjat-pinang": {
+                name: "Panjat Pinang"
+            },
+
+            panjat: {
+                name: "Panjat Pinang"
+            },
+
+            "makan-kerupuk": {
+                name: "Makan Kerupuk"
+            },
+
+            kerupuk: {
+                name: "Makan Kerupuk"
+            },
+
+            "lomba-kelereng": {
+                name: "Lomba Kelereng"
+            },
+
+            kelereng: {
+                name: "Lomba Kelereng"
+            }
+        }
+    };
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    const runtime = {
+        initialized: false,
+        currentScreen: "",
+        previousScreen: "",
+
+        originalUseTicket: null,
+        originalAddTicket: null,
+        originalRegisterResult: null,
+        originalShowScreen: null,
+
+        lastResultSignature: "",
+        lastResultTime: 0,
+
+        midnightTimer: null,
+        syncTimer: null,
+        toastTimer: null
+    };
+
+
+    /* =====================================================
+       UTILITAS
+    ===================================================== */
+
+    function getTodayKey() {
+        const now = new Date();
+
+        return [
+            now.getFullYear(),
+            String(now.getMonth() + 1).padStart(2, "0"),
+            String(now.getDate()).padStart(2, "0")
+        ].join("-");
+    }
+
+
+    function createDefaultData() {
+        return {
+            version: FINAL_CONFIG.version,
+            date: getTodayKey(),
+
+            memberId: "",
+            tickets: 0,
+            ticketsEarnedToday: 0,
+            ticketsUsedToday: 0,
+
+            pendingMysteryBoxes: 0,
+
+            statistics: {
+                totalPlayed: 0,
+                totalWon: 0,
+                totalLost: 0,
+
+                games: {
+                    panjat: {
+                        played: 0,
+                        won: 0,
+                        lost: 0,
+                        bestScore: 0
+                    },
+
+                    kerupuk: {
+                        played: 0,
+                        won: 0,
+                        lost: 0,
+                        bestScore: 0
+                    },
+
+                    kelereng: {
+                        played: 0,
+                        won: 0,
+                        lost: 0,
+                        bestScore: 0
+                    }
+                }
+            },
+
+            session: {
+                currentGame: "",
+                gameStartedAt: null,
+                lastScreen: "opening"
+            },
+
+            settings: {
+                soundEnabled: true,
+                reducedEffects: false
+            },
+
+            updatedAt: new Date().toISOString()
+        };
+    }
+
+
+    function safeNumber(value, fallback = 0) {
+        const number = Number(value);
+
+        return Number.isFinite(number)
+            ? number
+            : fallback;
+    }
+
+
+    function clamp(value, minimum, maximum) {
+        return Math.min(
+            Math.max(
+                safeNumber(value),
+                minimum
+            ),
+            maximum
+        );
+    }
+
+
+    function formatRupiah(value) {
+        return new Intl.NumberFormat(
+            "id-ID",
+            {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }
+        ).format(safeNumber(value));
+    }
+
+
+    function normalizeGameName(gameName) {
+        const value =
+            String(gameName || "")
+                .trim()
+                .toLowerCase();
+
+        if (
+            value.includes("pinang") ||
+            value === "panjat"
+        ) {
+            return "panjat";
+        }
+
+        if (
+            value.includes("kerupuk")
+        ) {
+            return "kerupuk";
+        }
+
+        if (
+            value.includes("kelereng")
+        ) {
+            return "kelereng";
+        }
+
+        return value;
+    }
+
+
+    function normalizeResult(result) {
+        const value =
+            String(result || "")
+                .trim()
+                .toLowerCase();
+
+        return [
+            "win",
+            "won",
+            "winner",
+            "menang",
+            "success"
+        ].includes(value)
+            ? "win"
+            : "lose";
+    }
+
+
+    function getCoreAPI() {
+        return window.ClickbetGame || null;
+    }
+
+
+    /* =====================================================
+       PENYIMPANAN
+    ===================================================== */
+
+    function saveData(data) {
+        try {
+            data.updatedAt =
+                new Date().toISOString();
+
+            localStorage.setItem(
+                FINAL_CONFIG.storageKey,
+                JSON.stringify(data)
+            );
+
+            return true;
+        } catch (error) {
+            console.error(
+                "[CLICKBET88 Part 6] Gagal menyimpan data:",
+                error
+            );
+
+            return false;
+        }
+    }
+
+
+    function sanitizeData(rawData) {
+        const fallback =
+            createDefaultData();
+
+        const data = {
+            ...fallback,
+            ...(rawData || {})
+        };
+
+        data.statistics = {
+            ...fallback.statistics,
+            ...(rawData?.statistics || {})
+        };
+
+        data.statistics.games = {
+            ...fallback.statistics.games,
+            ...(rawData?.statistics?.games || {})
+        };
+
+        ["panjat", "kerupuk", "kelereng"]
+            .forEach((gameName) => {
+                data.statistics.games[gameName] = {
+                    ...fallback.statistics.games[
+                        gameName
+                    ],
+                    ...(
+                        rawData?.statistics
+                            ?.games?.[gameName] ||
+                        {}
+                    )
+                };
+            });
+
+        data.session = {
+            ...fallback.session,
+            ...(rawData?.session || {})
+        };
+
+        data.settings = {
+            ...fallback.settings,
+            ...(rawData?.settings || {})
+        };
+
+        data.tickets = clamp(
+            data.tickets,
+            0,
+            FINAL_CONFIG.maximumDailyTickets
+        );
+
+        data.ticketsEarnedToday = clamp(
+            data.ticketsEarnedToday,
+            0,
+            FINAL_CONFIG.maximumDailyTickets
+        );
+
+        data.ticketsUsedToday =
+            Math.max(
+                safeNumber(
+                    data.ticketsUsedToday
+                ),
+                0
+            );
+
+        data.pendingMysteryBoxes =
+            Math.max(
+                safeNumber(
+                    data.pendingMysteryBoxes
+                ),
+                0
+            );
+
+        return data;
+    }
+
+
+    function readData() {
+        try {
+            const raw =
+                localStorage.getItem(
+                    FINAL_CONFIG.storageKey
+                );
+
+            if (!raw) {
+                const fresh =
+                    createDefaultData();
+
+                saveData(fresh);
+
+                return fresh;
+            }
+
+            const parsed =
+                sanitizeData(
+                    JSON.parse(raw)
+                );
+
+            if (
+                parsed.date !== getTodayKey()
+            ) {
+                return performDailyReset(
+                    parsed,
+                    false
+                );
+            }
+
+            return parsed;
+        } catch (error) {
+            console.error(
+                "[CLICKBET88 Part 6] Data rusak, membuat data baru:",
+                error
+            );
+
+            const fresh =
+                createDefaultData();
+
+            saveData(fresh);
+
+            return fresh;
+        }
+    }
+
+
+    /* =====================================================
+       RESET HARIAN
+    ===================================================== */
+
+    function performDailyReset(
+        previousData = readData(),
+        notify = true
+    ) {
+        const fresh =
+            createDefaultData();
+
+        /*
+         * Data yang tetap disimpan:
+         * - member
+         * - statistik keseluruhan
+         * - pengaturan suara
+         *
+         * Data yang direset:
+         * - tiket
+         * - tiket diperoleh/dipakai hari ini
+         * - Mystery Box tertunda
+         */
+        fresh.memberId =
+            previousData.memberId || "";
+
+        fresh.statistics =
+            previousData.statistics ||
+            fresh.statistics;
+
+        fresh.settings =
+            previousData.settings ||
+            fresh.settings;
+
+        saveData(fresh);
+        syncAllUI();
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:dailyreset",
+                {
+                    detail: {
+                        date: fresh.date
+                    }
+                }
+            )
+        );
+
+        if (notify) {
+            showFinalToast(
+                "Data harian telah direset. Tiket kembali ke 0.",
+                "info"
+            );
+        }
+
+        return fresh;
+    }
+
+
+    function scheduleMidnightReset() {
+        clearTimeout(
+            runtime.midnightTimer
+        );
+
+        const now = new Date();
+
+        const nextMidnight =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate() + 1,
+                0,
+                0,
+                1
+            );
+
+        const delay =
+            nextMidnight.getTime() -
+            now.getTime();
+
+        runtime.midnightTimer =
+            window.setTimeout(() => {
+                performDailyReset(
+                    readData(),
+                    true
+                );
+
+                scheduleMidnightReset();
+            }, delay);
+    }
+
+
+    /* =====================================================
+       MEMBER
+    ===================================================== */
+
+    function getMemberIdFromPage() {
+        const input =
+            document.getElementById(
+                "memberIdInput"
+            );
+
+        if (input?.value?.trim()) {
+            return input.value.trim();
+        }
+
+        const displayed =
+            document.querySelector(
+                "[data-user-name]"
+            );
+
+        const text =
+            displayed?.textContent?.trim();
+
+        if (
+            text &&
+            !["PLAYER", "MEMBER", "-", "ID"]
+                .includes(
+                    text.toUpperCase()
+                )
+        ) {
+            return text;
+        }
+
+        return "";
+    }
+
+
+    function saveMemberId(memberId) {
+        const cleanId =
+            String(memberId || "")
+                .trim();
+
+        if (!cleanId) {
+            return false;
+        }
+
+        const data = readData();
+
+        data.memberId = cleanId;
+
+        saveData(data);
+        syncAllUI();
+
+        return true;
+    }
+
+
+    function getMemberId() {
+        const data = readData();
+
+        return (
+            data.memberId ||
+            getMemberIdFromPage() ||
+            "PLAYER"
+        );
+    }
+
+
+    /* =====================================================
+       TIKET
+    ===================================================== */
+
+    function getTickets() {
+        return readData().tickets;
+    }
+
+
+    function addTickets(
+        amount = 1,
+        reason = "manual"
+    ) {
+        const requested =
+            Math.max(
+                Math.floor(
+                    safeNumber(amount)
+                ),
+                0
+            );
+
+        if (requested <= 0) {
+            return {
+                success: false,
+                added: 0,
+                current: getTickets(),
+                reason: "INVALID_AMOUNT"
+            };
+        }
+
+        const data = readData();
+
+        const availableCapacity =
+            FINAL_CONFIG.maximumDailyTickets -
+            data.tickets;
+
+        const added =
+            Math.min(
+                requested,
+                availableCapacity
+            );
+
+        if (added <= 0) {
+            showFinalToast(
+                "Tiket hari ini sudah mencapai batas maksimal 8.",
+                "warning"
+            );
+
+            return {
+                success: false,
+                added: 0,
+                current: data.tickets,
+                reason: "DAILY_LIMIT"
+            };
+        }
+
+        data.tickets += added;
+
+        data.ticketsEarnedToday =
+            clamp(
+                data.ticketsEarnedToday +
+                    added,
+                0,
+                FINAL_CONFIG
+                    .maximumDailyTickets
+            );
+
+        saveData(data);
+        syncAllUI();
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:ticketchange",
+                {
+                    detail: {
+                        action: "add",
+                        amount: added,
+                        current: data.tickets,
+                        reason
+                    }
+                }
+            )
+        );
+
+        return {
+            success: true,
+            added,
+            current: data.tickets,
+            reason
+        };
+    }
+
+
+    function useTickets(
+        amount = FINAL_CONFIG.ticketCostPerGame,
+        reason = "game"
+    ) {
+        const requested =
+            Math.max(
+                Math.floor(
+                    safeNumber(amount)
+                ),
+                1
+            );
+
+        const data = readData();
+
+        if (data.tickets < requested) {
+            showFinalToast(
+                "Tiket belum tersedia. Kamu membutuhkan 1 tiket untuk bermain.",
+                "warning"
+            );
+
+            return false;
+        }
+
+        data.tickets -= requested;
+        data.ticketsUsedToday +=
+            requested;
+
+        saveData(data);
+        syncAllUI();
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:ticketchange",
+                {
+                    detail: {
+                        action: "use",
+                        amount: requested,
+                        current: data.tickets,
+                        reason
+                    }
+                }
+            )
+        );
+
+        return true;
+    }
+
+
+    function setTickets(
+        amount,
+        reason = "testing"
+    ) {
+        const data = readData();
+
+        data.tickets =
+            clamp(
+                Math.floor(
+                    safeNumber(amount)
+                ),
+                0,
+                FINAL_CONFIG
+                    .maximumDailyTickets
+            );
+
+        /*
+         * Agar pengujian 8 tiket tidak tertahan
+         * oleh nilai earned sebelumnya.
+         */
+        if (reason === "testing") {
+            data.ticketsEarnedToday =
+                data.tickets;
+        }
+
+        saveData(data);
+        syncAllUI();
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:ticketchange",
+                {
+                    detail: {
+                        action: "set",
+                        amount: data.tickets,
+                        current: data.tickets,
+                        reason
+                    }
+                }
+            )
+        );
+
+        return data.tickets;
+    }
+
+
+    function getTicketStatus() {
+        const data = readData();
+
+        return {
+            current: data.tickets,
+            maximum:
+                FINAL_CONFIG
+                    .maximumDailyTickets,
+            earnedToday:
+                data.ticketsEarnedToday,
+            usedToday:
+                data.ticketsUsedToday,
+            remainingCapacity:
+                Math.max(
+                    FINAL_CONFIG
+                        .maximumDailyTickets -
+                    data.tickets,
+                    0
+                ),
+            date: data.date
+        };
+    }
+
+
+    /* =====================================================
+       STATISTIK GAME
+    ===================================================== */
+
+    function registerGameStart(gameName) {
+        const normalized =
+            normalizeGameName(gameName);
+
+        if (
+            !["panjat", "kerupuk", "kelereng"]
+                .includes(normalized)
+        ) {
+            return false;
+        }
+
+        const data = readData();
+
+        data.session.currentGame =
+            normalized;
+
+        data.session.gameStartedAt =
+            new Date().toISOString();
+
+        saveData(data);
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:gamestart",
+                {
+                    detail: {
+                        game: normalized
+                    }
+                }
+            )
+        );
+
+        return true;
+    }
+
+
+    function isDuplicateResult(
+        gameName,
+        result,
+        score
+    ) {
+        const signature =
+            `${gameName}:${result}:${score}`;
+
+        const now = Date.now();
+
+        const duplicate =
+            runtime.lastResultSignature ===
+                signature &&
+            now - runtime.lastResultTime <
+                1200;
+
+        runtime.lastResultSignature =
+            signature;
+
+        runtime.lastResultTime = now;
+
+        return duplicate;
+    }
+
+
+    function registerGameResult(
+        gameName,
+        result,
+        score = 0,
+        extra = null
+    ) {
+        const normalizedGame =
+            normalizeGameName(gameName);
+
+        const normalizedResult =
+            normalizeResult(result);
+
+        const cleanScore =
+            Math.max(
+                safeNumber(score),
+                0
+            );
+
+        if (
+            !["panjat", "kerupuk", "kelereng"]
+                .includes(normalizedGame)
+        ) {
+            console.warn(
+                "[CLICKBET88 Part 6] Nama game tidak dikenal:",
+                gameName
+            );
+
+            return false;
+        }
+
+        if (
+            isDuplicateResult(
+                normalizedGame,
+                normalizedResult,
+                cleanScore
+            )
+        ) {
+            return false;
+        }
+
+        const data = readData();
+
+        const stats =
+            data.statistics;
+
+        const gameStats =
+            stats.games[normalizedGame];
+
+        stats.totalPlayed += 1;
+        gameStats.played += 1;
+
+        if (normalizedResult === "win") {
+            stats.totalWon += 1;
+            gameStats.won += 1;
+
+            /*
+             * Setiap kemenangan membuka
+             * satu Mystery Box.
+             */
+            data.pendingMysteryBoxes += 1;
+        } else {
+            stats.totalLost += 1;
+            gameStats.lost += 1;
+        }
+
+        gameStats.bestScore =
+            Math.max(
+                safeNumber(
+                    gameStats.bestScore
+                ),
+                cleanScore
+            );
+
+        data.session.currentGame = "";
+        data.session.gameStartedAt = null;
+
+        saveData(data);
+        syncAllUI();
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:resultregistered",
+                {
+                    detail: {
+                        game:
+                            normalizedGame,
+                        result:
+                            normalizedResult,
+                        score:
+                            cleanScore,
+                        pendingMysteryBoxes:
+                            data.pendingMysteryBoxes,
+                        extra
+                    }
+                }
+            )
+        );
+
+        if (normalizedResult === "win") {
+            showFinalToast(
+                "Kemenangan tercatat! 1 Mystery Box berhasil dibuka.",
+                "success"
+            );
+        }
+
+        return true;
+    }
+
+
+    function getStatistics() {
+        return JSON.parse(
+            JSON.stringify(
+                readData().statistics
+            )
+        );
+    }
+
+
+    /* =====================================================
+       MYSTERY BOX ACCESS
+    ===================================================== */
+
+    function getPendingMysteryBoxes() {
+        return readData()
+            .pendingMysteryBoxes;
+    }
+
+
+    function canOpenMysteryBox() {
+        return (
+            getPendingMysteryBoxes() > 0
+        );
+    }
+
+
+    function consumeMysteryAccess() {
+        const data = readData();
+
+        if (
+            data.pendingMysteryBoxes <= 0
+        ) {
+            showFinalToast(
+                "Mystery Box hanya dapat dibuka setelah memenangkan permainan.",
+                "warning"
+            );
+
+            return false;
+        }
+
+        data.pendingMysteryBoxes -= 1;
+
+        saveData(data);
+        syncAllUI();
+
+        document.dispatchEvent(
+            new CustomEvent(
+                "clickbet:mysteryaccessused",
+                {
+                    detail: {
+                        remaining:
+                            data
+                                .pendingMysteryBoxes
+                    }
+                }
+            )
+        );
+
+        return true;
+    }
+
+
+    function grantMysteryAccess(
+        amount = 1
+    ) {
+        const data = readData();
+
+        const granted =
+            Math.max(
+                Math.floor(
+                    safeNumber(amount)
+                ),
+                0
+            );
+
+        data.pendingMysteryBoxes +=
+            granted;
+
+        saveData(data);
+        syncAllUI();
+
+        return data.pendingMysteryBoxes;
+    }
+
+
+    /* =====================================================
+       TOTAL HADIAH
+    ===================================================== */
+
+    function readMysteryData() {
+        try {
+            const raw =
+                localStorage.getItem(
+                    FINAL_CONFIG
+                        .mysteryStorageKey
+                );
+
+            if (!raw) {
+                return {
+                    totalReward: 0,
+                    totalOpened: 0,
+                    history: []
+                };
+            }
+
+            const parsed =
+                JSON.parse(raw);
+
+            if (
+                parsed?.date &&
+                parsed.date !==
+                    getTodayKey()
+            ) {
+                return {
+                    totalReward: 0,
+                    totalOpened: 0,
+                    history: []
+                };
+            }
+
+            return {
+                totalReward:
+                    safeNumber(
+                        parsed?.totalReward
+                    ),
+                totalOpened:
+                    safeNumber(
+                        parsed?.totalOpened
+                    ),
+                history:
+                    Array.isArray(
+                        parsed?.history
+                    )
+                        ? parsed.history
+                        : []
+            };
+        } catch {
+            return {
+                totalReward: 0,
+                totalOpened: 0,
+                history: []
+            };
+        }
+    }
+
+
+    /* =====================================================
+       SINKRONISASI UI
+    ===================================================== */
+
+    function setTextForSelectors(
+        selectors,
+        value
+    ) {
+        selectors.forEach((selector) => {
+            document
+                .querySelectorAll(selector)
+                .forEach((element) => {
+                    element.textContent =
+                        value;
+                });
+        });
+    }
+
+
+    function syncMemberUI() {
+        const memberId =
+            getMemberId();
+
+        setTextForSelectors(
+            [
+                "[data-user-name]",
+                "#lobbyMemberName",
+                "#pinangMemberName",
+                "#kerupukMemberName",
+                "#kelerengMemberName",
+                "#mysteryResultMember"
+            ],
+            memberId
+        );
+    }
+
+
+    function syncTicketUI() {
+        const status =
+            getTicketStatus();
+
+        setTextForSelectors(
+            [
+                "[data-ticket-count]",
+                "#remainingTicketValue",
+                "#pinangRemainingTicket",
+                "#kerupukRemainingTicket",
+                "#kelerengRemainingTicket"
+            ],
+            String(status.current)
+        );
+
+        /*
+         * Elemen lobby yang menampilkan format 0/8.
+         */
+        const dailyTicketElements = [
+            "#dailyTicketValue",
+            "#todayTicketValue",
+            "#lobbyTicketValue",
+            "[data-daily-ticket]"
+        ];
+
+        setTextForSelectors(
+            dailyTicketElements,
+            `${status.current} / ${status.maximum}`
+        );
+    }
+
+
+    function syncStatisticsUI() {
+        const stats =
+            getStatistics();
+
+        setTextForSelectors(
+            [
+                "#gamesPlayedValue",
+                "#totalGamePlayed",
+                "[data-games-played]"
+            ],
+            String(stats.totalPlayed)
+        );
+
+        setTextForSelectors(
+            [
+                "#gamesWonValue",
+                "[data-games-won]"
+            ],
+            String(stats.totalWon)
+        );
+
+        setTextForSelectors(
+            [
+                "#gamesLostValue",
+                "[data-games-lost]"
+            ],
+            String(stats.totalLost)
+        );
+
+        setTextForSelectors(
+            [
+                "#pendingMysteryValue",
+                "[data-pending-mystery]"
+            ],
+            String(
+                getPendingMysteryBoxes()
+            )
+        );
+    }
+
+
+    function syncRewardUI() {
+        const mysteryData =
+            readMysteryData();
+
+        setTextForSelectors(
+            [
+                "#todayRewardValue",
+                "#totalRewardToday",
+                "[data-total-reward]"
+            ],
+            formatRupiah(
+                mysteryData.totalReward
+            )
+        );
+    }
+
+
+    function syncMysteryButtons() {
+        const available =
+            canOpenMysteryBox();
+
+        const openButtons = [
+            document.getElementById(
+                "openMysteryBoxButton"
+            )
+        ].filter(Boolean);
+
+        openButtons.forEach((button) => {
+            /*
+             * Jangan ubah tombol saat animasi
+             * Mystery Box sedang berjalan.
+             */
+            const mysteryState =
+                window.ClickbetMystery
+                    ?.getState?.();
+
+            const busy = [
+                "countdown",
+                "opening"
+            ].includes(
+                mysteryState?.status
+            );
+
+            if (!busy) {
+                button.disabled =
+                    !available;
+
+                button.dataset
+                    .mysteryAvailable =
+                    String(available);
+
+                button.title =
+                    available
+                        ? "Buka Mystery Box"
+                        : "Menangkan permainan terlebih dahulu";
+            }
+        });
+    }
+
+
+    function syncAllUI() {
+        syncMemberUI();
+        syncTicketUI();
+        syncStatisticsUI();
+        syncRewardUI();
+        syncMysteryButtons();
+    }
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    function showFinalToast(
+        message,
+        type = "info",
+        duration = 2800
+    ) {
+        const existingToast =
+            document.getElementById(
+                "part6SystemToast"
+            );
+
+        existingToast?.remove();
+
+        clearTimeout(
+            runtime.toastTimer
+        );
+
+        const icons = {
+            success: "✓",
+            info: "i",
+            warning: "!",
+            error: "×"
+        };
+
+        const toast =
+            document.createElement("div");
+
+        toast.id =
+            "part6SystemToast";
+
+        toast.className =
+            `part6-system-toast ${type}`;
+
+        toast.setAttribute(
+            "role",
+            "status"
+        );
+
+        toast.innerHTML = `
+            <span class="part6-toast-icon">
+                ${icons[type] || icons.info}
+            </span>
+
+            <span class="part6-toast-message"></span>
+        `;
+
+        const messageElement =
+            toast.querySelector(
+                ".part6-toast-message"
+            );
+
+        messageElement.textContent =
+            message;
+
+        document.body.appendChild(
+            toast
+        );
+
+        requestAnimationFrame(() => {
+            toast.classList.add("show");
+        });
+
+        runtime.toastTimer =
+            window.setTimeout(() => {
+                toast.classList.remove(
+                    "show"
+                );
+
+                window.setTimeout(
+                    () => toast.remove(),
+                    300
+                );
+            }, duration);
+    }
+
+
+    /* =====================================================
+       SCREEN TRACKING
+    ===================================================== */
+
+    function detectActiveScreen() {
+        const active =
+            document.querySelector(
+                ".screen.active"
+            );
+
+        if (!active) {
+            return "";
+        }
+
+        return active.id
+            .replace(/Screen$/i, "")
+            .replace(
+                /([a-z])([A-Z])/g,
+                "$1-$2"
+            )
+            .toLowerCase();
+    }
+
+
+    function handleScreenChange(event) {
+        const screenName =
+            String(
+                event.detail?.screen ||
+                detectActiveScreen()
+            );
+
+        runtime.previousScreen =
+            runtime.currentScreen;
+
+        runtime.currentScreen =
+            screenName;
+
+        const data = readData();
+
+        data.session.lastScreen =
+            screenName;
+
+        saveData(data);
+        syncAllUI();
+
+        const game =
+            normalizeGameName(screenName);
+
+        if (
+            ["panjat", "kerupuk", "kelereng"]
+                .includes(game)
+        ) {
+            registerGameStart(game);
+        }
+    }
+
+
+    /* =====================================================
+       PROTEKSI MYSTERY BOX
+    ===================================================== */
+
+    function protectMysteryOpenButton() {
+        const button =
+            document.getElementById(
+                "openMysteryBoxButton"
+            );
+
+        if (!button) return;
+
+        /*
+         * Capture mode berjalan sebelum listener
+         * dari Part 5.
+         */
+        button.addEventListener(
+            "click",
+            (event) => {
+                if (
+                    !canOpenMysteryBox()
+                ) {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+
+                    showFinalToast(
+                        "Belum ada Mystery Box. Menangkan salah satu permainan terlebih dahulu.",
+                        "warning"
+                    );
+
+                    return;
+                }
+
+                const consumed =
+                    consumeMysteryAccess();
+
+                if (!consumed) {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                }
+            },
+            true
+        );
+    }
+
+
+    /* =====================================================
+       PATCH CORE API
+    ===================================================== */
+
+    function installCoreBridge() {
+        const api =
+            getCoreAPI();
+
+        if (!api) {
+            console.warn(
+                "[CLICKBET88 Part 6] ClickbetGame belum ditemukan. Bridge akan dicoba kembali."
+            );
+
+            window.setTimeout(
+                installCoreBridge,
+                500
+            );
+
+            return;
+        }
+
+        if (
+            api.__part6Integrated
+        ) {
+            return;
+        }
+
+        runtime.originalUseTicket =
+            typeof api.useTicket ===
+            "function"
+                ? api.useTicket.bind(api)
+                : null;
+
+        runtime.originalAddTicket =
+            typeof api.addTicket ===
+            "function"
+                ? api.addTicket.bind(api)
+                : null;
+
+        runtime.originalRegisterResult =
+            typeof api.registerGameResult ===
+            "function"
+                ? api.registerGameResult
+                    .bind(api)
+                : null;
+
+        runtime.originalShowScreen =
+            typeof api.showScreen ===
+            "function"
+                ? api.showScreen.bind(api)
+                : null;
+
+
+        /*
+         * API tiket disatukan dengan Part 6.
+         */
+        api.getTicketStatus =
+            getTicketStatus;
+
+        api.addTicket = (
+            amount,
+            reason
+        ) => {
+            return addTickets(
+                amount,
+                reason
+            ).success;
+        };
+
+        api.setTicket = (
+            amount,
+            reason
+        ) => {
+            return setTickets(
+                amount,
+                reason
+            );
+        };
+
+        api.useTicket = (
+            amount,
+            reason
+        ) => {
+            return useTickets(
+                amount,
+                reason
+            );
+        };
+
+
+        /*
+         * Integrasi hasil permainan.
+         */
+        api.registerGameResult = (
+            gameName,
+            result,
+            score,
+            extra
+        ) => {
+            const registered =
+                registerGameResult(
+                    gameName,
+                    result,
+                    score,
+                    extra
+                );
+
+            /*
+             * Fungsi lama tetap dijalankan apabila
+             * ada, agar modul sebelumnya tidak putus.
+             */
+            if (
+                runtime
+                    .originalRegisterResult
+            ) {
+                try {
+                    runtime
+                        .originalRegisterResult(
+                            gameName,
+                            result,
+                            score,
+                            extra
+                        );
+                } catch (error) {
+                    console.warn(
+                        "[CLICKBET88 Part 6] registerGameResult lama mengalami error:",
+                        error
+                    );
+                }
+            }
+
+            return registered;
+        };
+
+
+        /*
+         * Sinkronisasi setelah pindah screen.
+         */
+        if (
+            runtime.originalShowScreen
+        ) {
+            api.showScreen = (
+                screenName,
+                ...args
+            ) => {
+                const result =
+                    runtime
+                        .originalShowScreen(
+                            screenName,
+                            ...args
+                        );
+
+                window.setTimeout(
+                    syncAllUI,
+                    30
+                );
+
+                return result;
+            };
+        }
+
+
+        api.refreshUI =
+            syncAllUI;
+
+        api.getPlayerData = () => {
+            const data = readData();
+
+            return {
+                username:
+                    getMemberId(),
+                memberId:
+                    getMemberId(),
+                tickets:
+                    data.tickets,
+                statistics:
+                    getStatistics(),
+                pendingMysteryBoxes:
+                    data
+                        .pendingMysteryBoxes
+            };
+        };
+
+        api.setSound = (
+            enabled
+        ) => {
+            const data = readData();
+
+            data.settings.soundEnabled =
+                Boolean(enabled);
+
+            saveData(data);
+
+            document.body.classList.toggle(
+                "sound-disabled",
+                !data.settings
+                    .soundEnabled
+            );
+
+            return data.settings
+                .soundEnabled;
+        };
+
+        api.__part6Integrated =
+            true;
+
+        console.info(
+            "[CLICKBET88 Part 6] Core bridge berhasil dipasang."
+        );
+    }
+
+
+    /* =====================================================
+       LOGIN MEMBER
+    ===================================================== */
+
+    function bindMemberInput() {
+        const input =
+            document.getElementById(
+                "memberIdInput"
+            );
+
+        if (!input) return;
+
+        input.addEventListener(
+            "input",
+            () => {
+                const value =
+                    input.value.trim();
+
+                if (value) {
+                    saveMemberId(value);
+                }
+            }
+        );
+
+        input.addEventListener(
+            "change",
+            () => {
+                saveMemberId(
+                    input.value
+                );
+            }
+        );
+    }
+
+
+    /* =====================================================
+       BUTTON GAME
+    ===================================================== */
+
+    function bindGameButtons() {
+        document
+            .querySelectorAll(
+                "[data-game]"
+            )
+            .forEach((button) => {
+                button.addEventListener(
+                    "click",
+                    (event) => {
+                        if (
+                            getTickets() <= 0
+                        ) {
+                            event.preventDefault();
+                            event
+                                .stopImmediatePropagation();
+
+                            showFinalToast(
+                                "Tiket kamu masih 0. Tambahkan tiket terlebih dahulu untuk bermain.",
+                                "warning"
+                            );
+                        }
+                    },
+                    true
+                );
+            });
+    }
+
+
+    /* =====================================================
+       AUTO SYNC
+    ===================================================== */
+
+    function startAutoSync() {
+        clearInterval(
+            runtime.syncTimer
+        );
+
+        runtime.syncTimer =
+            window.setInterval(() => {
+                const data =
+                    readData();
+
+                if (
+                    data.date !==
+                    getTodayKey()
+                ) {
+                    performDailyReset(
+                        data,
+                        true
+                    );
+
+                    return;
+                }
+
+                syncAllUI();
+            }, 1500);
+    }
+
+
+    /* =====================================================
+       PUBLIC API
+    ===================================================== */
+
+    window.ClickbetFinal = {
+        version:
+            FINAL_CONFIG.version,
+
+        refresh:
+            syncAllUI,
+
+        getData() {
+            return JSON.parse(
+                JSON.stringify(
+                    readData()
+                )
+            );
+        },
+
+        getTickets,
+        getTicketStatus,
+
+        addTicket(
+            amount = 1,
+            reason = "manual"
+        ) {
+            return addTickets(
+                amount,
+                reason
+            );
+        },
+
+        setTicket(
+            amount = 8,
+            reason = "testing"
+        ) {
+            return setTickets(
+                amount,
+                reason
+            );
+        },
+
+        useTicket(
+            amount = 1,
+            reason = "manual"
+        ) {
+            return useTickets(
+                amount,
+                reason
+            );
+        },
+
+        getStatistics,
+
+        registerResult(
+            gameName,
+            result,
+            score = 0
+        ) {
+            return registerGameResult(
+                gameName,
+                result,
+                score
+            );
+        },
+
+        getPendingMysteryBoxes,
+        canOpenMysteryBox,
+
+        grantMysteryBox(
+            amount = 1
+        ) {
+            return grantMysteryAccess(
+                amount
+            );
+        },
+
+        resetDaily() {
+            return performDailyReset(
+                readData(),
+                true
+            );
+        },
+
+        resetEverything() {
+            localStorage.removeItem(
+                FINAL_CONFIG.storageKey
+            );
+
+            localStorage.removeItem(
+                FINAL_CONFIG
+                    .mysteryStorageKey
+            );
+
+            const fresh =
+                createDefaultData();
+
+            saveData(fresh);
+            syncAllUI();
+
+            return fresh;
+        },
+
+        /*
+         * Mode testing praktis.
+         *
+         * ClickbetFinal.enableTesting()
+         *
+         * Member = TESTPLAYER88
+         * Tiket = 8
+         * Mystery Box = 1
+         */
+        enableTesting() {
+            saveMemberId(
+                "TESTPLAYER88"
+            );
+
+            setTickets(
+                8,
+                "testing"
+            );
+
+            grantMysteryAccess(1);
+
+            syncAllUI();
+
+            showFinalToast(
+                "Mode testing aktif: 8 tiket dan 1 Mystery Box tersedia.",
+                "success"
+            );
+
+            return this.getData();
+        }
+    };
+
+
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
+
+    function initialize() {
+        if (runtime.initialized) {
+            return;
+        }
+
+        runtime.initialized = true;
+
+        readData();
+        bindMemberInput();
+        bindGameButtons();
+        protectMysteryOpenButton();
+
+        installCoreBridge();
+        scheduleMidnightReset();
+        startAutoSync();
+        syncAllUI();
+
+        document.addEventListener(
+            "clickbet:screenchange",
+            handleScreenChange
+        );
+
+        document.addEventListener(
+            "clickbet:rewardwon",
+            syncAllUI
+        );
+
+        document.addEventListener(
+            "clickbet:rewardclaimed",
+            syncAllUI
+        );
+
+        document.addEventListener(
+            "visibilitychange",
+            () => {
+                if (
+                    !document.hidden
+                ) {
+                    syncAllUI();
+                }
+            }
+        );
+
+        window.addEventListener(
+            "storage",
+            syncAllUI
+        );
+
+        console.info(
+            "[CLICKBET88] JavaScript Part 6 Final Integration aktif."
+        );
+    }
+
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initialize,
+            {
+                once: true
+            }
+        );
+    } else {
+        initialize();
+    }
+
+})();
