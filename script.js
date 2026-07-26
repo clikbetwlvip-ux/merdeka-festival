@@ -2648,3 +2648,1690 @@
     initialize();
 
 })();
+/* =========================================================
+   JAVASCRIPT PART 3
+   ENGINE GAME MAKAN KERUPUK
+========================================================= */
+
+(() => {
+    "use strict";
+
+    /* =====================================================
+       KONFIGURASI GAME
+    ===================================================== */
+
+    const KERUPUK_CONFIG = {
+        duration: 10,
+        targetTap: 35,
+        ticketCost: 1,
+        countdownStart: 3,
+        resultDelay: 550,
+        biteAnimationDuration: 160
+    };
+
+
+    /* =====================================================
+       AMBIL ELEMEN HTML
+    ===================================================== */
+
+    const screen =
+        document.getElementById("kerupukScreen");
+
+    if (!screen) {
+        console.warn(
+            "[CLICKBET88] Screen Makan Kerupuk tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    const elements = {
+        screen,
+
+        backButton:
+            document.getElementById("kerupukBackButton"),
+
+        pauseButton:
+            document.getElementById("kerupukPauseButton"),
+
+        soundButton:
+            document.getElementById("kerupukSoundButton"),
+
+        soundIcon:
+            document.getElementById("kerupukSoundIcon"),
+
+        timer:
+            document.getElementById("kerupukTimerValue"),
+
+        timerProgress:
+            document.getElementById("kerupukTimerProgress"),
+
+        remainingValue:
+            document.getElementById("kerupukRemainingValue"),
+
+        eatingProgress:
+            document.getElementById("kerupukEatingProgress"),
+
+        tapCount:
+            document.getElementById("kerupukTapCount"),
+
+        rope:
+            document.getElementById("kerupukRope"),
+
+        kerupuk:
+            document.getElementById("mainKerupuk"),
+
+        biteMask:
+            document.getElementById("kerupukBiteMask"),
+
+        player:
+            document.getElementById("kerupukPlayer"),
+
+        playerFace:
+            document.getElementById("kerupukPlayerFace"),
+
+        crumbEffect:
+            document.getElementById("kerupukCrumbEffect"),
+
+        readyMessage:
+            document.getElementById("kerupukReadyMessage"),
+
+        startButton:
+            document.getElementById("kerupukStartButton"),
+
+        tapButton:
+            document.getElementById("kerupukTapButton"),
+
+        countdownOverlay:
+            document.getElementById(
+                "kerupukCountdownOverlay"
+            ),
+
+        countdownValue:
+            document.getElementById(
+                "kerupukCountdownValue"
+            ),
+
+        countdownMessage:
+            document.getElementById(
+                "kerupukCountdownMessage"
+            ),
+
+        pauseOverlay:
+            document.getElementById(
+                "kerupukPauseOverlay"
+            ),
+
+        resumeButton:
+            document.getElementById(
+                "kerupukResumeButton"
+            ),
+
+        quitButton:
+            document.getElementById("kerupukQuitButton"),
+
+        resultOverlay:
+            document.getElementById(
+                "kerupukResultOverlay"
+            ),
+
+        resultModal:
+            document.getElementById(
+                "kerupukResultModal"
+            ),
+
+        closeResultButton:
+            document.getElementById(
+                "closeKerupukResultButton"
+            ),
+
+        winContent:
+            document.getElementById(
+                "kerupukWinContent"
+            ),
+
+        loseContent:
+            document.getElementById(
+                "kerupukLoseContent"
+            ),
+
+        resultRemainingTime:
+            document.getElementById(
+                "kerupukResultRemainingTime"
+            ),
+
+        resultTapCount:
+            document.getElementById(
+                "kerupukResultTapCount"
+            ),
+
+        loseTapCount:
+            document.getElementById(
+                "kerupukLoseTapCount"
+            ),
+
+        loseRemaining:
+            document.getElementById(
+                "kerupukLoseRemaining"
+            ),
+
+        loseTicket:
+            document.getElementById(
+                "kerupukLoseTicket"
+            ),
+
+        openMysteryButton:
+            document.getElementById(
+                "openKerupukMysteryButton"
+            ),
+
+        winLobbyButton:
+            document.getElementById(
+                "kerupukWinLobbyButton"
+            ),
+
+        retryButton:
+            document.getElementById(
+                "retryKerupukButton"
+            ),
+
+        loseLobbyButton:
+            document.getElementById(
+                "kerupukLoseLobbyButton"
+            ),
+
+        exitOverlay:
+            document.getElementById(
+                "kerupukExitConfirmOverlay"
+            ),
+
+        cancelExitButton:
+            document.getElementById(
+                "cancelKerupukExitButton"
+            ),
+
+        confirmExitButton:
+            document.getElementById(
+                "confirmKerupukExitButton"
+            ),
+
+        toast:
+            document.getElementById("kerupukToast"),
+
+        toastIcon:
+            document.getElementById(
+                "kerupukToastIcon"
+            ),
+
+        toastMessage:
+            document.getElementById(
+                "kerupukToastMessage"
+            )
+    };
+
+
+    /* =====================================================
+       STATE GAME
+    ===================================================== */
+
+    const game = {
+        status: "idle",
+
+        tapCount: 0,
+        progress: 0,
+        remaining: 100,
+        timeLeft: KERUPUK_CONFIG.duration,
+
+        timerId: null,
+        countdownId: null,
+        toastTimer: null,
+        biteTimer: null,
+
+        ticketUsed: false,
+        soundEnabled: true,
+        finishing: false
+    };
+
+
+    /* =====================================================
+       UTILITAS DASAR
+    ===================================================== */
+
+    function clamp(value, minimum, maximum) {
+        return Math.min(
+            Math.max(Number(value) || 0, minimum),
+            maximum
+        );
+    }
+
+
+    function formatTime(seconds) {
+        const cleanSeconds = Math.max(
+            0,
+            Math.ceil(Number(seconds) || 0)
+        );
+
+        return `00:${String(cleanSeconds).padStart(2, "0")}`;
+    }
+
+
+    function getClickbetAPI() {
+        return window.ClickbetGame || null;
+    }
+
+
+    function getTicketCount() {
+        const api = getClickbetAPI();
+
+        if (
+            !api ||
+            typeof api.getTicketStatus !== "function"
+        ) {
+            return 0;
+        }
+
+        const ticketStatus =
+            api.getTicketStatus();
+
+        return Number(ticketStatus?.current) || 0;
+    }
+
+
+    function isPlaying() {
+        return game.status === "playing";
+    }
+
+
+    function isBusy() {
+        return [
+            "countdown",
+            "playing",
+            "paused"
+        ].includes(game.status);
+    }
+
+
+    function isKerupukScreenActive() {
+        const activeName =
+            document.body.dataset.activeScreen || "";
+
+        return (
+            activeName === "kerupuk" ||
+            activeName === "makan-kerupuk" ||
+            activeName === "makanKerupuk" ||
+            elements.screen.classList.contains("active")
+        );
+    }
+
+
+    /* =====================================================
+       OVERLAY HELPER
+    ===================================================== */
+
+    function showOverlay(element) {
+        if (!element) {
+            return;
+        }
+
+        element.hidden = false;
+        element.setAttribute("aria-hidden", "false");
+
+        requestAnimationFrame(() => {
+            element.classList.add(
+                "active",
+                "show",
+                "visible"
+            );
+        });
+    }
+
+
+    function hideOverlay(element) {
+        if (!element) {
+            return;
+        }
+
+        element.classList.remove(
+            "active",
+            "show",
+            "visible"
+        );
+
+        element.setAttribute("aria-hidden", "true");
+
+        window.setTimeout(() => {
+            const stillVisible =
+                element.classList.contains("active") ||
+                element.classList.contains("show") ||
+                element.classList.contains("visible");
+
+            if (!stillVisible) {
+                element.hidden = true;
+            }
+        }, 300);
+    }
+
+
+    /* =====================================================
+       NOTIFIKASI GAME
+    ===================================================== */
+
+    function showToast(
+        message,
+        type = "info",
+        duration = 2300
+    ) {
+        clearTimeout(game.toastTimer);
+
+        if (
+            !elements.toast ||
+            !elements.toastMessage
+        ) {
+            getClickbetAPI()?.notify?.(
+                message,
+                type
+            );
+
+            return;
+        }
+
+        const iconMap = {
+            info: "ℹ️",
+            success: "✅",
+            warning: "⚠️",
+            error: "❌"
+        };
+
+        if (elements.toastIcon) {
+            elements.toastIcon.textContent =
+                iconMap[type] || iconMap.info;
+        }
+
+        elements.toastMessage.textContent =
+            message;
+
+        elements.toast.className =
+            `game-toast ${type} show`;
+
+        game.toastTimer =
+            window.setTimeout(() => {
+                elements.toast?.classList.remove(
+                    "show"
+                );
+            }, duration);
+    }
+
+
+    /* =====================================================
+       MEMBERSIHKAN TIMER
+    ===================================================== */
+
+    function clearGameTimers() {
+        clearInterval(game.timerId);
+        clearInterval(game.countdownId);
+        clearTimeout(game.biteTimer);
+
+        game.timerId = null;
+        game.countdownId = null;
+        game.biteTimer = null;
+    }
+
+
+    /* =====================================================
+       RENDER TAMPILAN GAME
+    ===================================================== */
+
+    function renderGame() {
+        const progress =
+            clamp(game.progress, 0, 100);
+
+        const remaining =
+            clamp(game.remaining, 0, 100);
+
+        const timePercentage =
+            clamp(
+                game.timeLeft /
+                KERUPUK_CONFIG.duration *
+                100,
+                0,
+                100
+            );
+
+
+        if (elements.timer) {
+            elements.timer.textContent =
+                formatTime(game.timeLeft);
+
+            elements.timer.classList.toggle(
+                "danger",
+                game.timeLeft <= 3 &&
+                game.status === "playing"
+            );
+        }
+
+
+        if (elements.timerProgress) {
+            elements.timerProgress.style.width =
+                `${timePercentage}%`;
+
+            elements.timerProgress.classList.toggle(
+                "danger",
+                game.timeLeft <= 3
+            );
+        }
+
+
+        if (elements.tapCount) {
+            elements.tapCount.textContent =
+                game.tapCount;
+        }
+
+
+        if (elements.remainingValue) {
+            elements.remainingValue.textContent =
+                `${Math.round(remaining)}%`;
+        }
+
+
+        if (elements.eatingProgress) {
+            elements.eatingProgress.style.width =
+                `${progress}%`;
+        }
+
+
+        if (elements.biteMask) {
+            elements.biteMask.style.height =
+                `${progress}%`;
+
+            elements.biteMask.style.opacity =
+                progress <= 0 ? "0" : "1";
+        }
+
+
+        if (elements.kerupuk) {
+            const scale =
+                clamp(
+                    1 - progress * 0.0045,
+                    0.55,
+                    1
+                );
+
+            elements.kerupuk.style.setProperty(
+                "--kerupuk-scale",
+                scale
+            );
+
+            elements.kerupuk.classList.toggle(
+                "almost-finished",
+                remaining <= 25
+            );
+
+            elements.kerupuk.classList.toggle(
+                "finished",
+                remaining <= 0
+            );
+        }
+
+
+        if (elements.tapButton) {
+            elements.tapButton.disabled =
+                game.status !== "playing";
+        }
+
+
+        if (elements.startButton) {
+            elements.startButton.disabled =
+                isBusy();
+
+            const buttonText =
+                elements.startButton.querySelector(
+                    ".start-button-text"
+                );
+
+            if (buttonText) {
+                if (game.status === "idle") {
+                    buttonText.textContent =
+                        "MULAI PERMAINAN";
+                } else if (
+                    game.status === "finished"
+                ) {
+                    buttonText.textContent =
+                        "MAIN LAGI";
+                } else if (
+                    game.status === "countdown"
+                ) {
+                    buttonText.textContent =
+                        "BERSIAP...";
+                } else {
+                    buttonText.textContent =
+                        "PERMAINAN BERJALAN";
+                }
+            }
+        }
+
+
+        elements.screen.classList.toggle(
+            "game-playing",
+            game.status === "playing"
+        );
+
+        elements.screen.classList.toggle(
+            "game-paused",
+            game.status === "paused"
+        );
+
+        elements.screen.classList.toggle(
+            "game-finished",
+            game.status === "finished"
+        );
+    }
+
+
+    /* =====================================================
+       RESET GAME
+    ===================================================== */
+
+    function resetVisualClasses() {
+        elements.player?.classList.remove(
+            "eating",
+            "bite",
+            "winning",
+            "losing",
+            "paused"
+        );
+
+        elements.kerupuk?.classList.remove(
+            "bite",
+            "swing",
+            "almost-finished",
+            "finished",
+            "winning"
+        );
+
+        elements.rope?.classList.remove(
+            "swing",
+            "active"
+        );
+
+        elements.crumbEffect?.classList.remove(
+            "active"
+        );
+
+        if (elements.playerFace) {
+            elements.playerFace.textContent =
+                "😋";
+        }
+    }
+
+
+    function resetRoundData() {
+        clearGameTimers();
+
+        game.tapCount = 0;
+        game.progress = 0;
+        game.remaining = 100;
+        game.timeLeft =
+            KERUPUK_CONFIG.duration;
+
+        game.finishing = false;
+
+        resetVisualClasses();
+
+        hideOverlay(elements.countdownOverlay);
+        hideOverlay(elements.pauseOverlay);
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.exitOverlay);
+
+        renderGame();
+    }
+
+
+    function resetGame(options = {}) {
+        const {
+            preserveTicketStatus = false
+        } = options;
+
+        resetRoundData();
+
+        game.status = "idle";
+
+        if (!preserveTicketStatus) {
+            game.ticketUsed = false;
+        }
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Tekan mulai untuk bersiap makan kerupuk!";
+        }
+
+        renderGame();
+    }
+
+
+    /* =====================================================
+       SISTEM TIKET
+    ===================================================== */
+
+    function consumeTicket() {
+        const api = getClickbetAPI();
+
+        if (!api) {
+            showToast(
+                "Sistem tiket belum tersedia.",
+                "error"
+            );
+
+            return false;
+        }
+
+        if (
+            getTicketCount() <
+            KERUPUK_CONFIG.ticketCost
+        ) {
+            showToast(
+                "Tiket kamu tidak mencukupi.",
+                "warning",
+                2800
+            );
+
+            api.notify?.(
+                "Kamu membutuhkan 1 tiket untuk memainkan Makan Kerupuk.",
+                "warning"
+            );
+
+            return false;
+        }
+
+        if (
+            typeof api.useTicket !== "function"
+        ) {
+            showToast(
+                "Fungsi penggunaan tiket belum tersedia.",
+                "error"
+            );
+
+            return false;
+        }
+
+        const successful =
+            api.useTicket(
+                KERUPUK_CONFIG.ticketCost
+            );
+
+        if (!successful) {
+            showToast(
+                "Tiket gagal digunakan.",
+                "error"
+            );
+
+            return false;
+        }
+
+        game.ticketUsed = true;
+
+        showToast(
+            "1 tiket digunakan. Bersiap makan kerupuk!",
+            "success"
+        );
+
+        return true;
+    }
+
+
+    /* =====================================================
+       MULAI COUNTDOWN
+    ===================================================== */
+
+    function startCountdown() {
+        if (isBusy()) {
+            return;
+        }
+
+        if (!consumeTicket()) {
+            return;
+        }
+
+        resetRoundData();
+
+        game.status = "countdown";
+
+        let countdown =
+            KERUPUK_CONFIG.countdownStart;
+
+        if (elements.countdownValue) {
+            elements.countdownValue.textContent =
+                countdown;
+        }
+
+        if (elements.countdownMessage) {
+            elements.countdownMessage.textContent =
+                "Bersiap!";
+        }
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Bersiap, perlombaan segera dimulai!";
+        }
+
+        showOverlay(elements.countdownOverlay);
+        renderGame();
+
+        game.countdownId =
+            window.setInterval(() => {
+                countdown -= 1;
+
+                if (countdown > 0) {
+                    if (elements.countdownValue) {
+                        elements.countdownValue.textContent =
+                            countdown;
+                    }
+
+                    if (
+                        elements.countdownMessage
+                    ) {
+                        elements.countdownMessage.textContent =
+                            countdown === 1
+                                ? "Siap!"
+                                : "Bersiap!";
+                    }
+
+                    return;
+                }
+
+                clearInterval(
+                    game.countdownId
+                );
+
+                game.countdownId = null;
+
+                if (elements.countdownValue) {
+                    elements.countdownValue.textContent =
+                        "GO!";
+                }
+
+                if (elements.countdownMessage) {
+                    elements.countdownMessage.textContent =
+                        "Makan sekarang!";
+                }
+
+                window.setTimeout(() => {
+                    hideOverlay(
+                        elements.countdownOverlay
+                    );
+
+                    startRound();
+                }, 500);
+            }, 850);
+    }
+
+
+    /* =====================================================
+       MULAI RONDE
+    ===================================================== */
+
+    function startRound() {
+        game.status = "playing";
+        game.finishing = false;
+
+        elements.player?.classList.add(
+            "eating"
+        );
+
+        elements.rope?.classList.add(
+            "active"
+        );
+
+        if (elements.playerFace) {
+            elements.playerFace.textContent =
+                "😋";
+        }
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Tap secepat mungkin sampai kerupuk habis!";
+        }
+
+        renderGame();
+
+        game.timerId =
+            window.setInterval(() => {
+                if (
+                    game.status !== "playing"
+                ) {
+                    return;
+                }
+
+                game.timeLeft =
+                    Math.max(
+                        game.timeLeft - 0.1,
+                        0
+                    );
+
+                renderGame();
+
+                if (game.timeLeft <= 0) {
+                    finishGame(false);
+                }
+            }, 100);
+    }
+
+
+    /* =====================================================
+       PROSES TAP
+    ===================================================== */
+
+    function registerTap() {
+        if (!isPlaying()) {
+            return;
+        }
+
+        if (game.finishing) {
+            return;
+        }
+
+        game.tapCount += 1;
+
+        game.progress =
+            clamp(
+                game.tapCount /
+                KERUPUK_CONFIG.targetTap *
+                100,
+                0,
+                100
+            );
+
+        game.remaining =
+            clamp(
+                100 - game.progress,
+                0,
+                100
+            );
+
+        animateBite();
+        animateCrumbs();
+        animateRope();
+
+        renderGame();
+
+        if (
+            game.tapCount >=
+            KERUPUK_CONFIG.targetTap
+        ) {
+            finishGame(true);
+        }
+    }
+
+
+    /* =====================================================
+       ANIMASI TAP DAN MAKAN
+    ===================================================== */
+
+    function animateBite() {
+        if (elements.player) {
+            elements.player.classList.remove(
+                "bite"
+            );
+
+            void elements.player.offsetWidth;
+
+            elements.player.classList.add(
+                "bite"
+            );
+        }
+
+        if (elements.kerupuk) {
+            elements.kerupuk.classList.remove(
+                "bite"
+            );
+
+            void elements.kerupuk.offsetWidth;
+
+            elements.kerupuk.classList.add(
+                "bite"
+            );
+        }
+
+        clearTimeout(game.biteTimer);
+
+        game.biteTimer =
+            window.setTimeout(() => {
+                elements.player?.classList.remove(
+                    "bite"
+                );
+
+                elements.kerupuk?.classList.remove(
+                    "bite"
+                );
+            }, KERUPUK_CONFIG.biteAnimationDuration);
+    }
+
+
+    function animateCrumbs() {
+        if (!elements.crumbEffect) {
+            return;
+        }
+
+        elements.crumbEffect.classList.remove(
+            "active"
+        );
+
+        void elements.crumbEffect.offsetWidth;
+
+        elements.crumbEffect.classList.add(
+            "active"
+        );
+
+        window.setTimeout(() => {
+            elements.crumbEffect?.classList.remove(
+                "active"
+            );
+        }, 350);
+    }
+
+
+    function animateRope() {
+        if (!elements.rope) {
+            return;
+        }
+
+        elements.rope.classList.remove(
+            "swing"
+        );
+
+        void elements.rope.offsetWidth;
+
+        elements.rope.classList.add(
+            "swing"
+        );
+
+        elements.kerupuk?.classList.remove(
+            "swing"
+        );
+
+        void elements.kerupuk?.offsetWidth;
+
+        elements.kerupuk?.classList.add(
+            "swing"
+        );
+
+        window.setTimeout(() => {
+            elements.rope?.classList.remove(
+                "swing"
+            );
+
+            elements.kerupuk?.classList.remove(
+                "swing"
+            );
+        }, 280);
+    }
+
+
+    /* =====================================================
+       SELESAI PERMAINAN
+    ===================================================== */
+
+    function finishGame(isWinner) {
+        if (
+            game.status !== "playing" &&
+            game.status !== "paused"
+        ) {
+            return;
+        }
+
+        if (game.finishing) {
+            return;
+        }
+
+        game.finishing = true;
+
+        clearGameTimers();
+
+        game.status = "finished";
+
+        elements.player?.classList.remove(
+            "eating",
+            "bite",
+            "paused"
+        );
+
+        elements.kerupuk?.classList.remove(
+            "bite",
+            "swing"
+        );
+
+        elements.rope?.classList.remove(
+            "active",
+            "swing"
+        );
+
+        if (isWinner) {
+            game.progress = 100;
+            game.remaining = 0;
+
+            elements.player?.classList.add(
+                "winning"
+            );
+
+            elements.kerupuk?.classList.add(
+                "finished",
+                "winning"
+            );
+
+            if (elements.playerFace) {
+                elements.playerFace.textContent =
+                    "🤩";
+            }
+
+            if (elements.readyMessage) {
+                elements.readyMessage.textContent =
+                    "Hebat! Kerupuk berhasil dihabiskan!";
+            }
+        } else {
+            elements.player?.classList.add(
+                "losing"
+            );
+
+            if (elements.playerFace) {
+                elements.playerFace.textContent =
+                    "😓";
+            }
+
+            if (elements.readyMessage) {
+                elements.readyMessage.textContent =
+                    "Waktu habis. Kerupuk belum selesai!";
+            }
+        }
+
+        renderGame();
+        registerResult(isWinner);
+
+        window.setTimeout(() => {
+            showResult(isWinner);
+        }, KERUPUK_CONFIG.resultDelay);
+    }
+
+
+    /* =====================================================
+       SIMPAN HASIL KE SISTEM UTAMA
+    ===================================================== */
+
+    function registerResult(isWinner) {
+        const api = getClickbetAPI();
+
+        if (
+            !api ||
+            typeof api.registerGameResult !==
+                "function"
+        ) {
+            return;
+        }
+
+        api.registerGameResult(
+            "kerupuk",
+            isWinner ? "win" : "lose",
+            game.tapCount,
+            0
+        );
+    }
+
+
+    /* =====================================================
+       TAMPILKAN HASIL
+    ===================================================== */
+
+    function showResult(isWinner) {
+        if (!elements.resultOverlay) {
+            return;
+        }
+
+        if (elements.winContent) {
+            elements.winContent.hidden =
+                !isWinner;
+        }
+
+        if (elements.loseContent) {
+            elements.loseContent.hidden =
+                isWinner;
+        }
+
+        if (isWinner) {
+            if (
+                elements.resultRemainingTime
+            ) {
+                elements.resultRemainingTime.textContent =
+                    formatTime(
+                        game.timeLeft
+                    );
+            }
+
+            if (elements.resultTapCount) {
+                elements.resultTapCount.textContent =
+                    game.tapCount;
+            }
+
+            elements.resultModal?.classList.add(
+                "win",
+                "result-win"
+            );
+
+            elements.resultModal?.classList.remove(
+                "lose",
+                "result-lose"
+            );
+
+            createKerupukConfetti();
+        } else {
+            if (elements.loseTapCount) {
+                elements.loseTapCount.textContent =
+                    game.tapCount;
+            }
+
+            if (elements.loseRemaining) {
+                elements.loseRemaining.textContent =
+                    `${Math.round(
+                        game.remaining
+                    )}%`;
+            }
+
+            if (elements.loseTicket) {
+                elements.loseTicket.textContent =
+                    getTicketCount();
+            }
+
+            elements.resultModal?.classList.add(
+                "lose",
+                "result-lose"
+            );
+
+            elements.resultModal?.classList.remove(
+                "win",
+                "result-win"
+            );
+        }
+
+        showOverlay(elements.resultOverlay);
+    }
+
+
+    /* =====================================================
+       EFEK CONFETTI MENANG
+    ===================================================== */
+
+    function createKerupukConfetti() {
+        const container =
+            elements.resultOverlay;
+
+        if (!container) {
+            return;
+        }
+
+        container
+            .querySelectorAll(
+                ".kerupuk-js-confetti"
+            )
+            .forEach((item) => item.remove());
+
+        const fragment =
+            document.createDocumentFragment();
+
+        for (
+            let index = 0;
+            index < 48;
+            index += 1
+        ) {
+            const confetti =
+                document.createElement("span");
+
+            confetti.className =
+                "kerupuk-js-confetti";
+
+            confetti.style.setProperty(
+                "--confetti-left",
+                `${Math.random() * 100}%`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-delay",
+                `${Math.random() * 0.8}s`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-duration",
+                `${1.8 + Math.random() * 1.6}s`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-rotation",
+                `${Math.random() * 900}deg`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-hue",
+                `${Math.floor(
+                    Math.random() * 360
+                )}`
+            );
+
+            fragment.appendChild(confetti);
+        }
+
+        container.appendChild(fragment);
+
+        window.setTimeout(() => {
+            container
+                .querySelectorAll(
+                    ".kerupuk-js-confetti"
+                )
+                .forEach((item) =>
+                    item.remove()
+                );
+        }, 4200);
+    }
+
+
+    /* =====================================================
+       PAUSE DAN RESUME
+    ===================================================== */
+
+    function pauseGame() {
+        if (game.status !== "playing") {
+            showToast(
+                "Permainan belum dimulai.",
+                "info"
+            );
+
+            return;
+        }
+
+        game.status = "paused";
+
+        elements.player?.classList.add(
+            "paused"
+        );
+
+        elements.kerupuk?.classList.add(
+            "paused"
+        );
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Permainan sedang dijeda.";
+        }
+
+        showOverlay(elements.pauseOverlay);
+        renderGame();
+    }
+
+
+    function resumeGame() {
+        if (game.status !== "paused") {
+            return;
+        }
+
+        game.status = "playing";
+
+        elements.player?.classList.remove(
+            "paused"
+        );
+
+        elements.kerupuk?.classList.remove(
+            "paused"
+        );
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Lanjutkan tap sampai kerupuk habis!";
+        }
+
+        hideOverlay(elements.pauseOverlay);
+        renderGame();
+    }
+
+
+    /* =====================================================
+       KONFIRMASI KELUAR
+    ===================================================== */
+
+    function requestExit() {
+        if (isBusy()) {
+            showOverlay(elements.exitOverlay);
+            return;
+        }
+
+        returnToLobby();
+    }
+
+
+    function cancelExit() {
+        hideOverlay(elements.exitOverlay);
+    }
+
+
+    function confirmExit() {
+        hideOverlay(elements.exitOverlay);
+        returnToLobby();
+    }
+
+
+    function returnToLobby() {
+        clearGameTimers();
+
+        hideOverlay(elements.pauseOverlay);
+        hideOverlay(elements.countdownOverlay);
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.exitOverlay);
+
+        resetGame();
+
+        const api = getClickbetAPI();
+
+        if (
+            api &&
+            typeof api.backToLobby === "function"
+        ) {
+            api.backToLobby();
+            return;
+        }
+
+        if (
+            api &&
+            typeof api.showScreen === "function"
+        ) {
+            api.showScreen("lobby");
+        }
+    }
+
+
+    /* =====================================================
+       TOMBOL HASIL
+    ===================================================== */
+
+    function closeResult() {
+        hideOverlay(elements.resultOverlay);
+    }
+
+
+    function retryGame() {
+        hideOverlay(elements.resultOverlay);
+
+        window.setTimeout(() => {
+            resetGame();
+            startCountdown();
+        }, 250);
+    }
+
+
+    function openMysteryBox() {
+        hideOverlay(elements.resultOverlay);
+
+        const api = getClickbetAPI();
+
+        if (
+            !api ||
+            typeof api.showScreen !== "function"
+        ) {
+            showToast(
+                "Mystery Box belum tersedia.",
+                "warning"
+            );
+
+            return;
+        }
+
+        api.showScreen("mystery");
+
+        api.notify?.(
+            "Mystery Box berhasil dibuka. Engine hadiah akan diaktifkan pada Part berikutnya.",
+            "success"
+        );
+    }
+
+
+    /* =====================================================
+       PENGATURAN SUARA
+    ===================================================== */
+
+    function toggleSound() {
+        game.soundEnabled =
+            !game.soundEnabled;
+
+        if (elements.soundIcon) {
+            elements.soundIcon.textContent =
+                game.soundEnabled
+                    ? "🔊"
+                    : "🔇";
+        }
+
+        getClickbetAPI()?.setSound?.(
+            game.soundEnabled
+        );
+
+        showToast(
+            game.soundEnabled
+                ? "Suara diaktifkan."
+                : "Suara dimatikan.",
+            "info"
+        );
+    }
+
+
+    /* =====================================================
+       KEYBOARD
+    ===================================================== */
+
+    function handleKeyboard(event) {
+        if (!isKerupukScreenActive()) {
+            return;
+        }
+
+        if (
+            event.code === "Space" &&
+            game.status === "playing"
+        ) {
+            event.preventDefault();
+            registerTap();
+            return;
+        }
+
+        if (
+            event.key === "Escape" &&
+            game.status === "paused"
+        ) {
+            resumeGame();
+            return;
+        }
+
+        if (
+            event.key === "Escape" &&
+            isBusy()
+        ) {
+            requestExit();
+        }
+    }
+
+
+    /* =====================================================
+       PERUBAHAN SCREEN
+    ===================================================== */
+
+    function handleScreenChange(event) {
+        const screenName =
+            event.detail?.screen || "";
+
+        const enteringKerupuk =
+            screenName === "kerupuk" ||
+            screenName === "makan-kerupuk" ||
+            screenName === "makanKerupuk";
+
+        if (enteringKerupuk) {
+            renderGame();
+            return;
+        }
+
+        if (isBusy()) {
+            clearGameTimers();
+            resetGame();
+        }
+    }
+
+
+    /* =====================================================
+       BIND EVENT
+    ===================================================== */
+
+    function bindEvents() {
+        elements.startButton?.addEventListener(
+            "click",
+            startCountdown
+        );
+
+        elements.tapButton?.addEventListener(
+            "click",
+            registerTap
+        );
+
+        elements.pauseButton?.addEventListener(
+            "click",
+            pauseGame
+        );
+
+        elements.resumeButton?.addEventListener(
+            "click",
+            resumeGame
+        );
+
+        elements.quitButton?.addEventListener(
+            "click",
+            requestExit
+        );
+
+        elements.backButton?.addEventListener(
+            "click",
+            (event) => {
+                if (isBusy()) {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    requestExit();
+                }
+            },
+            true
+        );
+
+        elements.cancelExitButton?.addEventListener(
+            "click",
+            cancelExit
+        );
+
+        elements.confirmExitButton?.addEventListener(
+            "click",
+            confirmExit
+        );
+
+        elements.closeResultButton?.addEventListener(
+            "click",
+            closeResult
+        );
+
+        elements.retryButton?.addEventListener(
+            "click",
+            retryGame
+        );
+
+        elements.winLobbyButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.loseLobbyButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.openMysteryButton?.addEventListener(
+            "click",
+            openMysteryBox
+        );
+
+        elements.soundButton?.addEventListener(
+            "click",
+            toggleSound
+        );
+
+        elements.resultOverlay?.addEventListener(
+            "click",
+            (event) => {
+                if (
+                    event.target ===
+                    elements.resultOverlay
+                ) {
+                    closeResult();
+                }
+            }
+        );
+
+        elements.exitOverlay?.addEventListener(
+            "click",
+            (event) => {
+                if (
+                    event.target ===
+                    elements.exitOverlay
+                ) {
+                    cancelExit();
+                }
+            }
+        );
+
+        document.addEventListener(
+            "keydown",
+            handleKeyboard
+        );
+
+        document.addEventListener(
+            "clickbet:screenchange",
+            handleScreenChange
+        );
+    }
+
+
+    /* =====================================================
+       PUBLIC API MAKAN KERUPUK
+    ===================================================== */
+
+    window.ClickbetKerupuk = {
+        start: startCountdown,
+        tap: registerTap,
+        pause: pauseGame,
+        resume: resumeGame,
+        reset: resetGame,
+
+        getState() {
+            return {
+                status: game.status,
+                tapCount: game.tapCount,
+                progress: game.progress,
+                remaining: game.remaining,
+                timeLeft: game.timeLeft,
+                ticketUsed: game.ticketUsed
+            };
+        }
+    };
+
+
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
+
+    function initialize() {
+        bindEvents();
+        resetGame();
+
+        console.info(
+            "[CLICKBET88] JavaScript Part 3 Makan Kerupuk aktif."
+        );
+    }
+
+
+    initialize();
+
+})();
