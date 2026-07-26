@@ -1309,3 +1309,1342 @@
     }
 
 })();
+/* =========================================================
+   JAVASCRIPT PART 2
+   ENGINE GAME PANJAT PINANG
+========================================================= */
+
+(() => {
+    "use strict";
+
+    /* =====================================================
+       KONFIGURASI GAME
+    ===================================================== */
+
+    const PINANG_CONFIG = {
+        duration: 15,
+        targetTap: 45,
+        ticketCost: 1,
+        countdownStart: 3,
+        minimumBottom: 8,
+        maximumBottom: 78,
+        resultDelay: 500
+    };
+
+
+    /* =====================================================
+       AMBIL ELEMEN HTML
+    ===================================================== */
+
+    const screen = document.getElementById(
+        "panjatPinangScreen"
+    );
+
+    if (!screen) {
+        console.warn(
+            "[CLICKBET88] Screen Panjat Pinang tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    const elements = {
+        screen,
+
+        backButton:
+            document.getElementById("pinangBackButton"),
+
+        pauseButton:
+            document.getElementById("pinangPauseButton"),
+
+        soundButton:
+            document.getElementById("pinangSoundButton"),
+
+        soundIcon:
+            document.getElementById("pinangSoundIcon"),
+
+        timer:
+            document.getElementById("pinangTimerValue"),
+
+        progressFill:
+            document.getElementById("pinangVerticalProgress"),
+
+        progressMarker:
+            document.getElementById("pinangProgressMarker"),
+
+        progressText:
+            document.getElementById("pinangProgressValue"),
+
+        tapCount:
+            document.getElementById("pinangTapCount"),
+
+        player:
+            document.getElementById("pinangPlayer"),
+
+        dust:
+            document.getElementById("pinangDustEffect"),
+
+        readyMessage:
+            document.getElementById("pinangReadyMessage"),
+
+        startButton:
+            document.getElementById("pinangStartButton"),
+
+        tapButton:
+            document.getElementById("pinangTapButton"),
+
+        countdownOverlay:
+            document.getElementById(
+                "pinangCountdownOverlay"
+            ),
+
+        countdownValue:
+            document.getElementById(
+                "pinangCountdownValue"
+            ),
+
+        countdownMessage:
+            document.getElementById(
+                "pinangCountdownMessage"
+            ),
+
+        pauseOverlay:
+            document.getElementById("pinangPauseOverlay"),
+
+        resumeButton:
+            document.getElementById("pinangResumeButton"),
+
+        quitButton:
+            document.getElementById("pinangQuitButton"),
+
+        resultOverlay:
+            document.getElementById("pinangResultOverlay"),
+
+        resultModal:
+            document.getElementById("pinangResultModal"),
+
+        closeResultButton:
+            document.getElementById(
+                "closePinangResultButton"
+            ),
+
+        winContent:
+            document.getElementById("pinangWinContent"),
+
+        loseContent:
+            document.getElementById("pinangLoseContent"),
+
+        resultRemainingTime:
+            document.getElementById(
+                "pinangResultRemainingTime"
+            ),
+
+        resultTapCount:
+            document.getElementById(
+                "pinangResultTapCount"
+            ),
+
+        loseTapCount:
+            document.getElementById(
+                "pinangLoseTapCount"
+            ),
+
+        loseProgress:
+            document.getElementById(
+                "pinangLoseProgress"
+            ),
+
+        loseTicket:
+            document.getElementById(
+                "pinangLoseTicket"
+            ),
+
+        openMysteryButton:
+            document.getElementById(
+                "openPinangMysteryButton"
+            ),
+
+        winLobbyButton:
+            document.getElementById(
+                "pinangWinLobbyButton"
+            ),
+
+        retryButton:
+            document.getElementById(
+                "retryPinangButton"
+            ),
+
+        loseLobbyButton:
+            document.getElementById(
+                "pinangLoseLobbyButton"
+            ),
+
+        exitOverlay:
+            document.getElementById(
+                "pinangExitConfirmOverlay"
+            ),
+
+        cancelExitButton:
+            document.getElementById(
+                "cancelPinangExitButton"
+            ),
+
+        confirmExitButton:
+            document.getElementById(
+                "confirmPinangExitButton"
+            ),
+
+        toast:
+            document.getElementById("pinangToast"),
+
+        toastIcon:
+            document.getElementById("pinangToastIcon"),
+
+        toastMessage:
+            document.getElementById(
+                "pinangToastMessage"
+            )
+    };
+
+
+    /* =====================================================
+       STATE GAME
+    ===================================================== */
+
+    const game = {
+        status: "idle",
+
+        tapCount: 0,
+        progress: 0,
+        timeLeft: PINANG_CONFIG.duration,
+
+        timerId: null,
+        countdownId: null,
+        toastTimer: null,
+
+        startedAt: null,
+        pausedAt: null,
+
+        ticketUsed: false,
+        soundEnabled: true
+    };
+
+
+    /* =====================================================
+       UTILITAS
+    ===================================================== */
+
+    function clamp(value, minimum, maximum) {
+        return Math.min(
+            Math.max(Number(value) || 0, minimum),
+            maximum
+        );
+    }
+
+
+    function formatTime(seconds) {
+        const cleanSeconds = Math.max(
+            0,
+            Math.ceil(Number(seconds) || 0)
+        );
+
+        return `00:${String(cleanSeconds).padStart(2, "0")}`;
+    }
+
+
+    function getClickbetAPI() {
+        return window.ClickbetGame || null;
+    }
+
+
+    function getTicketCount() {
+        const api = getClickbetAPI();
+
+        if (!api || typeof api.getTicketStatus !== "function") {
+            return 0;
+        }
+
+        return api.getTicketStatus().current;
+    }
+
+
+    function isGameActive() {
+        return game.status === "playing";
+    }
+
+
+    function isGameBusy() {
+        return [
+            "countdown",
+            "playing",
+            "paused"
+        ].includes(game.status);
+    }
+
+
+    /* =====================================================
+       OVERLAY HELPER
+    ===================================================== */
+
+    function showOverlay(element) {
+        if (!element) return;
+
+        element.hidden = false;
+        element.setAttribute("aria-hidden", "false");
+
+        requestAnimationFrame(() => {
+            element.classList.add(
+                "active",
+                "show",
+                "visible"
+            );
+        });
+    }
+
+
+    function hideOverlay(element) {
+        if (!element) return;
+
+        element.classList.remove(
+            "active",
+            "show",
+            "visible"
+        );
+
+        element.setAttribute("aria-hidden", "true");
+
+        window.setTimeout(() => {
+            if (
+                !element.classList.contains("active") &&
+                !element.classList.contains("show")
+            ) {
+                element.hidden = true;
+            }
+        }, 300);
+    }
+
+
+    /* =====================================================
+       TOAST KHUSUS PANJAT PINANG
+    ===================================================== */
+
+    function showToast(
+        message,
+        type = "info",
+        duration = 2200
+    ) {
+        if (!elements.toast || !elements.toastMessage) {
+            const api = getClickbetAPI();
+
+            if (api?.notify) {
+                api.notify(message, type);
+            }
+
+            return;
+        }
+
+        clearTimeout(game.toastTimer);
+
+        const iconMap = {
+            info: "ℹ️",
+            success: "✅",
+            warning: "⚠️",
+            error: "❌"
+        };
+
+        elements.toastIcon.textContent =
+            iconMap[type] || iconMap.info;
+
+        elements.toastMessage.textContent = message;
+
+        elements.toast.className =
+            `game-toast ${type} show`;
+
+        game.toastTimer = window.setTimeout(() => {
+            elements.toast.classList.remove("show");
+        }, duration);
+    }
+
+
+    /* =====================================================
+       RENDER GAME
+    ===================================================== */
+
+    function renderGame() {
+        const progress = clamp(game.progress, 0, 100);
+
+        if (elements.timer) {
+            elements.timer.textContent =
+                formatTime(game.timeLeft);
+
+            elements.timer.classList.toggle(
+                "danger",
+                game.timeLeft <= 5 &&
+                game.status === "playing"
+            );
+        }
+
+
+        if (elements.tapCount) {
+            elements.tapCount.textContent =
+                game.tapCount;
+        }
+
+
+        if (elements.progressText) {
+            elements.progressText.textContent =
+                `${Math.round(progress)}%`;
+        }
+
+
+        if (elements.progressFill) {
+            elements.progressFill.style.height =
+                `${progress}%`;
+        }
+
+
+        if (elements.progressMarker) {
+            elements.progressMarker.style.bottom =
+                `${progress}%`;
+        }
+
+
+        if (elements.player) {
+            const movementRange =
+                PINANG_CONFIG.maximumBottom -
+                PINANG_CONFIG.minimumBottom;
+
+            const playerBottom =
+                PINANG_CONFIG.minimumBottom +
+                movementRange *
+                (progress / 100);
+
+            elements.player.style.bottom =
+                `${playerBottom}%`;
+        }
+
+
+        if (elements.tapButton) {
+            elements.tapButton.disabled =
+                game.status !== "playing";
+        }
+
+
+        if (elements.startButton) {
+            elements.startButton.disabled =
+                isGameBusy();
+
+            const startText =
+                elements.startButton.querySelector(
+                    ".start-button-text"
+                );
+
+            if (startText) {
+                if (game.status === "idle") {
+                    startText.textContent =
+                        "MULAI PERMAINAN";
+                } else if (game.status === "finished") {
+                    startText.textContent =
+                        "MAIN LAGI";
+                } else {
+                    startText.textContent =
+                        "PERMAINAN BERJALAN";
+                }
+            }
+        }
+
+
+        elements.screen.classList.toggle(
+            "game-playing",
+            game.status === "playing"
+        );
+
+        elements.screen.classList.toggle(
+            "game-paused",
+            game.status === "paused"
+        );
+
+        elements.screen.classList.toggle(
+            "game-finished",
+            game.status === "finished"
+        );
+    }
+
+
+    /* =====================================================
+       RESET TAMPILAN GAME
+    ===================================================== */
+
+    function resetGame(options = {}) {
+        const {
+            preserveTicketStatus = false
+        } = options;
+
+        clearGameIntervals();
+
+        game.status = "idle";
+        game.tapCount = 0;
+        game.progress = 0;
+        game.timeLeft = PINANG_CONFIG.duration;
+        game.startedAt = null;
+        game.pausedAt = null;
+
+        if (!preserveTicketStatus) {
+            game.ticketUsed = false;
+        }
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Tekan tombol mulai untuk bersiap!";
+        }
+
+        elements.player?.classList.remove(
+            "climbing",
+            "tap",
+            "winning",
+            "losing",
+            "slipping",
+            "paused"
+        );
+
+        elements.dust?.classList.remove("active");
+
+        hideOverlay(elements.countdownOverlay);
+        hideOverlay(elements.pauseOverlay);
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.exitOverlay);
+
+        renderGame();
+    }
+
+
+    function clearGameIntervals() {
+        clearInterval(game.timerId);
+        clearInterval(game.countdownId);
+
+        game.timerId = null;
+        game.countdownId = null;
+    }
+
+
+    /* =====================================================
+       CEK DAN GUNAKAN TIKET
+    ===================================================== */
+
+    function consumeTicket() {
+        const api = getClickbetAPI();
+
+        if (!api) {
+            showToast(
+                "Sistem tiket belum tersedia.",
+                "error"
+            );
+
+            return false;
+        }
+
+        if (getTicketCount() < PINANG_CONFIG.ticketCost) {
+            showToast(
+                "Tiket kamu belum mencukupi untuk bermain.",
+                "warning",
+                2800
+            );
+
+            api.notify?.(
+                "Kamu membutuhkan 1 tiket untuk memainkan Panjat Pinang.",
+                "warning"
+            );
+
+            return false;
+        }
+
+        const successful = api.useTicket(
+            PINANG_CONFIG.ticketCost
+        );
+
+        if (!successful) {
+            return false;
+        }
+
+        game.ticketUsed = true;
+
+        showToast(
+            "1 tiket digunakan. Bersiaplah!",
+            "success"
+        );
+
+        return true;
+    }
+
+
+    /* =====================================================
+       MULAI COUNTDOWN
+    ===================================================== */
+
+    function startCountdown() {
+        if (isGameBusy()) {
+            return;
+        }
+
+        if (!consumeTicket()) {
+            return;
+        }
+
+        resetRoundWithoutReturningTicket();
+
+        game.status = "countdown";
+
+        let countdown =
+            PINANG_CONFIG.countdownStart;
+
+        if (elements.countdownValue) {
+            elements.countdownValue.textContent =
+                countdown;
+        }
+
+        if (elements.countdownMessage) {
+            elements.countdownMessage.textContent =
+                "Bersiap!";
+        }
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Bersiap, permainan segera dimulai!";
+        }
+
+        showOverlay(elements.countdownOverlay);
+        renderGame();
+
+        game.countdownId = window.setInterval(() => {
+            countdown -= 1;
+
+            if (countdown > 0) {
+                if (elements.countdownValue) {
+                    elements.countdownValue.textContent =
+                        countdown;
+                }
+
+                if (elements.countdownMessage) {
+                    elements.countdownMessage.textContent =
+                        countdown === 1
+                            ? "Siap!"
+                            : "Bersiap!";
+                }
+
+                return;
+            }
+
+            clearInterval(game.countdownId);
+            game.countdownId = null;
+
+            if (elements.countdownValue) {
+                elements.countdownValue.textContent =
+                    "GO!";
+            }
+
+            if (elements.countdownMessage) {
+                elements.countdownMessage.textContent =
+                    "Panjat sekarang!";
+            }
+
+            window.setTimeout(() => {
+                hideOverlay(elements.countdownOverlay);
+                startRound();
+            }, 500);
+        }, 850);
+    }
+
+
+    function resetRoundWithoutReturningTicket() {
+        clearGameIntervals();
+
+        game.tapCount = 0;
+        game.progress = 0;
+        game.timeLeft = PINANG_CONFIG.duration;
+        game.startedAt = null;
+        game.pausedAt = null;
+
+        elements.player?.classList.remove(
+            "climbing",
+            "tap",
+            "winning",
+            "losing",
+            "slipping",
+            "paused"
+        );
+
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.pauseOverlay);
+
+        renderGame();
+    }
+
+
+    /* =====================================================
+       MULAI PERMAINAN
+    ===================================================== */
+
+    function startRound() {
+        game.status = "playing";
+        game.startedAt = Date.now();
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Tap secepat mungkin sampai mencapai puncak!";
+        }
+
+        elements.player?.classList.add("climbing");
+
+        renderGame();
+
+        game.timerId = window.setInterval(() => {
+            if (game.status !== "playing") {
+                return;
+            }
+
+            game.timeLeft = Math.max(
+                game.timeLeft - 0.1,
+                0
+            );
+
+            renderGame();
+
+            if (game.timeLeft <= 0) {
+                finishGame(false);
+            }
+        }, 100);
+    }
+
+
+    /* =====================================================
+       PROSES TAP
+    ===================================================== */
+
+    function registerTap() {
+        if (!isGameActive()) {
+            return;
+        }
+
+        game.tapCount += 1;
+
+        game.progress = clamp(
+            game.tapCount /
+            PINANG_CONFIG.targetTap *
+            100,
+            0,
+            100
+        );
+
+        animatePlayerTap();
+        animateDust();
+        renderGame();
+
+        if (game.tapCount >= PINANG_CONFIG.targetTap) {
+            finishGame(true);
+        }
+    }
+
+
+    function animatePlayerTap() {
+        if (!elements.player) return;
+
+        elements.player.classList.remove("tap");
+
+        void elements.player.offsetWidth;
+
+        elements.player.classList.add("tap");
+
+        window.setTimeout(() => {
+            elements.player?.classList.remove("tap");
+        }, 130);
+    }
+
+
+    function animateDust() {
+        if (!elements.dust) return;
+
+        elements.dust.classList.remove("active");
+
+        void elements.dust.offsetWidth;
+
+        elements.dust.classList.add("active");
+
+        window.setTimeout(() => {
+            elements.dust?.classList.remove("active");
+        }, 250);
+    }
+
+
+    /* =====================================================
+       SELESAI GAME
+    ===================================================== */
+
+    function finishGame(isWinner) {
+        if (
+            game.status !== "playing" &&
+            game.status !== "paused"
+        ) {
+            return;
+        }
+
+        clearGameIntervals();
+
+        game.status = "finished";
+
+        elements.player?.classList.remove(
+            "climbing",
+            "tap",
+            "paused"
+        );
+
+        if (elements.tapButton) {
+            elements.tapButton.disabled = true;
+        }
+
+        if (isWinner) {
+            game.progress = 100;
+            elements.player?.classList.add("winning");
+
+            if (elements.readyMessage) {
+                elements.readyMessage.textContent =
+                    "Hebat! Kamu berhasil mencapai puncak!";
+            }
+        } else {
+            elements.player?.classList.add(
+                "losing",
+                "slipping"
+            );
+
+            if (elements.readyMessage) {
+                elements.readyMessage.textContent =
+                    "Waktu habis. Coba lebih cepat lagi!";
+            }
+        }
+
+        renderGame();
+
+        registerResult(isWinner);
+
+        window.setTimeout(() => {
+            showResult(isWinner);
+        }, PINANG_CONFIG.resultDelay);
+    }
+
+
+    function registerResult(isWinner) {
+        const api = getClickbetAPI();
+
+        if (!api?.registerGameResult) {
+            return;
+        }
+
+        api.registerGameResult(
+            "panjat",
+            isWinner ? "win" : "lose",
+            game.tapCount,
+            0
+        );
+    }
+
+
+    /* =====================================================
+       TAMPILKAN HASIL
+    ===================================================== */
+
+    function showResult(isWinner) {
+        if (!elements.resultOverlay) {
+            return;
+        }
+
+        if (elements.winContent) {
+            elements.winContent.hidden = !isWinner;
+        }
+
+        if (elements.loseContent) {
+            elements.loseContent.hidden = isWinner;
+        }
+
+        if (isWinner) {
+            if (elements.resultRemainingTime) {
+                elements.resultRemainingTime.textContent =
+                    formatTime(game.timeLeft);
+            }
+
+            if (elements.resultTapCount) {
+                elements.resultTapCount.textContent =
+                    game.tapCount;
+            }
+
+            elements.resultModal?.classList.add(
+                "win",
+                "result-win"
+            );
+
+            elements.resultModal?.classList.remove(
+                "lose",
+                "result-lose"
+            );
+
+            createMiniConfetti();
+        } else {
+            if (elements.loseTapCount) {
+                elements.loseTapCount.textContent =
+                    game.tapCount;
+            }
+
+            if (elements.loseProgress) {
+                elements.loseProgress.textContent =
+                    `${Math.round(game.progress)}%`;
+            }
+
+            if (elements.loseTicket) {
+                elements.loseTicket.textContent =
+                    getTicketCount();
+            }
+
+            elements.resultModal?.classList.add(
+                "lose",
+                "result-lose"
+            );
+
+            elements.resultModal?.classList.remove(
+                "win",
+                "result-win"
+            );
+        }
+
+        showOverlay(elements.resultOverlay);
+    }
+
+
+    /* =====================================================
+       CONFETTI SEDERHANA
+    ===================================================== */
+
+    function createMiniConfetti() {
+        const container =
+            elements.resultOverlay;
+
+        if (!container) return;
+
+        container
+            .querySelectorAll(".pinang-js-confetti")
+            .forEach((item) => item.remove());
+
+        const fragment =
+            document.createDocumentFragment();
+
+        for (let index = 0; index < 45; index++) {
+            const confetti =
+                document.createElement("span");
+
+            confetti.className =
+                "pinang-js-confetti";
+
+            confetti.style.setProperty(
+                "--confetti-left",
+                `${Math.random() * 100}%`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-delay",
+                `${Math.random() * 0.7}s`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-duration",
+                `${1.8 + Math.random() * 1.5}s`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-rotation",
+                `${Math.random() * 720}deg`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-hue",
+                `${Math.floor(Math.random() * 360)}`
+            );
+
+            fragment.appendChild(confetti);
+        }
+
+        container.appendChild(fragment);
+
+        window.setTimeout(() => {
+            container
+                .querySelectorAll(".pinang-js-confetti")
+                .forEach((item) => item.remove());
+        }, 4000);
+    }
+
+
+    /* =====================================================
+       PAUSE DAN RESUME
+    ===================================================== */
+
+    function pauseGame() {
+        if (game.status !== "playing") {
+            showToast(
+                "Permainan belum dimulai.",
+                "info"
+            );
+
+            return;
+        }
+
+        game.status = "paused";
+        game.pausedAt = Date.now();
+
+        elements.player?.classList.add("paused");
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Permainan sedang dijeda.";
+        }
+
+        showOverlay(elements.pauseOverlay);
+        renderGame();
+    }
+
+
+    function resumeGame() {
+        if (game.status !== "paused") {
+            return;
+        }
+
+        game.status = "playing";
+        game.pausedAt = null;
+
+        elements.player?.classList.remove("paused");
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Lanjutkan tap sampai mencapai puncak!";
+        }
+
+        hideOverlay(elements.pauseOverlay);
+        renderGame();
+    }
+
+
+    /* =====================================================
+       KELUAR GAME
+    ===================================================== */
+
+    function requestExit() {
+        if (isGameBusy()) {
+            showOverlay(elements.exitOverlay);
+            return;
+        }
+
+        returnToLobby();
+    }
+
+
+    function cancelExit() {
+        hideOverlay(elements.exitOverlay);
+    }
+
+
+    function confirmExit() {
+        hideOverlay(elements.exitOverlay);
+        returnToLobby();
+    }
+
+
+    function returnToLobby() {
+        clearGameIntervals();
+
+        hideOverlay(elements.pauseOverlay);
+        hideOverlay(elements.countdownOverlay);
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.exitOverlay);
+
+        resetGame();
+
+        const api = getClickbetAPI();
+
+        if (api?.backToLobby) {
+            api.backToLobby();
+        }
+    }
+
+
+    /* =====================================================
+       RESULT ACTION
+    ===================================================== */
+
+    function closeResult() {
+        hideOverlay(elements.resultOverlay);
+    }
+
+
+    function retryGame() {
+        hideOverlay(elements.resultOverlay);
+
+        window.setTimeout(() => {
+            resetGame();
+            startCountdown();
+        }, 250);
+    }
+
+
+    function openMysteryBox() {
+        hideOverlay(elements.resultOverlay);
+
+        const api = getClickbetAPI();
+
+        if (!api?.showScreen) {
+            return;
+        }
+
+        /*
+         * Kemenangan membuka akses ke Mystery Box.
+         * Logika hadiah lengkap dibuat pada Part Mystery Box.
+         */
+        api.showScreen("mystery");
+
+        api.notify?.(
+            "Mystery Box terbuka. Sistem hadiah akan diaktifkan pada Part berikutnya.",
+            "success"
+        );
+    }
+
+
+    /* =====================================================
+       SOUND
+    ===================================================== */
+
+    function toggleSound() {
+        game.soundEnabled = !game.soundEnabled;
+
+        if (elements.soundIcon) {
+            elements.soundIcon.textContent =
+                game.soundEnabled ? "🔊" : "🔇";
+        }
+
+        const api = getClickbetAPI();
+
+        api?.setSound?.(game.soundEnabled);
+
+        showToast(
+            game.soundEnabled
+                ? "Suara diaktifkan."
+                : "Suara dimatikan.",
+            "info"
+        );
+    }
+
+
+    /* =====================================================
+       KEYBOARD
+    ===================================================== */
+
+    function handleKeyboard(event) {
+        const activeScreen =
+            document.body.dataset.activeScreen;
+
+        if (activeScreen !== "panjat") {
+            return;
+        }
+
+        if (
+            event.code === "Space" &&
+            game.status === "playing"
+        ) {
+            event.preventDefault();
+            registerTap();
+            return;
+        }
+
+        if (
+            event.key === "Escape" &&
+            game.status === "paused"
+        ) {
+            resumeGame();
+            return;
+        }
+
+        if (
+            event.key === "Escape" &&
+            isGameBusy()
+        ) {
+            requestExit();
+        }
+    }
+
+
+    /* =====================================================
+       SCREEN CHANGE
+    ===================================================== */
+
+    function handleScreenChange(event) {
+        const screenName =
+            event.detail?.screen;
+
+        if (screenName === "panjat") {
+            renderGame();
+            return;
+        }
+
+        if (isGameBusy()) {
+            clearGameIntervals();
+            resetGame();
+        }
+    }
+
+
+    /* =====================================================
+       BIND EVENTS
+    ===================================================== */
+
+    function bindEvents() {
+        elements.startButton?.addEventListener(
+            "click",
+            startCountdown
+        );
+
+        elements.tapButton?.addEventListener(
+            "click",
+            registerTap
+        );
+
+        elements.pauseButton?.addEventListener(
+            "click",
+            pauseGame
+        );
+
+        elements.resumeButton?.addEventListener(
+            "click",
+            resumeGame
+        );
+
+        elements.quitButton?.addEventListener(
+            "click",
+            requestExit
+        );
+
+        elements.backButton?.addEventListener(
+            "click",
+            (event) => {
+                if (isGameBusy()) {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    requestExit();
+                }
+            },
+            true
+        );
+
+        elements.cancelExitButton?.addEventListener(
+            "click",
+            cancelExit
+        );
+
+        elements.confirmExitButton?.addEventListener(
+            "click",
+            confirmExit
+        );
+
+        elements.closeResultButton?.addEventListener(
+            "click",
+            closeResult
+        );
+
+        elements.retryButton?.addEventListener(
+            "click",
+            retryGame
+        );
+
+        elements.winLobbyButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.loseLobbyButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.openMysteryButton?.addEventListener(
+            "click",
+            openMysteryBox
+        );
+
+        elements.soundButton?.addEventListener(
+            "click",
+            toggleSound
+        );
+
+        elements.resultOverlay?.addEventListener(
+            "click",
+            (event) => {
+                if (event.target === elements.resultOverlay) {
+                    closeResult();
+                }
+            }
+        );
+
+        elements.exitOverlay?.addEventListener(
+            "click",
+            (event) => {
+                if (event.target === elements.exitOverlay) {
+                    cancelExit();
+                }
+            }
+        );
+
+        document.addEventListener(
+            "keydown",
+            handleKeyboard
+        );
+
+        document.addEventListener(
+            "clickbet:screenchange",
+            handleScreenChange
+        );
+    }
+
+
+    /* =====================================================
+       PUBLIC API PANJAT PINANG
+    ===================================================== */
+
+    window.ClickbetPinang = {
+        start: startCountdown,
+        tap: registerTap,
+        pause: pauseGame,
+        resume: resumeGame,
+        reset: resetGame,
+
+        getState() {
+            return {
+                status: game.status,
+                tapCount: game.tapCount,
+                progress: game.progress,
+                timeLeft: game.timeLeft,
+                ticketUsed: game.ticketUsed
+            };
+        }
+    };
+
+
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
+
+    function initialize() {
+        bindEvents();
+        resetGame();
+
+        console.info(
+            "[CLICKBET88] JavaScript Part 2 Panjat Pinang aktif."
+        );
+    }
+
+
+    initialize();
+
+})();
