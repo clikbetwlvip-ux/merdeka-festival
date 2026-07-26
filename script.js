@@ -4169,3 +4169,2007 @@
     "[CLICKBET88 PART 2] Premium Panjat Pinang aktif."
   );
 })();
+/* =========================================================
+   CLICKBET88 FESTIVAL KEMERDEKAAN 2026
+   JAVASCRIPT BARU — PART 3
+   PREMIUM MAKAN KERUPUK ENGINE
+========================================================= */
+
+(() => {
+  "use strict";
+
+  /* =========================================================
+     1. KONFIGURASI
+  ========================================================= */
+
+  const CONFIG = Object.freeze({
+    duration: 15,
+    countdown: 3,
+
+    ticketCost: 1,
+
+    maximumProgress: 100,
+    minimumBite: 2.5,
+    normalBite: 3.4,
+    perfectBite: 5.2,
+
+    minimumTapDelay: 75,
+
+    perfectMinimum: 130,
+    perfectMaximum: 340,
+
+    comboTimeout: 760,
+    maximumCombo: 20,
+
+    swingPower: 7,
+    swingDamping: 0.91,
+
+    missSwingLimit: 28,
+    missPenalty: 1.3,
+
+    resultDelay: 650,
+    toastDuration: 1800
+  });
+
+
+  /* =========================================================
+     2. DOM HELPER
+  ========================================================= */
+
+  const $ = (id) =>
+    document.getElementById(id);
+
+  const clamp = (
+    value,
+    minimum,
+    maximum
+  ) =>
+    Math.min(
+      Math.max(
+        Number(value) || 0,
+        minimum
+      ),
+      maximum
+    );
+
+  const api = () =>
+    window.ClickbetGame || null;
+
+  function setText(
+    element,
+    value
+  ) {
+    if (element) {
+      element.textContent =
+        String(value);
+    }
+  }
+
+  function formatTime(seconds) {
+    const cleanSeconds =
+      Math.max(
+        0,
+        Math.ceil(seconds)
+      );
+
+    return `00:${String(
+      cleanSeconds
+    ).padStart(2, "0")}`;
+  }
+
+  function playSound(
+    type = "click"
+  ) {
+    api()?.playSound?.(type);
+  }
+
+  function notify(
+    message,
+    type = "info"
+  ) {
+    api()?.notify?.(
+      message,
+      type
+    );
+  }
+
+  function openOverlay(element) {
+    if (!element) {
+      return;
+    }
+
+    if (api()?.openOverlay) {
+      api().openOverlay(element);
+      return;
+    }
+
+    element.hidden = false;
+
+    element.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    element.classList.add(
+      "active",
+      "show",
+      "visible"
+    );
+  }
+
+  function closeOverlay(element) {
+    if (!element) {
+      return;
+    }
+
+    if (api()?.closeOverlay) {
+      api().closeOverlay(element);
+      return;
+    }
+
+    element.classList.remove(
+      "active",
+      "show",
+      "visible"
+    );
+
+    element.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    window.setTimeout(() => {
+      element.hidden = true;
+    }, 250);
+  }
+
+
+  /* =========================================================
+     3. SCREEN DAN ELEMENT
+  ========================================================= */
+
+  const screen =
+    $("makanKerupukScreen");
+
+  if (!screen) {
+    console.warn(
+      "[CLICKBET88 PART 3] Screen Makan Kerupuk tidak ditemukan."
+    );
+
+    return;
+  }
+
+  const ELEMENTS = {
+    screen,
+
+    arena:
+      screen.querySelector(
+        ".kerupuk-arena"
+      ) ||
+      screen.querySelector(
+        ".makan-kerupuk-arena"
+      ) ||
+      screen.querySelector(
+        ".game-arena"
+      ),
+
+    player:
+      $("kerupukPlayer") ||
+      screen.querySelector(
+        ".kerupuk-player"
+      ) ||
+      screen.querySelector(
+        ".kerupuk-character"
+      ) ||
+      screen.querySelector(
+        ".makan-kerupuk-character"
+      ),
+
+    playerFace:
+      screen.querySelector(
+        ".player-face"
+      ) ||
+      screen.querySelector(
+        ".kerupuk-player-face"
+      ),
+
+    kerupuk:
+      $("hangingKerupuk") ||
+      $("kerupukObject") ||
+      screen.querySelector(
+        ".hanging-kerupuk"
+      ) ||
+      screen.querySelector(
+        ".kerupuk-food"
+      ) ||
+      screen.querySelector(
+        ".kerupuk-rope"
+      ),
+
+    rope:
+      $("kerupukRope") ||
+      screen.querySelector(
+        ".kerupuk-rope"
+      ),
+
+    crumbEffect:
+      $("kerupukCrumbEffect") ||
+      screen.querySelector(
+        ".kerupuk-crumb-effect"
+      ),
+
+    timer:
+      $("kerupukTimerValue"),
+
+    progressFill:
+      $("kerupukProgressFill") ||
+      $("kerupukProgressBar"),
+
+    progressValue:
+      $("kerupukProgressValue"),
+
+    remainingValue:
+      $("kerupukRemainingValue"),
+
+    tapCount:
+      $("kerupukTapCount"),
+
+    scoreValue:
+      $("kerupukScoreValue"),
+
+    comboValue:
+      $("kerupukComboValue"),
+
+    readyMessage:
+      $("kerupukReadyMessage"),
+
+    startButton:
+      $("kerupukStartButton"),
+
+    biteButton:
+      $("kerupukBiteButton") ||
+      $("kerupukTapButton"),
+
+    backButton:
+      $("kerupukBackButton"),
+
+    pauseButton:
+      $("kerupukPauseButton"),
+
+    soundButton:
+      $("kerupukSoundButton"),
+
+    soundIcon:
+      $("kerupukSoundIcon"),
+
+    countdownOverlay:
+      $("kerupukCountdownOverlay"),
+
+    countdownValue:
+      $("kerupukCountdownValue"),
+
+    countdownMessage:
+      $("kerupukCountdownMessage"),
+
+    pauseOverlay:
+      $("kerupukPauseOverlay"),
+
+    resumeButton:
+      $("kerupukResumeButton"),
+
+    quitButton:
+      $("kerupukQuitButton"),
+
+    resultOverlay:
+      $("kerupukResultOverlay"),
+
+    resultModal:
+      $("kerupukResultModal"),
+
+    closeResultButton:
+      $("closeKerupukResultButton"),
+
+    winContent:
+      $("kerupukWinContent"),
+
+    loseContent:
+      $("kerupukLoseContent"),
+
+    resultRemainingTime:
+      $("kerupukResultRemainingTime"),
+
+    resultTapCount:
+      $("kerupukResultTapCount"),
+
+    loseTapCount:
+      $("kerupukLoseTapCount"),
+
+    loseRemaining:
+      $("kerupukLoseRemaining"),
+
+    loseTicket:
+      $("kerupukLoseTicket"),
+
+    openMysteryButton:
+      $("openKerupukMysteryButton"),
+
+    winLobbyButton:
+      $("kerupukWinLobbyButton"),
+
+    retryButton:
+      $("retryKerupukButton"),
+
+    loseLobbyButton:
+      $("kerupukLoseLobbyButton"),
+
+    exitOverlay:
+      $("kerupukExitConfirmOverlay"),
+
+    cancelExitButton:
+      $("cancelKerupukExitButton"),
+
+    confirmExitButton:
+      $("confirmKerupukExitButton"),
+
+    toast:
+      $("kerupukToast"),
+
+    toastIcon:
+      $("kerupukToastIcon"),
+
+    toastMessage:
+      $("kerupukToastMessage")
+  };
+
+
+  /* =========================================================
+     4. STATE
+  ========================================================= */
+
+  const STATE = {
+    status: "idle",
+
+    progress: 0,
+    visualProgress: 0,
+
+    remainingTime:
+      CONFIG.duration,
+
+    taps: 0,
+    score: 0,
+
+    combo: 0,
+    bestCombo: 0,
+
+    swing: 0,
+    swingVelocity: 0,
+
+    lastTapTime: 0,
+    lastFrameTime: 0,
+
+    ticketUsed: false,
+    resultRegistered: false,
+
+    animationFrame: 0,
+    countdownTimer: 0,
+    resultTimer: 0,
+    toastTimer: 0,
+    feedbackTimer: 0,
+
+    biteSide: false
+  };
+
+
+  /* =========================================================
+     5. STATUS
+  ========================================================= */
+
+  function isPlaying() {
+    return (
+      STATE.status === "playing"
+    );
+  }
+
+  function isPaused() {
+    return (
+      STATE.status === "paused"
+    );
+  }
+
+  function isBusy() {
+    return [
+      "countdown",
+      "playing",
+      "paused"
+    ].includes(STATE.status);
+  }
+
+  function clearTimers() {
+    window.clearInterval(
+      STATE.countdownTimer
+    );
+
+    window.clearTimeout(
+      STATE.resultTimer
+    );
+
+    window.clearTimeout(
+      STATE.toastTimer
+    );
+
+    window.clearTimeout(
+      STATE.feedbackTimer
+    );
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    STATE.countdownTimer = 0;
+    STATE.resultTimer = 0;
+    STATE.animationFrame = 0;
+  }
+
+
+  /* =========================================================
+     6. TOAST
+  ========================================================= */
+
+  function showToast(
+    message,
+    type = "info"
+  ) {
+    const icons = {
+      info: "ℹ️",
+      success: "✅",
+      warning: "⚠️",
+      error: "❌",
+      bite: "🍘",
+      perfect: "⚡",
+      combo: "🔥",
+      miss: "💨"
+    };
+
+    if (
+      !ELEMENTS.toast ||
+      !ELEMENTS.toastMessage
+    ) {
+      notify(message, type);
+      return;
+    }
+
+    window.clearTimeout(
+      STATE.toastTimer
+    );
+
+    setText(
+      ELEMENTS.toastIcon,
+      icons[type] || icons.info
+    );
+
+    setText(
+      ELEMENTS.toastMessage,
+      message
+    );
+
+    ELEMENTS.toast.classList.remove(
+      "show"
+    );
+
+    void ELEMENTS.toast.offsetWidth;
+
+    ELEMENTS.toast.dataset.type =
+      type;
+
+    ELEMENTS.toast.classList.add(
+      "show"
+    );
+
+    STATE.toastTimer =
+      window.setTimeout(() => {
+        ELEMENTS.toast?.classList.remove(
+          "show"
+        );
+      }, CONFIG.toastDuration);
+  }
+
+
+  /* =========================================================
+     7. UI TAMBAHAN OTOMATIS
+  ========================================================= */
+
+  function createPremiumFeedback() {
+    if (
+      !ELEMENTS.arena ||
+      $("kerupukLiveFeedback")
+    ) {
+      return;
+    }
+
+    const feedback =
+      document.createElement("div");
+
+    feedback.id =
+      "kerupukLiveFeedback";
+
+    feedback.className =
+      "kerupuk-live-feedback";
+
+    feedback.setAttribute(
+      "aria-live",
+      "polite"
+    );
+
+    ELEMENTS.arena.appendChild(
+      feedback
+    );
+
+    ELEMENTS.feedback = feedback;
+  }
+
+
+  /* =========================================================
+     8. RENDER
+  ========================================================= */
+
+  function renderTimer() {
+    setText(
+      ELEMENTS.timer,
+      formatTime(
+        STATE.remainingTime
+      )
+    );
+
+    const timerBox =
+      ELEMENTS.timer?.closest(
+        ".kerupuk-timer"
+      ) ||
+      ELEMENTS.timer?.parentElement;
+
+    timerBox?.classList.toggle(
+      "danger",
+      STATE.remainingTime <= 5
+    );
+  }
+
+  function renderProgress() {
+    const progress = clamp(
+      STATE.visualProgress,
+      0,
+      100
+    );
+
+    const remaining =
+      Math.max(
+        0,
+        100 -
+        Math.floor(
+          STATE.progress
+        )
+      );
+
+    if (ELEMENTS.progressFill) {
+      ELEMENTS.progressFill.style.width =
+        `${progress}%`;
+
+      ELEMENTS.progressFill.style.height =
+        `${progress}%`;
+
+      ELEMENTS.progressFill.setAttribute(
+        "aria-valuenow",
+        String(
+          Math.floor(progress)
+        )
+      );
+    }
+
+    setText(
+      ELEMENTS.progressValue,
+      `${Math.floor(
+        STATE.progress
+      )}%`
+    );
+
+    setText(
+      ELEMENTS.remainingValue,
+      `${remaining}%`
+    );
+
+    if (ELEMENTS.kerupuk) {
+      ELEMENTS.kerupuk.style.setProperty(
+        "--kerupuk-progress",
+        `${progress}%`
+      );
+
+      ELEMENTS.kerupuk.style.opacity =
+        String(
+          clamp(
+            1 - progress * 0.006,
+            0.32,
+            1
+          )
+        );
+
+      ELEMENTS.kerupuk.style.scale =
+        String(
+          clamp(
+            1 - progress * 0.005,
+            0.5,
+            1
+          )
+        );
+
+      ELEMENTS.kerupuk.classList.toggle(
+        "almost-finished",
+        progress >= 75
+      );
+    }
+  }
+
+  function renderStatistics() {
+    setText(
+      ELEMENTS.tapCount,
+      STATE.taps
+    );
+
+    setText(
+      ELEMENTS.scoreValue,
+      Math.floor(STATE.score)
+    );
+
+    setText(
+      ELEMENTS.comboValue,
+      STATE.combo > 0
+        ? `x${STATE.combo}`
+        : "x0"
+    );
+  }
+
+  function renderButtons() {
+    if (ELEMENTS.startButton) {
+      ELEMENTS.startButton.disabled =
+        isBusy();
+
+      ELEMENTS.startButton.hidden =
+        isBusy();
+    }
+
+    if (ELEMENTS.biteButton) {
+      ELEMENTS.biteButton.disabled =
+        !isPlaying();
+
+      ELEMENTS.biteButton.classList.toggle(
+        "active",
+        isPlaying()
+      );
+    }
+
+    if (ELEMENTS.pauseButton) {
+      ELEMENTS.pauseButton.disabled =
+        !isPlaying();
+    }
+  }
+
+  function renderReadyMessage() {
+    if (!ELEMENTS.readyMessage) {
+      return;
+    }
+
+    const messages = {
+      idle:
+        "Tekan MULAI untuk bersiap makan kerupuk!",
+      countdown:
+        "Bersiap, perlombaan segera dimulai!",
+      playing:
+        "Tap cepat saat kerupuk berada dekat mulut!",
+      paused:
+        "Permainan sedang dijeda.",
+      win:
+        "Kerupuk berhasil dihabiskan!",
+      lose:
+        "Waktu habis. Sedikit lagi!"
+    };
+
+    ELEMENTS.readyMessage.textContent =
+      messages[STATE.status] ||
+      messages.idle;
+  }
+
+  function renderSwing() {
+    if (!ELEMENTS.rope) {
+      return;
+    }
+
+    ELEMENTS.rope.style.setProperty(
+      "--kerupuk-swing",
+      `${STATE.swing}deg`
+    );
+
+    ELEMENTS.rope.style.transform =
+      `translateX(-50%) rotate(${STATE.swing}deg)`;
+  }
+
+  function renderSound() {
+    const enabled =
+      api()?.isSoundEnabled?.() !==
+      false;
+
+    setText(
+      ELEMENTS.soundIcon,
+      enabled ? "🔊" : "🔇"
+    );
+  }
+
+  function renderAll() {
+    renderTimer();
+    renderProgress();
+    renderStatistics();
+    renderButtons();
+    renderReadyMessage();
+    renderSwing();
+    renderSound();
+
+    screen.classList.toggle(
+      "game-playing",
+      isPlaying()
+    );
+
+    screen.classList.toggle(
+      "game-paused",
+      isPaused()
+    );
+  }
+
+
+  /* =========================================================
+     9. RESET
+  ========================================================= */
+
+  function resetVisualClasses() {
+    ELEMENTS.player?.classList.remove(
+      "eating",
+      "bite",
+      "winning",
+      "losing",
+      "paused"
+    );
+
+    ELEMENTS.kerupuk?.classList.remove(
+      "bite",
+      "swing",
+      "almost-finished",
+      "finished",
+      "winning"
+    );
+
+    ELEMENTS.rope?.classList.remove(
+      "swing",
+      "active"
+    );
+
+    ELEMENTS.crumbEffect?.classList.remove(
+      "active"
+    );
+
+    ELEMENTS.arena?.classList.remove(
+      "shake",
+      "winning",
+      "losing",
+      "danger"
+    );
+
+    if (ELEMENTS.playerFace) {
+      ELEMENTS.playerFace.textContent =
+        "😋";
+    }
+  }
+
+  function resetGame() {
+    clearTimers();
+    resetVisualClasses();
+
+    STATE.status = "idle";
+
+    STATE.progress = 0;
+    STATE.visualProgress = 0;
+
+    STATE.remainingTime =
+      CONFIG.duration;
+
+    STATE.taps = 0;
+    STATE.score = 0;
+
+    STATE.combo = 0;
+    STATE.bestCombo = 0;
+
+    STATE.swing = 0;
+    STATE.swingVelocity = 0;
+
+    STATE.lastTapTime = 0;
+    STATE.lastFrameTime = 0;
+
+    STATE.ticketUsed = false;
+    STATE.resultRegistered = false;
+
+    closeOverlay(
+      ELEMENTS.countdownOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.exitOverlay
+    );
+
+    renderAll();
+  }
+
+
+  /* =========================================================
+     10. COUNTDOWN
+  ========================================================= */
+
+  function startCountdown() {
+    if (isBusy()) {
+      return;
+    }
+
+    if (!api()) {
+      showToast(
+        "Core Part 1 belum aktif.",
+        "error"
+      );
+
+      return;
+    }
+
+    if (!api().hasTickets?.(1)) {
+      showToast(
+        "Tiket tidak cukup untuk bermain.",
+        "warning"
+      );
+
+      playSound("error");
+      return;
+    }
+
+    resetGame();
+
+    STATE.status = "countdown";
+
+    renderAll();
+
+    openOverlay(
+      ELEMENTS.countdownOverlay
+    );
+
+    let count =
+      CONFIG.countdown;
+
+    setText(
+      ELEMENTS.countdownValue,
+      count
+    );
+
+    setText(
+      ELEMENTS.countdownMessage,
+      "BERSIAP!"
+    );
+
+    playSound("open");
+
+    STATE.countdownTimer =
+      window.setInterval(() => {
+        count -= 1;
+
+        if (count > 0) {
+          setText(
+            ELEMENTS.countdownValue,
+            count
+          );
+
+          setText(
+            ELEMENTS.countdownMessage,
+            count === 1
+              ? "SIAP!"
+              : "BERSIAP!"
+          );
+
+          playSound("click");
+          return;
+        }
+
+        window.clearInterval(
+          STATE.countdownTimer
+        );
+
+        setText(
+          ELEMENTS.countdownValue,
+          "GO!"
+        );
+
+        setText(
+          ELEMENTS.countdownMessage,
+          "MAKAN SEKARANG!"
+        );
+
+        playSound("success");
+
+        window.setTimeout(() => {
+          closeOverlay(
+            ELEMENTS.countdownOverlay
+          );
+
+          beginGame();
+        }, 450);
+      }, 800);
+  }
+
+
+  /* =========================================================
+     11. MULAI GAME
+  ========================================================= */
+
+  function beginGame() {
+    const ticketUsed =
+      api()?.useTicket?.(
+        CONFIG.ticketCost,
+        "makan-kerupuk"
+      );
+
+    if (!ticketUsed) {
+      STATE.status = "idle";
+      renderAll();
+      return;
+    }
+
+    STATE.ticketUsed = true;
+    STATE.status = "playing";
+
+    STATE.remainingTime =
+      CONFIG.duration;
+
+    STATE.lastFrameTime =
+      performance.now();
+
+    renderAll();
+
+    showToast(
+      "Mulai! Habiskan kerupuk sebelum waktunya habis.",
+      "bite"
+    );
+
+    STATE.animationFrame =
+      requestAnimationFrame(
+        gameLoop
+      );
+  }
+
+
+  /* =========================================================
+     12. GAME LOOP
+  ========================================================= */
+
+  function gameLoop(timestamp) {
+    if (!isPlaying()) {
+      return;
+    }
+
+    const delta = clamp(
+      (
+        timestamp -
+        STATE.lastFrameTime
+      ) / 1000,
+      0,
+      0.08
+    );
+
+    STATE.lastFrameTime =
+      timestamp;
+
+    STATE.remainingTime -=
+      delta;
+
+    STATE.swingVelocity +=
+      -STATE.swing *
+      13 *
+      delta;
+
+    STATE.swingVelocity *=
+      Math.pow(
+        CONFIG.swingDamping,
+        delta * 60
+      );
+
+    STATE.swing +=
+      STATE.swingVelocity *
+      delta;
+
+    STATE.swing = clamp(
+      STATE.swing,
+      -36,
+      36
+    );
+
+    STATE.visualProgress +=
+      (
+        STATE.progress -
+        STATE.visualProgress
+      ) *
+      Math.min(
+        delta * 13,
+        1
+      );
+
+    if (
+      STATE.combo > 0 &&
+      timestamp -
+        STATE.lastTapTime >
+        CONFIG.comboTimeout
+    ) {
+      STATE.combo = 0;
+    }
+
+    ELEMENTS.arena?.classList.toggle(
+      "danger",
+      STATE.remainingTime <= 5
+    );
+
+    renderAll();
+
+    if (
+      STATE.progress >=
+      CONFIG.maximumProgress
+    ) {
+      finishGame(true);
+      return;
+    }
+
+    if (
+      STATE.remainingTime <= 0
+    ) {
+      STATE.remainingTime = 0;
+      finishGame(false);
+      return;
+    }
+
+    STATE.animationFrame =
+      requestAnimationFrame(
+        gameLoop
+      );
+  }
+
+
+  /* =========================================================
+     13. AKSI GIGIT
+  ========================================================= */
+
+  function biteKerupuk() {
+    if (!isPlaying()) {
+      return;
+    }
+
+    const now =
+      performance.now();
+
+    const interval =
+      STATE.lastTapTime
+        ? now -
+          STATE.lastTapTime
+        : 250;
+
+    if (
+      interval <
+      CONFIG.minimumTapDelay
+    ) {
+      return;
+    }
+
+    STATE.lastTapTime = now;
+    STATE.taps += 1;
+
+    const swingDistance =
+      Math.abs(STATE.swing);
+
+    let bitePower =
+      CONFIG.normalBite;
+
+    let feedbackType =
+      "normal";
+
+    if (
+      interval >=
+        CONFIG.perfectMinimum &&
+      interval <=
+        CONFIG.perfectMaximum &&
+      swingDistance <= 19
+    ) {
+      STATE.combo = clamp(
+        STATE.combo + 1,
+        0,
+        CONFIG.maximumCombo
+      );
+
+      STATE.bestCombo =
+        Math.max(
+          STATE.bestCombo,
+          STATE.combo
+        );
+
+      bitePower =
+        CONFIG.perfectBite +
+        STATE.combo * 0.08;
+
+      feedbackType =
+        "perfect";
+    } else if (
+      swingDistance >
+      CONFIG.missSwingLimit
+    ) {
+      bitePower =
+        CONFIG.minimumBite -
+        CONFIG.missPenalty;
+
+      STATE.combo = 0;
+      feedbackType = "miss";
+    } else {
+      STATE.combo =
+        Math.max(
+          STATE.combo - 1,
+          0
+        );
+    }
+
+    bitePower =
+      Math.max(
+        bitePower,
+        0.8
+      );
+
+    STATE.progress = clamp(
+      STATE.progress +
+      bitePower,
+      0,
+      CONFIG.maximumProgress
+    );
+
+    STATE.score +=
+      Math.round(
+        bitePower * 100 +
+        STATE.combo * 25
+      );
+
+    const direction =
+      Math.random() > 0.5
+        ? 1
+        : -1;
+
+    STATE.swingVelocity +=
+      direction *
+      CONFIG.swingPower;
+
+    animateBite(
+      feedbackType
+    );
+
+    if (
+      feedbackType ===
+      "perfect"
+    ) {
+      showFeedback(
+        STATE.combo >= 3
+          ? `COMBO x${STATE.combo}`
+          : "PERFECT!",
+        STATE.combo >= 3
+          ? "combo"
+          : "perfect"
+      );
+
+      playSound("success");
+    } else if (
+      feedbackType === "miss"
+    ) {
+      showFeedback(
+        "HAMPIR MELESET!",
+        "miss"
+      );
+
+      playSound("error");
+    } else {
+      showFeedback(
+        "NYAM!",
+        "normal"
+      );
+
+      playSound("click");
+    }
+
+    renderAll();
+
+    if (
+      STATE.progress >=
+      CONFIG.maximumProgress
+    ) {
+      finishGame(true);
+    }
+  }
+
+
+  /* =========================================================
+     14. ANIMASI GIGIT
+  ========================================================= */
+
+  function animateBite(type) {
+    ELEMENTS.player?.classList.remove(
+      "eating",
+      "bite"
+    );
+
+    ELEMENTS.kerupuk?.classList.remove(
+      "bite",
+      "swing"
+    );
+
+    ELEMENTS.crumbEffect?.classList.remove(
+      "active"
+    );
+
+    ELEMENTS.biteButton?.classList.remove(
+      "pressed"
+    );
+
+    ELEMENTS.arena?.classList.remove(
+      "shake"
+    );
+
+    void screen.offsetWidth;
+
+    STATE.biteSide =
+      !STATE.biteSide;
+
+    ELEMENTS.player?.classList.add(
+      "eating",
+      "bite"
+    );
+
+    ELEMENTS.player?.classList.toggle(
+      "bite-left",
+      STATE.biteSide
+    );
+
+    ELEMENTS.player?.classList.toggle(
+      "bite-right",
+      !STATE.biteSide
+    );
+
+    ELEMENTS.kerupuk?.classList.add(
+      "bite",
+      "swing"
+    );
+
+    ELEMENTS.crumbEffect?.classList.add(
+      "active"
+    );
+
+    ELEMENTS.biteButton?.classList.add(
+      "pressed"
+    );
+
+    if (type === "miss") {
+      ELEMENTS.arena?.classList.add(
+        "shake"
+      );
+
+      if (ELEMENTS.playerFace) {
+        ELEMENTS.playerFace.textContent =
+          "😵";
+      }
+    } else if (
+      ELEMENTS.playerFace
+    ) {
+      ELEMENTS.playerFace.textContent =
+        type === "perfect"
+          ? "🤩"
+          : "😋";
+    }
+
+    window.setTimeout(() => {
+      ELEMENTS.player?.classList.remove(
+        "eating",
+        "bite"
+      );
+
+      ELEMENTS.kerupuk?.classList.remove(
+        "bite"
+      );
+
+      ELEMENTS.crumbEffect?.classList.remove(
+        "active"
+      );
+
+      ELEMENTS.biteButton?.classList.remove(
+        "pressed"
+      );
+
+      ELEMENTS.arena?.classList.remove(
+        "shake"
+      );
+
+      if (ELEMENTS.playerFace) {
+        ELEMENTS.playerFace.textContent =
+          "😋";
+      }
+    }, 260);
+  }
+
+  function showFeedback(
+    message,
+    type
+  ) {
+    const feedback =
+      ELEMENTS.feedback;
+
+    if (!feedback) {
+      return;
+    }
+
+    window.clearTimeout(
+      STATE.feedbackTimer
+    );
+
+    feedback.textContent =
+      message;
+
+    feedback.dataset.type =
+      type;
+
+    feedback.classList.remove(
+      "show"
+    );
+
+    void feedback.offsetWidth;
+
+    feedback.classList.add(
+      "show"
+    );
+
+    STATE.feedbackTimer =
+      window.setTimeout(() => {
+        feedback.classList.remove(
+          "show"
+        );
+      }, 520);
+  }
+
+
+  /* =========================================================
+     15. PAUSE
+  ========================================================= */
+
+  function pauseGame() {
+    if (!isPlaying()) {
+      return;
+    }
+
+    STATE.status = "paused";
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    ELEMENTS.player?.classList.add(
+      "paused"
+    );
+
+    openOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    renderAll();
+    playSound("click");
+  }
+
+  function resumeGame() {
+    if (!isPaused()) {
+      return;
+    }
+
+    STATE.status = "playing";
+
+    STATE.lastFrameTime =
+      performance.now();
+
+    ELEMENTS.player?.classList.remove(
+      "paused"
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    renderAll();
+    playSound("open");
+
+    STATE.animationFrame =
+      requestAnimationFrame(
+        gameLoop
+      );
+  }
+
+
+  /* =========================================================
+     16. SELESAI GAME
+  ========================================================= */
+
+  function finishGame(won) {
+    if (
+      STATE.status === "win" ||
+      STATE.status === "lose"
+    ) {
+      return;
+    }
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    STATE.status =
+      won ? "win" : "lose";
+
+    STATE.remainingTime =
+      Math.max(
+        STATE.remainingTime,
+        0
+      );
+
+    if (won) {
+      STATE.progress = 100;
+      STATE.visualProgress = 100;
+
+      ELEMENTS.kerupuk?.classList.add(
+        "finished",
+        "winning"
+      );
+
+      ELEMENTS.player?.classList.add(
+        "winning"
+      );
+
+      ELEMENTS.arena?.classList.add(
+        "winning"
+      );
+    } else {
+      ELEMENTS.player?.classList.add(
+        "losing"
+      );
+
+      ELEMENTS.arena?.classList.add(
+        "losing"
+      );
+    }
+
+    registerResult(won);
+
+    renderAll();
+
+    playSound(
+      won ? "success" : "error"
+    );
+
+    STATE.resultTimer =
+      window.setTimeout(() => {
+        showResult(won);
+      }, CONFIG.resultDelay);
+  }
+
+  function registerResult(won) {
+    if (
+      STATE.resultRegistered
+    ) {
+      return;
+    }
+
+    STATE.resultRegistered = true;
+
+    api()?.registerGameResult?.(
+      "makan-kerupuk",
+      won ? "win" : "lose",
+      {
+        progress:
+          Math.floor(
+            STATE.progress
+          ),
+
+        taps: STATE.taps,
+
+        score:
+          Math.floor(
+            STATE.score
+          ),
+
+        bestCombo:
+          STATE.bestCombo,
+
+        remainingTime:
+          Math.ceil(
+            STATE.remainingTime
+          )
+      }
+    );
+  }
+
+
+  /* =========================================================
+     17. RESULT
+  ========================================================= */
+
+  function showResult(won) {
+    if (ELEMENTS.winContent) {
+      ELEMENTS.winContent.hidden =
+        !won;
+
+      ELEMENTS.winContent.style.display =
+        won ? "" : "none";
+    }
+
+    if (ELEMENTS.loseContent) {
+      ELEMENTS.loseContent.hidden =
+        won;
+
+      ELEMENTS.loseContent.style.display =
+        won ? "none" : "";
+    }
+
+    setText(
+      ELEMENTS.resultRemainingTime,
+      `${Math.ceil(
+        STATE.remainingTime
+      )} detik`
+    );
+
+    setText(
+      ELEMENTS.resultTapCount,
+      STATE.taps
+    );
+
+    setText(
+      ELEMENTS.loseTapCount,
+      STATE.taps
+    );
+
+    setText(
+      ELEMENTS.loseRemaining,
+      `${Math.max(
+        0,
+        100 -
+        Math.floor(
+          STATE.progress
+        )
+      )}%`
+    );
+
+    setText(
+      ELEMENTS.loseTicket,
+      api()?.getTickets?.() ?? 0
+    );
+
+    ELEMENTS.resultModal?.classList.toggle(
+      "win",
+      won
+    );
+
+    ELEMENTS.resultModal?.classList.toggle(
+      "lose",
+      !won
+    );
+
+    openOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    if (won) {
+      showToast(
+        "Menang! Mystery Box berhasil terbuka.",
+        "success"
+      );
+    } else {
+      showToast(
+        "Waktu habis. Coba tap lebih cepat!",
+        "warning"
+      );
+    }
+  }
+
+
+  /* =========================================================
+     18. EXIT, RETRY DAN MYSTERY
+  ========================================================= */
+
+  function requestExit() {
+    if (isBusy()) {
+      if (ELEMENTS.exitOverlay) {
+        openOverlay(
+          ELEMENTS.exitOverlay
+        );
+      } else {
+        const confirmed =
+          window.confirm(
+            "Keluar dari permainan? Tiket tidak dikembalikan."
+          );
+
+        if (confirmed) {
+          quitToLobby();
+        }
+      }
+
+      return;
+    }
+
+    quitToLobby();
+  }
+
+  function quitToLobby() {
+    clearTimers();
+
+    closeOverlay(
+      ELEMENTS.exitOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    resetGame();
+
+    api()?.returnToLobby?.();
+  }
+
+  function retryGame() {
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    if (!api()?.hasTickets?.(1)) {
+      showToast(
+        "Tiket sudah habis.",
+        "warning"
+      );
+
+      window.setTimeout(() => {
+        api()?.returnToLobby?.();
+      }, 650);
+
+      return;
+    }
+
+    resetGame();
+    startCountdown();
+  }
+
+  function openMystery() {
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    const opened =
+      api()?.openMystery?.();
+
+    if (!opened) {
+      showToast(
+        "Mystery Box belum dapat dibuka.",
+        "warning"
+      );
+    }
+  }
+
+  function toggleSound() {
+    const enabled =
+      api()?.isSoundEnabled?.() ===
+      false;
+
+    api()?.setSound?.(enabled);
+
+    renderSound();
+  }
+
+
+  /* =========================================================
+     19. EVENT BUTTON
+  ========================================================= */
+
+  ELEMENTS.startButton?.addEventListener(
+    "click",
+    startCountdown
+  );
+
+  ELEMENTS.biteButton?.addEventListener(
+    "click",
+    biteKerupuk
+  );
+
+  ELEMENTS.pauseButton?.addEventListener(
+    "click",
+    pauseGame
+  );
+
+  ELEMENTS.resumeButton?.addEventListener(
+    "click",
+    resumeGame
+  );
+
+  ELEMENTS.backButton?.addEventListener(
+    "click",
+    requestExit
+  );
+
+  ELEMENTS.quitButton?.addEventListener(
+    "click",
+    requestExit
+  );
+
+  ELEMENTS.cancelExitButton?.addEventListener(
+    "click",
+    () => {
+      closeOverlay(
+        ELEMENTS.exitOverlay
+      );
+    }
+  );
+
+  ELEMENTS.confirmExitButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.closeResultButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.winLobbyButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.loseLobbyButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.retryButton?.addEventListener(
+    "click",
+    retryGame
+  );
+
+  ELEMENTS.openMysteryButton?.addEventListener(
+    "click",
+    openMystery
+  );
+
+  ELEMENTS.soundButton?.addEventListener(
+    "click",
+    toggleSound
+  );
+
+
+  /* =========================================================
+     20. KEYBOARD
+  ========================================================= */
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      const activeScreen =
+        document.querySelector(
+          ".screen.active"
+        );
+
+      if (
+        activeScreen !== screen
+      ) {
+        return;
+      }
+
+      if (
+        event.code === "Space" ||
+        event.code === "Enter"
+      ) {
+        if (isPlaying()) {
+          event.preventDefault();
+          biteKerupuk();
+        }
+      }
+
+      if (
+        event.code === "KeyP"
+      ) {
+        event.preventDefault();
+
+        if (isPlaying()) {
+          pauseGame();
+        } else if (isPaused()) {
+          resumeGame();
+        }
+      }
+
+      if (
+        event.code === "Escape"
+      ) {
+        event.preventDefault();
+
+        if (isPaused()) {
+          resumeGame();
+        } else {
+          requestExit();
+        }
+      }
+    }
+  );
+
+
+  /* =========================================================
+     21. TAP ARENA
+  ========================================================= */
+
+  let lastPointerTime = 0;
+
+  ELEMENTS.arena?.addEventListener(
+    "pointerdown",
+    (event) => {
+      if (!isPlaying()) {
+        return;
+      }
+
+      if (
+        event.target.closest(
+          "button"
+        )
+      ) {
+        return;
+      }
+
+      const now =
+        performance.now();
+
+      if (
+        now -
+          lastPointerTime <
+        CONFIG.minimumTapDelay
+      ) {
+        return;
+      }
+
+      lastPointerTime = now;
+
+      biteKerupuk();
+    }
+  );
+
+
+  /* =========================================================
+     22. SCREEN CHANGE
+  ========================================================= */
+
+  document.addEventListener(
+    "clickbet:screenchange",
+    (event) => {
+      if (
+        event.detail?.screen ===
+        "kerupuk"
+      ) {
+        resetGame();
+
+        window.setTimeout(() => {
+          ELEMENTS.startButton?.focus();
+        }, 300);
+      } else if (isBusy()) {
+        clearTimers();
+        STATE.status = "idle";
+      }
+    }
+  );
+
+
+  /* =========================================================
+     23. AUTO PAUSE
+  ========================================================= */
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (
+        document.hidden &&
+        isPlaying()
+      ) {
+        pauseGame();
+      }
+    }
+  );
+
+
+  /* =========================================================
+     24. PUBLIC API
+  ========================================================= */
+
+  window.ClickbetKerupuk =
+    Object.freeze({
+      start:
+        startCountdown,
+
+      bite:
+        biteKerupuk,
+
+      tap:
+        biteKerupuk,
+
+      pause:
+        pauseGame,
+
+      resume:
+        resumeGame,
+
+      reset:
+        resetGame,
+
+      returnLobby:
+        quitToLobby,
+
+      getStatus() {
+        return {
+          status:
+            STATE.status,
+
+          progress:
+            STATE.progress,
+
+          remaining:
+            Math.max(
+              0,
+              100 -
+              STATE.progress
+            ),
+
+          time:
+            STATE.remainingTime,
+
+          taps:
+            STATE.taps,
+
+          combo:
+            STATE.combo,
+
+          bestCombo:
+            STATE.bestCombo,
+
+          score:
+            STATE.score,
+
+          swing:
+            STATE.swing
+        };
+      }
+    });
+
+
+  /* =========================================================
+     25. INITIALIZATION
+  ========================================================= */
+
+  createPremiumFeedback();
+  resetGame();
+  renderAll();
+
+  console.info(
+    "[CLICKBET88 PART 3] Premium Makan Kerupuk aktif."
+  );
+})();
