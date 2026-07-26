@@ -17784,3 +17784,52 @@ height:15px;
     min-height: 490px;
   }
 }
+/* =========================================================
+   FIX 01 — SCREEN DISPLAY SYSTEM
+   Memperbaiki opening, login, lobby, dan layar game
+========================================================= */
+
+.screen {
+  display: none !important;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.screen.active {
+  display: block !important;
+}
+
+/* Opening harus menggunakan flex */
+#openingScreen.active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Login harus menggunakan flex */
+#loginScreen.active {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Lobby dan semua game tetap block */
+#lobbyScreen.active,
+#panjatPinangScreen.active,
+#kerupukScreen.active,
+#kelerengScreen.active,
+#mysteryScreen.active {
+  display: block !important;
+}
+
+/* Screen yang sedang keluar tetap terlihat selama animasi */
+.screen.is-leaving {
+  display: block !important;
+  pointer-events: none;
+}
+
+#openingScreen.is-leaving,
+#loginScreen.is-leaving {
+  display: flex !important;
+}
