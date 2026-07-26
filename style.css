@@ -4050,3 +4050,904 @@ height:15px;
 }
 
 }
+/* =========================================================
+   CSS PART 3B-2C — MYSTERY BOX PROGRESS
+========================================================= */
+
+
+/* =========================================================
+   MYSTERY BOX CARD
+========================================================= */
+
+.mystery-progress-card,
+.mystery-box-progress-card{
+    position:relative;
+    display:grid;
+    grid-template-columns:150px minmax(0,1fr);
+    align-items:center;
+    gap:24px;
+    padding:24px;
+    overflow:hidden;
+    isolation:isolate;
+    border-radius:26px;
+    border:1px solid rgba(255,221,125,.28);
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(255,201,76,.15),
+            transparent 38%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.085),
+            rgba(255,255,255,.025)
+        );
+
+    box-shadow:
+        var(--shadow-large),
+        inset 0 1px rgba(255,255,255,.09);
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW
+========================================================= */
+
+.mystery-progress-card::before,
+.mystery-box-progress-card::before{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    left:-100px;
+    top:-100px;
+    z-index:-2;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,197,61,.22),
+            rgba(255,197,61,.05) 45%,
+            transparent 70%
+        );
+
+    filter:blur(8px);
+    animation:mysteryAmbientGlow 4s ease-in-out infinite;
+}
+
+.mystery-progress-card::after,
+.mystery-box-progress-card::after{
+    content:"";
+    position:absolute;
+    inset:-40%;
+    z-index:-3;
+
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent,
+            rgba(255,219,112,.05),
+            transparent 22%
+        );
+
+    animation:mysteryBackgroundRotate 12s linear infinite;
+}
+
+@keyframes mysteryAmbientGlow{
+    0%,
+    100%{
+        opacity:.55;
+        transform:scale(.92);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.08);
+    }
+}
+
+@keyframes mysteryBackgroundRotate{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   MYSTERY BOX VISUAL
+========================================================= */
+
+.mystery-box-visual{
+    position:relative;
+    width:140px;
+    height:140px;
+    display:grid;
+    place-items:center;
+    margin:auto;
+}
+
+.mystery-box-glow{
+    position:absolute;
+    inset:15px;
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,218,105,.45),
+            rgba(255,191,40,.12) 45%,
+            transparent 72%
+        );
+
+    filter:blur(10px);
+    animation:mysteryGlowPulse 2.5s ease-in-out infinite;
+}
+
+.mystery-box-image,
+.mystery-box-icon{
+    position:relative;
+    z-index:2;
+    width:105px;
+    max-height:112px;
+    object-fit:contain;
+    user-select:none;
+    pointer-events:none;
+
+    filter:
+        drop-shadow(0 15px 18px rgba(0,0,0,.38))
+        drop-shadow(0 0 13px rgba(255,211,89,.18));
+
+    animation:mysteryBoxFloat 3.2s ease-in-out infinite;
+}
+
+@keyframes mysteryGlowPulse{
+    0%,
+    100%{
+        opacity:.55;
+        transform:scale(.85);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.1);
+    }
+}
+
+@keyframes mysteryBoxFloat{
+    0%,
+    100%{
+        transform:translateY(0) rotate(-1deg);
+    }
+
+    50%{
+        transform:translateY(-9px) rotate(1deg);
+    }
+}
+
+
+/* =========================================================
+   SPARKLES
+========================================================= */
+
+.mystery-sparkle{
+    position:absolute;
+    z-index:3;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#fff4b4;
+
+    box-shadow:
+        0 0 6px #fff,
+        0 0 14px rgba(255,218,102,.9);
+
+    animation:mysterySparkle 2s ease-in-out infinite;
+}
+
+.mystery-sparkle:nth-child(1){
+    top:15%;
+    left:15%;
+    animation-delay:0s;
+}
+
+.mystery-sparkle:nth-child(2){
+    top:20%;
+    right:10%;
+    animation-delay:.6s;
+}
+
+.mystery-sparkle:nth-child(3){
+    right:18%;
+    bottom:18%;
+    animation-delay:1.1s;
+}
+
+.mystery-sparkle:nth-child(4){
+    left:10%;
+    bottom:25%;
+    animation-delay:1.5s;
+}
+
+@keyframes mysterySparkle{
+    0%,
+    100%{
+        opacity:.2;
+        transform:scale(.45) rotate(0);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.35) rotate(180deg);
+    }
+}
+
+
+/* =========================================================
+   MYSTERY CONTENT
+========================================================= */
+
+.mystery-progress-content{
+    position:relative;
+    z-index:2;
+    display:grid;
+    gap:16px;
+    min-width:0;
+}
+
+.mystery-progress-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+}
+
+.mystery-progress-heading{
+    min-width:0;
+}
+
+.mystery-progress-title{
+    margin:0;
+    color:#fff;
+    font-size:1.2rem;
+    font-weight:900;
+    line-height:1.2;
+}
+
+.mystery-progress-description{
+    margin-top:6px;
+    max-width:560px;
+    color:rgba(255,255,255,.62);
+    font-size:.76rem;
+    line-height:1.55;
+}
+
+.mystery-progress-counter{
+    flex-shrink:0;
+    display:flex;
+    align-items:baseline;
+    gap:4px;
+    padding:9px 13px;
+    border-radius:14px;
+
+    background:rgba(255,202,68,.09);
+    border:1px solid rgba(255,220,112,.22);
+}
+
+.mystery-progress-counter strong{
+    color:#ffe28a;
+    font-size:1.55rem;
+    font-weight:1000;
+    line-height:1;
+    text-shadow:0 0 12px rgba(255,210,78,.35);
+}
+
+.mystery-progress-counter span{
+    color:rgba(255,255,255,.55);
+    font-size:.72rem;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   PROGRESS TRACK
+========================================================= */
+
+.mystery-progress-bar-wrap{
+    display:grid;
+    gap:9px;
+}
+
+.mystery-progress-labels{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    color:rgba(255,255,255,.6);
+    font-size:.68rem;
+    font-weight:700;
+}
+
+.mystery-progress-labels strong{
+    color:#ffd972;
+    font-size:.72rem;
+    font-weight:900;
+}
+
+.mystery-progress-track{
+    position:relative;
+    width:100%;
+    height:18px;
+    overflow:hidden;
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.55),
+            rgba(0,0,0,.33)
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        inset 0 2px 8px rgba(0,0,0,.58),
+        0 1px rgba(255,255,255,.04);
+}
+
+.mystery-progress-fill{
+    position:relative;
+    width:0%;
+    height:100%;
+    overflow:hidden;
+    border-radius:inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #a96200 0%,
+            #efad24 38%,
+            #ffe477 72%,
+            #fff0a3 100%
+        );
+
+    box-shadow:
+        0 0 10px rgba(255,194,54,.42),
+        0 0 22px rgba(255,194,54,.2);
+
+    transition:
+        width .85s cubic-bezier(.18,.8,.22,1),
+        filter .35s ease;
+}
+
+.mystery-progress-fill::before{
+    content:"";
+    position:absolute;
+    inset:2px 0 auto 0;
+    height:42%;
+    border-radius:999px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.48),
+            transparent
+        );
+}
+
+.mystery-progress-fill::after{
+    content:"";
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:-45%;
+    width:38%;
+
+    background:
+        linear-gradient(
+            100deg,
+            transparent,
+            rgba(255,255,255,.7),
+            transparent
+        );
+
+    transform:skewX(-16deg);
+    animation:mysteryProgressShine 2.2s linear infinite;
+}
+
+@keyframes mysteryProgressShine{
+    from{
+        left:-45%;
+    }
+
+    to{
+        left:125%;
+    }
+}
+
+
+/* =========================================================
+   TICKET STEPS
+========================================================= */
+
+.mystery-ticket-steps{
+    display:grid;
+    grid-template-columns:repeat(8,minmax(0,1fr));
+    gap:7px;
+}
+
+.mystery-ticket-step{
+    position:relative;
+    height:7px;
+    border-radius:999px;
+    background:rgba(255,255,255,.09);
+    transition:.3s ease;
+}
+
+.mystery-ticket-step.active,
+.mystery-ticket-step.completed{
+    background:
+        linear-gradient(
+            90deg,
+            #c77b00,
+            #ffd660
+        );
+
+    box-shadow:0 0 8px rgba(255,205,70,.26);
+}
+
+
+/* =========================================================
+   MYSTERY STATUS
+========================================================= */
+
+.mystery-status-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+}
+
+.mystery-status{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    min-width:0;
+    color:rgba(255,255,255,.63);
+    font-size:.72rem;
+    font-weight:700;
+}
+
+.mystery-status-dot{
+    flex-shrink:0;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#f1b632;
+
+    box-shadow:
+        0 0 0 4px rgba(241,182,50,.1),
+        0 0 10px rgba(241,182,50,.4);
+
+    animation:mysteryStatusPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes mysteryStatusPulse{
+    0%,
+    100%{
+        opacity:.55;
+        transform:scale(.85);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1.08);
+    }
+}
+
+
+/* =========================================================
+   OPEN BUTTON
+========================================================= */
+
+.mystery-open-button,
+.open-mystery-button{
+    position:relative;
+    flex-shrink:0;
+    min-height:44px;
+    padding:0 19px;
+    overflow:hidden;
+    border:0;
+    border-radius:15px;
+    cursor:pointer;
+
+    color:#3d2100;
+    font-size:.75rem;
+    font-weight:1000;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff0a4,
+            #ffc943 48%,
+            #d88a08 100%
+        );
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.25),
+        0 0 18px rgba(255,199,48,.23),
+        inset 0 1px rgba(255,255,255,.72);
+
+    transition:
+        transform .25s ease,
+        filter .25s ease,
+        box-shadow .25s ease;
+}
+
+.mystery-open-button::before,
+.open-mystery-button::before{
+    content:"";
+    position:absolute;
+    top:-60%;
+    left:-35%;
+    width:28%;
+    height:220%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.8),
+            transparent
+        );
+
+    transform:rotate(20deg);
+    animation:mysteryButtonShine 2.8s ease-in-out infinite;
+}
+
+.mystery-open-button:hover,
+.open-mystery-button:hover{
+    transform:translateY(-2px) scale(1.02);
+    filter:brightness(1.08);
+
+    box-shadow:
+        0 12px 26px rgba(0,0,0,.28),
+        0 0 28px rgba(255,201,54,.38),
+        inset 0 1px rgba(255,255,255,.8);
+}
+
+.mystery-open-button:active,
+.open-mystery-button:active{
+    transform:translateY(0) scale(.98);
+}
+
+.mystery-open-button:disabled,
+.open-mystery-button:disabled{
+    cursor:not-allowed;
+    color:rgba(255,255,255,.42);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.12),
+            rgba(255,255,255,.05)
+        );
+
+    box-shadow:none;
+    filter:none;
+}
+
+.mystery-open-button:disabled::before,
+.open-mystery-button:disabled::before{
+    display:none;
+}
+
+@keyframes mysteryButtonShine{
+    0%,
+    62%{
+        left:-35%;
+    }
+
+    100%{
+        left:135%;
+    }
+}
+
+
+/* =========================================================
+   READY STATE
+========================================================= */
+
+.mystery-progress-card.ready,
+.mystery-box-progress-card.ready{
+    border-color:rgba(255,225,117,.72);
+
+    box-shadow:
+        var(--shadow-large),
+        0 0 20px rgba(255,200,45,.17),
+        inset 0 0 28px rgba(255,197,39,.05);
+}
+
+.mystery-progress-card.ready .mystery-box-image,
+.mystery-progress-card.ready .mystery-box-icon,
+.mystery-box-progress-card.ready .mystery-box-image,
+.mystery-box-progress-card.ready .mystery-box-icon{
+    animation:
+        mysteryBoxReadyFloat 2.6s ease-in-out infinite,
+        mysteryBoxReadyShake 5s ease-in-out infinite;
+}
+
+.mystery-progress-card.ready .mystery-box-glow,
+.mystery-box-progress-card.ready .mystery-box-glow{
+    opacity:1;
+    animation:mysteryReadyGlow 1.3s ease-in-out infinite;
+}
+
+.mystery-progress-card.ready .mystery-status-dot,
+.mystery-box-progress-card.ready .mystery-status-dot{
+    background:#76ff9c;
+
+    box-shadow:
+        0 0 0 4px rgba(79,255,132,.12),
+        0 0 14px rgba(79,255,132,.55);
+}
+
+.mystery-progress-card.ready .mystery-status,
+.mystery-box-progress-card.ready .mystery-status{
+    color:#baffcc;
+}
+
+.mystery-ready-label{
+    display:none;
+    color:#ffe485;
+    font-size:.7rem;
+    font-weight:1000;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    text-shadow:0 0 10px rgba(255,211,78,.4);
+}
+
+.ready .mystery-ready-label{
+    display:inline-flex;
+    animation:mysteryReadyText 1.2s ease-in-out infinite;
+}
+
+@keyframes mysteryBoxReadyFloat{
+    0%,
+    100%{
+        transform:translateY(0) scale(1);
+    }
+
+    50%{
+        transform:translateY(-10px) scale(1.035);
+    }
+}
+
+@keyframes mysteryBoxReadyShake{
+    0%,
+    78%,
+    100%{
+        rotate:0deg;
+    }
+
+    81%{
+        rotate:-3deg;
+    }
+
+    84%{
+        rotate:3deg;
+    }
+
+    87%{
+        rotate:-2deg;
+    }
+
+    90%{
+        rotate:2deg;
+    }
+
+    93%{
+        rotate:0deg;
+    }
+}
+
+@keyframes mysteryReadyGlow{
+    0%,
+    100%{
+        transform:scale(.9);
+        filter:blur(9px);
+    }
+
+    50%{
+        transform:scale(1.22);
+        filter:blur(13px);
+    }
+}
+
+@keyframes mysteryReadyText{
+    0%,
+    100%{
+        opacity:.65;
+    }
+
+    50%{
+        opacity:1;
+    }
+}
+
+
+/* =========================================================
+   LOCKED STATE
+========================================================= */
+
+.mystery-progress-card.locked .mystery-box-image,
+.mystery-progress-card.locked .mystery-box-icon,
+.mystery-box-progress-card.locked .mystery-box-image,
+.mystery-box-progress-card.locked .mystery-box-icon{
+    filter:
+        grayscale(.25)
+        brightness(.78)
+        drop-shadow(0 12px 14px rgba(0,0,0,.35));
+}
+
+.mystery-progress-card.locked .mystery-box-glow,
+.mystery-box-progress-card.locked .mystery-box-glow{
+    opacity:.4;
+}
+
+
+/* =========================================================
+   HOVER EFFECT
+========================================================= */
+
+@media(hover:hover){
+
+    .mystery-progress-card,
+    .mystery-box-progress-card{
+        transition:
+            transform .3s ease,
+            border-color .3s ease,
+            box-shadow .3s ease;
+    }
+
+    .mystery-progress-card:hover,
+    .mystery-box-progress-card:hover{
+        transform:translateY(-3px);
+        border-color:rgba(255,221,125,.42);
+
+        box-shadow:
+            0 22px 50px rgba(0,0,0,.3),
+            0 0 24px rgba(255,199,50,.08),
+            inset 0 1px rgba(255,255,255,.1);
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+
+@media(max-width:780px){
+
+    .mystery-progress-card,
+    .mystery-box-progress-card{
+        grid-template-columns:120px minmax(0,1fr);
+        gap:18px;
+        padding:20px;
+    }
+
+    .mystery-box-visual{
+        width:115px;
+        height:115px;
+    }
+
+    .mystery-box-image,
+    .mystery-box-icon{
+        width:88px;
+    }
+
+    .mystery-progress-title{
+        font-size:1.08rem;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+
+@media(max-width:560px){
+
+    .mystery-progress-card,
+    .mystery-box-progress-card{
+        grid-template-columns:1fr;
+        gap:12px;
+        padding:18px;
+        text-align:center;
+    }
+
+    .mystery-box-visual{
+        width:105px;
+        height:105px;
+    }
+
+    .mystery-box-image,
+    .mystery-box-icon{
+        width:82px;
+        max-height:88px;
+    }
+
+    .mystery-progress-header{
+        display:grid;
+        justify-content:stretch;
+        justify-items:center;
+        gap:11px;
+    }
+
+    .mystery-progress-description{
+        margin-inline:auto;
+    }
+
+    .mystery-progress-counter{
+        justify-self:center;
+    }
+
+    .mystery-progress-labels{
+        font-size:.62rem;
+    }
+
+    .mystery-progress-track{
+        height:15px;
+    }
+
+    .mystery-ticket-steps{
+        gap:4px;
+    }
+
+    .mystery-status-row{
+        display:grid;
+        justify-content:stretch;
+        justify-items:center;
+        gap:13px;
+    }
+
+    .mystery-status{
+        justify-content:center;
+    }
+
+    .mystery-open-button,
+    .open-mystery-button{
+        width:100%;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    .mystery-progress-card::before,
+    .mystery-progress-card::after,
+    .mystery-box-progress-card::before,
+    .mystery-box-progress-card::after,
+    .mystery-box-glow,
+    .mystery-box-image,
+    .mystery-box-icon,
+    .mystery-sparkle,
+    .mystery-progress-fill::after,
+    .mystery-status-dot,
+    .mystery-open-button::before,
+    .open-mystery-button::before,
+    .mystery-ready-label{
+        animation:none !important;
+    }
+
+}
