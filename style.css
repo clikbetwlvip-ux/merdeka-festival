@@ -15592,3 +15592,1480 @@ height:15px;
     }
 
 }
+/* =========================================================
+   CSS PART 5A-2 — JACKPOT & ULTIMATE PRIZE EFFECTS
+========================================================= */
+
+
+/* =========================================================
+   EFFECT LAYER
+========================================================= */
+
+.mystery-effect-layer{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    overflow:hidden;
+    pointer-events:none;
+    visibility:hidden;
+}
+
+.mystery-effect-layer.active{
+    visibility:visible;
+}
+
+
+/* =========================================================
+   SCREEN FLASH
+========================================================= */
+
+.prize-screen-flash{
+    position:absolute;
+    inset:0;
+    z-index:2;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255,255,255,.98),
+            rgba(255,232,127,.72) 25%,
+            rgba(255,177,35,.26) 50%,
+            transparent 75%
+        );
+
+    opacity:0;
+}
+
+.prize-screen-flash.active{
+    animation:prizeScreenFlash .9s ease-out forwards;
+}
+
+@keyframes prizeScreenFlash{
+    0%{
+        opacity:0;
+    }
+
+    14%{
+        opacity:1;
+    }
+
+    36%{
+        opacity:.68;
+    }
+
+    100%{
+        opacity:0;
+    }
+}
+
+
+/* =========================================================
+   GOLDEN OVERLAY
+========================================================= */
+
+.prize-golden-overlay{
+    position:absolute;
+    inset:-15%;
+    z-index:1;
+
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent,
+            rgba(255,219,90,.22),
+            transparent 18%,
+            rgba(255,139,21,.15),
+            transparent 38%,
+            rgba(255,219,90,.22),
+            transparent 58%,
+            rgba(255,139,21,.15),
+            transparent 78%,
+            rgba(255,219,90,.22),
+            transparent
+        );
+
+    filter:blur(40px);
+    opacity:0;
+}
+
+.prize-golden-overlay.active{
+    animation:prizeGoldenOverlay 4s linear infinite;
+}
+
+@keyframes prizeGoldenOverlay{
+    0%{
+        opacity:0;
+        transform:rotate(0) scale(.8);
+    }
+
+    20%{
+        opacity:.75;
+    }
+
+    100%{
+        opacity:.45;
+        transform:rotate(360deg) scale(1.2);
+    }
+}
+
+
+/* =========================================================
+   JACKPOT TITLE
+========================================================= */
+
+.jackpot-title{
+    position:absolute;
+    top:19%;
+    left:50%;
+    z-index:30;
+
+    width:min(900px,94%);
+    transform:
+        translateX(-50%)
+        scale(.2);
+
+    color:#fff9cf;
+    font-size:clamp(3rem,10vw,8.4rem);
+    font-weight:1000;
+    font-style:italic;
+    line-height:.8;
+    letter-spacing:-.06em;
+    text-align:center;
+    text-transform:uppercase;
+
+    opacity:0;
+
+    text-shadow:
+        0 5px 0 #de8c00,
+        0 10px 0 #914200,
+        0 16px 14px rgba(0,0,0,.38),
+        0 0 20px rgba(255,241,150,.95),
+        0 0 55px rgba(255,186,38,.75),
+        0 0 110px rgba(255,91,31,.45);
+}
+
+.jackpot-title.show{
+    animation:jackpotTitleShow 1.15s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes jackpotTitleShow{
+    0%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            translateY(80px)
+            scale(.1)
+            rotate(-8deg);
+    }
+
+    48%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(-15px)
+            scale(1.25)
+            rotate(2deg);
+    }
+
+    70%{
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(.96)
+            rotate(-1deg);
+    }
+
+    100%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1)
+            rotate(0);
+    }
+}
+
+
+/* =========================================================
+   JACKPOT TITLE PULSE
+========================================================= */
+
+.jackpot-title.pulse{
+    animation:
+        jackpotTitleShow 1.15s cubic-bezier(.16,1,.3,1) forwards,
+        jackpotTitlePulse .8s ease-in-out 1.15s infinite alternate;
+}
+
+@keyframes jackpotTitlePulse{
+    to{
+        filter:
+            brightness(1.25)
+            drop-shadow(0 0 25px rgba(255,225,95,.8));
+
+        transform:
+            translateX(-50%)
+            scale(1.045);
+    }
+}
+
+
+/* =========================================================
+   CROWN
+========================================================= */
+
+.jackpot-crown{
+    position:absolute;
+    top:8%;
+    left:50%;
+    z-index:31;
+    width:150px;
+    height:115px;
+
+    transform:
+        translateX(-50%)
+        translateY(-100px)
+        rotate(-12deg)
+        scale(.2);
+
+    opacity:0;
+    filter:
+        drop-shadow(0 10px 9px rgba(0,0,0,.36))
+        drop-shadow(0 0 22px rgba(255,215,69,.6));
+}
+
+.jackpot-crown::before{
+    content:"";
+    position:absolute;
+    right:8px;
+    bottom:9px;
+    left:8px;
+    height:58px;
+
+    clip-path:polygon(
+        0 100%,
+        0 38%,
+        24% 65%,
+        42% 3%,
+        60% 64%,
+        79% 12%,
+        100% 61%,
+        100% 100%
+    );
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff1a2,
+            #ffc72e 35%,
+            #e78c00 70%,
+            #fff0a0
+        );
+
+    border-radius:10px;
+}
+
+.jackpot-crown::after{
+    content:"";
+    position:absolute;
+    right:3px;
+    bottom:0;
+    left:3px;
+    height:25px;
+
+    border-radius:8px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff3a7,
+            #eda20d
+        );
+
+    border:3px solid #a35800;
+}
+
+.jackpot-crown.show{
+    animation:jackpotCrownShow 1s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes jackpotCrownShow{
+    0%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            translateY(-110px)
+            rotate(-18deg)
+            scale(.2);
+    }
+
+    65%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(10px)
+            rotate(5deg)
+            scale(1.18);
+    }
+
+    100%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(0)
+            rotate(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   PRIZE BADGE
+========================================================= */
+
+.prize-rank-badge{
+    position:absolute;
+    top:47%;
+    left:50%;
+    z-index:32;
+
+    min-width:150px;
+    padding:10px 20px;
+
+    transform:
+        translateX(-50%)
+        scale(.35);
+
+    border-radius:999px;
+
+    font-size:.78rem;
+    font-weight:1000;
+    letter-spacing:.18em;
+    text-align:center;
+    text-transform:uppercase;
+
+    opacity:0;
+}
+
+.prize-rank-badge.show{
+    animation:prizeRankBadgeShow .7s ease-out forwards;
+}
+
+@keyframes prizeRankBadgeShow{
+    0%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            translateY(20px)
+            scale(.35);
+    }
+
+    65%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(-6px)
+            scale(1.15);
+    }
+
+    100%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   BADGE LEVELS
+========================================================= */
+
+.prize-rank-badge.lucky{
+    color:#173e20;
+    background:linear-gradient(180deg,#d9ffd8,#75db7d);
+    border:2px solid #baffbe;
+    box-shadow:0 0 20px rgba(92,255,113,.4);
+}
+
+.prize-rank-badge.nice{
+    color:#154457;
+    background:linear-gradient(180deg,#d7fbff,#72d6ec);
+    border:2px solid #c1f8ff;
+    box-shadow:0 0 20px rgba(70,219,255,.42);
+}
+
+.prize-rank-badge.great{
+    color:#33236b;
+    background:linear-gradient(180deg,#eee4ff,#ae8aff);
+    border:2px solid #e0cfff;
+    box-shadow:0 0 24px rgba(162,109,255,.48);
+}
+
+.prize-rank-badge.excellent{
+    color:#6a2a00;
+    background:linear-gradient(180deg,#ffe8b7,#ffae38);
+    border:2px solid #ffe4a4;
+    box-shadow:0 0 25px rgba(255,160,38,.52);
+}
+
+.prize-rank-badge.amazing{
+    color:#6c0d23;
+    background:linear-gradient(180deg,#ffd5df,#ff668c);
+    border:2px solid #ffc5d3;
+    box-shadow:0 0 27px rgba(255,66,112,.55);
+}
+
+.prize-rank-badge.epic{
+    color:#fff;
+    background:linear-gradient(135deg,#7c28eb,#e933c8);
+    border:2px solid #efb3ff;
+    box-shadow:
+        0 0 26px rgba(202,57,255,.6),
+        inset 0 1px rgba(255,255,255,.5);
+}
+
+.prize-rank-badge.legendary{
+    color:#522400;
+    background:linear-gradient(135deg,#fff3a4,#f6b91f,#ff7533);
+    border:2px solid #fff0a4;
+    box-shadow:
+        0 0 28px rgba(255,191,31,.72),
+        0 0 55px rgba(255,88,37,.35);
+}
+
+.prize-rank-badge.jackpot{
+    color:#461d00;
+    background:
+        linear-gradient(
+            90deg,
+            #fff1a2,
+            #ffbd1e,
+            #fff7c4,
+            #e58a00,
+            #fff1a2
+        );
+
+    background-size:300% 100%;
+    border:3px solid #fff5b5;
+
+    box-shadow:
+        0 0 30px rgba(255,221,72,.9),
+        0 0 65px rgba(255,122,23,.55);
+
+    animation:
+        prizeRankBadgeShow .7s ease-out forwards,
+        jackpotBadgeShine 1.4s linear .7s infinite;
+}
+
+@keyframes jackpotBadgeShine{
+    to{
+        background-position:300% 0;
+    }
+}
+
+
+/* =========================================================
+   COUNT-UP AMOUNT
+========================================================= */
+
+.prize-countup{
+    position:absolute;
+    top:36%;
+    left:50%;
+    z-index:33;
+
+    width:min(900px,96%);
+    transform:
+        translateX(-50%)
+        scale(.4);
+
+    color:#fff8c8;
+    font-size:clamp(3rem,11vw,8.5rem);
+    font-weight:1000;
+    line-height:.9;
+    letter-spacing:-.06em;
+    text-align:center;
+
+    opacity:0;
+
+    text-shadow:
+        0 5px 0 #d88700,
+        0 10px 0 #793300,
+        0 16px 18px rgba(0,0,0,.4),
+        0 0 25px rgba(255,234,130,.95),
+        0 0 65px rgba(255,151,25,.65);
+}
+
+.prize-countup.show{
+    animation:prizeCountupShow .9s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes prizeCountupShow{
+    0%{
+        opacity:0;
+        transform:
+            translateX(-50%)
+            translateY(50px)
+            scale(.3);
+    }
+
+    60%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(-8px)
+            scale(1.12);
+    }
+
+    100%{
+        opacity:1;
+        transform:
+            translateX(-50%)
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   PRIZE SPARKLE
+========================================================= */
+
+.prize-sparkles{
+    position:absolute;
+    inset:0;
+    z-index:20;
+    overflow:hidden;
+    pointer-events:none;
+}
+
+.prize-sparkle{
+    position:absolute;
+    top:var(--sparkle-top,50%);
+    left:var(--sparkle-left,50%);
+
+    width:var(--sparkle-size,14px);
+    height:var(--sparkle-size,14px);
+
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+}
+
+.prize-sparkle::before,
+.prize-sparkle::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+
+    background:#fff8b0;
+    border-radius:999px;
+    box-shadow:
+        0 0 8px rgba(255,242,151,.9),
+        0 0 18px rgba(255,188,37,.65);
+}
+
+.prize-sparkle::before{
+    width:100%;
+    height:22%;
+    transform:translate(-50%,-50%);
+}
+
+.prize-sparkle::after{
+    width:22%;
+    height:100%;
+    transform:translate(-50%,-50%);
+}
+
+.prize-sparkles.active .prize-sparkle{
+    animation:
+        prizeSparklePop
+        var(--sparkle-duration,1.4s)
+        ease-in-out
+        var(--sparkle-delay,0s)
+        infinite;
+}
+
+@keyframes prizeSparklePop{
+    0%,
+    100%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            scale(0)
+            rotate(0);
+    }
+
+    45%{
+        opacity:1;
+        transform:
+            translate(-50%,-50%)
+            scale(1)
+            rotate(90deg);
+    }
+
+    70%{
+        opacity:.7;
+        transform:
+            translate(-50%,-50%)
+            scale(.6)
+            rotate(140deg);
+    }
+}
+
+
+/* =========================================================
+   GOLD BURST
+========================================================= */
+
+.gold-burst{
+    position:absolute;
+    top:50%;
+    left:50%;
+    z-index:10;
+    width:20px;
+    height:20px;
+
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+}
+
+.gold-burst-particle{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:var(--burst-size,9px);
+    height:var(--burst-size,9px);
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff8c9,
+            #ffc536 50%,
+            #ed7c00
+        );
+
+    box-shadow:
+        0 0 12px rgba(255,211,69,.75);
+
+    opacity:0;
+}
+
+.gold-burst.active .gold-burst-particle{
+    animation:
+        goldBurstParticle
+        var(--burst-duration,1.2s)
+        ease-out
+        var(--burst-delay,0s)
+        forwards;
+}
+
+@keyframes goldBurstParticle{
+    0%{
+        opacity:1;
+        transform:
+            translate(-50%,-50%)
+            rotate(var(--burst-angle,0deg))
+            translateX(0)
+            scale(.3);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            rotate(var(--burst-angle,0deg))
+            translateX(var(--burst-distance,300px))
+            scale(1.25);
+    }
+}
+
+
+/* =========================================================
+   CONFETTI PREMIUM
+========================================================= */
+
+.prize-confetti{
+    position:absolute;
+    inset:0;
+    z-index:18;
+    overflow:hidden;
+}
+
+.prize-confetti-piece{
+    position:absolute;
+    top:-40px;
+    left:var(--confetti-left,50%);
+
+    width:var(--confetti-width,10px);
+    height:var(--confetti-height,18px);
+
+    border-radius:2px;
+
+    background:
+        hsl(
+            var(--confetti-hue,45)
+            90%
+            58%
+        );
+
+    opacity:0;
+}
+
+.prize-confetti.active .prize-confetti-piece{
+    animation:
+        prizeConfettiFall
+        var(--confetti-duration,3.1s)
+        linear
+        var(--confetti-delay,0s)
+        forwards;
+}
+
+@keyframes prizeConfettiFall{
+    0%{
+        opacity:1;
+        transform:
+            translate3d(0,-30px,0)
+            rotateX(0)
+            rotateY(0)
+            rotateZ(0);
+    }
+
+    25%{
+        transform:
+            translate3d(
+                calc(var(--confetti-drift,40px) * .35),
+                24vh,
+                0
+            )
+            rotateX(180deg)
+            rotateY(150deg)
+            rotateZ(160deg);
+    }
+
+    55%{
+        opacity:1;
+        transform:
+            translate3d(
+                calc(var(--confetti-drift,40px) * -.2),
+                58vh,
+                0
+            )
+            rotateX(390deg)
+            rotateY(320deg)
+            rotateZ(420deg);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translate3d(
+                var(--confetti-drift,40px),
+                112vh,
+                0
+            )
+            rotateX(760deg)
+            rotateY(650deg)
+            rotateZ(820deg);
+    }
+}
+
+
+/* =========================================================
+   COIN RAIN
+========================================================= */
+
+.coin-rain{
+    position:absolute;
+    inset:0;
+    z-index:19;
+    overflow:hidden;
+}
+
+.coin-rain-item{
+    position:absolute;
+    top:-80px;
+    left:var(--coin-left,50%);
+    width:var(--coin-size,36px);
+    height:var(--coin-size,36px);
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 28%,
+            #fff8af 0 7%,
+            #ffd23c 18%,
+            #e58a00 58%,
+            #8e4600 75%,
+            #f6b51c 82%
+        );
+
+    border:2px solid #ffe987;
+
+    box-shadow:
+        inset 3px 3px 5px rgba(255,255,255,.55),
+        inset -4px -4px 5px rgba(126,56,0,.34),
+        0 4px 8px rgba(0,0,0,.27),
+        0 0 13px rgba(255,190,30,.45);
+
+    opacity:0;
+}
+
+.coin-rain-item::after{
+    content:"88";
+    position:absolute;
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    color:#8f4b00;
+    font-size:calc(var(--coin-size,36px) * .28);
+    font-weight:1000;
+
+    text-shadow:0 1px rgba(255,241,141,.85);
+}
+
+.coin-rain.active .coin-rain-item{
+    animation:
+        coinRainFall
+        var(--coin-duration,3.2s)
+        cubic-bezier(.22,.55,.35,1)
+        var(--coin-delay,0s)
+        forwards;
+}
+
+@keyframes coinRainFall{
+    0%{
+        opacity:0;
+        transform:
+            translateY(-60px)
+            translateX(0)
+            rotateY(0)
+            rotateZ(0)
+            scale(.6);
+    }
+
+    12%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translateY(115vh)
+            translateX(var(--coin-drift,60px))
+            rotateY(1080deg)
+            rotateZ(540deg)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   DIAMOND RAIN
+========================================================= */
+
+.diamond-rain{
+    position:absolute;
+    inset:0;
+    z-index:17;
+    overflow:hidden;
+}
+
+.diamond-rain-item{
+    position:absolute;
+    top:-70px;
+    left:var(--diamond-left,50%);
+
+    width:var(--diamond-size,30px);
+    height:var(--diamond-size,30px);
+
+    clip-path:polygon(
+        50% 0,
+        100% 38%,
+        78% 100%,
+        22% 100%,
+        0 38%
+    );
+
+    background:
+        linear-gradient(
+            135deg,
+            #eaffff,
+            #5ce7ff 32%,
+            #218bff 60%,
+            #bd8cff
+        );
+
+    box-shadow:
+        0 0 18px rgba(90,223,255,.7);
+
+    opacity:0;
+}
+
+.diamond-rain.active .diamond-rain-item{
+    animation:
+        diamondRainFall
+        var(--diamond-duration,3.5s)
+        linear
+        var(--diamond-delay,0s)
+        forwards;
+}
+
+@keyframes diamondRainFall{
+    0%{
+        opacity:0;
+        transform:
+            translateY(-60px)
+            translateX(0)
+            rotate(0)
+            scale(.5);
+    }
+
+    12%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translateY(112vh)
+            translateX(var(--diamond-drift,50px))
+            rotate(720deg)
+            scale(1.15);
+    }
+}
+
+
+/* =========================================================
+   FIREWORKS
+========================================================= */
+
+.fireworks-layer{
+    position:absolute;
+    inset:0;
+    z-index:16;
+    overflow:hidden;
+}
+
+.firework{
+    position:absolute;
+    top:var(--firework-top,35%);
+    left:var(--firework-left,50%);
+    width:10px;
+    height:10px;
+
+    transform:translate(-50%,-50%);
+}
+
+.firework-particle{
+    position:absolute;
+    top:50%;
+    left:50%;
+
+    width:var(--firework-size,7px);
+    height:var(--firework-size,7px);
+
+    border-radius:50%;
+
+    background:
+        hsl(
+            var(--firework-hue,45)
+            100%
+            67%
+        );
+
+    box-shadow:
+        0 0 10px
+        hsl(
+            var(--firework-hue,45)
+            100%
+            60%
+        );
+
+    opacity:0;
+}
+
+.firework.active .firework-particle{
+    animation:
+        fireworkExplode
+        var(--firework-duration,1.35s)
+        ease-out
+        var(--firework-delay,0s)
+        forwards;
+}
+
+@keyframes fireworkExplode{
+    0%{
+        opacity:1;
+        transform:
+            translate(-50%,-50%)
+            rotate(var(--firework-angle,0deg))
+            translateX(0)
+            scale(.35);
+    }
+
+    72%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            rotate(var(--firework-angle,0deg))
+            translateX(var(--firework-distance,150px))
+            translateY(50px)
+            scale(.85);
+    }
+}
+
+
+/* =========================================================
+   FIREWORK CENTER FLASH
+========================================================= */
+
+.firework::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+
+    width:28px;
+    height:28px;
+
+    transform:
+        translate(-50%,-50%)
+        scale(0);
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #fff,
+            #ffe782 35%,
+            transparent 70%
+        );
+
+    opacity:0;
+}
+
+.firework.active::after{
+    animation:fireworkCenterFlash .55s ease-out forwards;
+}
+
+@keyframes fireworkCenterFlash{
+    0%{
+        opacity:1;
+        transform:
+            translate(-50%,-50%)
+            scale(.2);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            scale(4.5);
+    }
+}
+
+
+/* =========================================================
+   RAINBOW AURA
+========================================================= */
+
+.jackpot-rainbow-aura{
+    position:absolute;
+    top:50%;
+    left:50%;
+    z-index:4;
+
+    width:min(800px,90vw);
+    aspect-ratio:1;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.3);
+
+    border-radius:50%;
+
+    background:
+        conic-gradient(
+            #ff3855,
+            #ffb629,
+            #fff25a,
+            #5cff93,
+            #47d8ff,
+            #7e6cff,
+            #e34cff,
+            #ff3855
+        );
+
+    filter:
+        blur(45px)
+        saturate(1.4);
+
+    mix-blend-mode:screen;
+    opacity:0;
+}
+
+.jackpot-rainbow-aura.active{
+    animation:jackpotRainbowAura 5s linear infinite;
+}
+
+@keyframes jackpotRainbowAura{
+    0%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            scale(.3)
+            rotate(0);
+    }
+
+    20%{
+        opacity:.35;
+    }
+
+    100%{
+        opacity:.3;
+        transform:
+            translate(-50%,-50%)
+            scale(1.15)
+            rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   PRIZE LEVEL SCREEN EFFECT
+========================================================= */
+
+.mystery-box-screen.prize-lucky{
+    box-shadow:inset 0 0 100px rgba(91,255,111,.12);
+}
+
+.mystery-box-screen.prize-nice{
+    box-shadow:inset 0 0 100px rgba(73,214,255,.14);
+}
+
+.mystery-box-screen.prize-great{
+    box-shadow:inset 0 0 120px rgba(159,95,255,.17);
+}
+
+.mystery-box-screen.prize-excellent{
+    box-shadow:inset 0 0 125px rgba(255,153,41,.2);
+}
+
+.mystery-box-screen.prize-amazing{
+    box-shadow:inset 0 0 135px rgba(255,62,111,.22);
+}
+
+.mystery-box-screen.prize-epic{
+    box-shadow:
+        inset 0 0 150px rgba(206,57,255,.24),
+        inset 0 0 75px rgba(94,49,255,.16);
+}
+
+.mystery-box-screen.prize-legendary{
+    animation:legendaryScreenPulse 1.3s ease-in-out infinite alternate;
+}
+
+@keyframes legendaryScreenPulse{
+    to{
+        box-shadow:
+            inset 0 0 170px rgba(255,181,32,.28),
+            inset 0 0 80px rgba(255,73,35,.2);
+    }
+}
+
+.mystery-box-screen.prize-jackpot{
+    animation:jackpotScreenPulse .7s ease-in-out infinite alternate;
+}
+
+@keyframes jackpotScreenPulse{
+    from{
+        filter:
+            brightness(1)
+            saturate(1);
+    }
+
+    to{
+        filter:
+            brightness(1.14)
+            saturate(1.2);
+
+        box-shadow:
+            inset 0 0 190px rgba(255,219,62,.32),
+            inset 0 0 100px rgba(255,85,30,.22);
+    }
+}
+
+
+/* =========================================================
+   RESULT CARD PRIZE LEVEL
+========================================================= */
+
+.mystery-result-card.legendary,
+.mystery-result-card.jackpot{
+    border-color:rgba(255,226,111,.58);
+
+    box-shadow:
+        0 24px 70px rgba(0,0,0,.4),
+        0 0 32px rgba(255,192,39,.28),
+        inset 0 1px rgba(255,255,255,.18);
+}
+
+.mystery-result-card.jackpot{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,207,63,.18),
+            rgba(255,76,35,.08),
+            rgba(255,255,255,.04)
+        );
+}
+
+
+/* =========================================================
+   RESULT AMOUNT GLOW
+========================================================= */
+
+.mystery-prize-amount.legendary{
+    animation:legendaryAmountGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes legendaryAmountGlow{
+    to{
+        filter:
+            brightness(1.2)
+            drop-shadow(0 0 20px rgba(255,213,82,.65));
+
+        transform:scale(1.035);
+    }
+}
+
+.mystery-prize-amount.jackpot{
+    background:
+        linear-gradient(
+            90deg,
+            #fff6b3,
+            #ffba24,
+            #fff,
+            #ff8c26,
+            #fff6b3
+        );
+
+    background-size:300% 100%;
+    background-clip:text;
+    -webkit-background-clip:text;
+    color:transparent;
+
+    animation:
+        jackpotAmountShine 1.35s linear infinite,
+        jackpotAmountPulse .65s ease-in-out infinite alternate;
+}
+
+@keyframes jackpotAmountShine{
+    to{
+        background-position:300% 0;
+    }
+}
+
+@keyframes jackpotAmountPulse{
+    to{
+        transform:scale(1.055);
+        filter:drop-shadow(0 0 26px rgba(255,207,55,.82));
+    }
+}
+
+
+/* =========================================================
+   SOUND SYNC CLASSES
+========================================================= */
+
+.sound-trigger-box-shake{}
+
+.sound-trigger-box-open{}
+
+.sound-trigger-prize-small{}
+
+.sound-trigger-prize-medium{}
+
+.sound-trigger-prize-large{}
+
+.sound-trigger-legendary{}
+
+.sound-trigger-jackpot{}
+
+.sound-trigger-coin{}
+
+.sound-trigger-firework{}
+
+.sound-trigger-button{}
+
+
+/* =========================================================
+   EFFECT PERFORMANCE MODE
+========================================================= */
+
+.performance-low .prize-confetti-piece:nth-child(n+31),
+.performance-low .coin-rain-item:nth-child(n+21),
+.performance-low .diamond-rain-item:nth-child(n+16),
+.performance-low .gold-burst-particle:nth-child(n+25),
+.performance-low .firework:nth-child(n+4),
+.performance-low .prize-sparkle:nth-child(n+18){
+    display:none;
+}
+
+.performance-low .jackpot-rainbow-aura,
+.performance-low .prize-golden-overlay{
+    filter:blur(28px);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:900px){
+
+    .jackpot-title{
+        top:21%;
+    }
+
+    .jackpot-crown{
+        width:120px;
+        height:95px;
+    }
+
+    .prize-countup{
+        top:39%;
+    }
+
+    .prize-rank-badge{
+        top:50%;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:560px){
+
+    .jackpot-title{
+        top:21%;
+        font-size:3.35rem;
+        line-height:.85;
+    }
+
+    .jackpot-crown{
+        top:9%;
+        width:95px;
+        height:78px;
+    }
+
+    .prize-countup{
+        top:39%;
+        font-size:3.6rem;
+    }
+
+    .prize-rank-badge{
+        top:49%;
+        min-width:125px;
+        padding:8px 14px;
+        font-size:.62rem;
+    }
+
+    .coin-rain-item{
+        --coin-size:27px;
+    }
+
+    .diamond-rain-item{
+        --diamond-size:23px;
+    }
+
+    .firework-particle{
+        --firework-size:5px;
+    }
+
+    .firework.active .firework-particle{
+        --firework-distance:95px;
+    }
+
+    .gold-burst.active .gold-burst-particle{
+        --burst-distance:190px;
+    }
+
+    .jackpot-rainbow-aura{
+        width:120vw;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media(max-width:380px){
+
+    .jackpot-title{
+        font-size:2.75rem;
+    }
+
+    .prize-countup{
+        font-size:3rem;
+    }
+
+    .jackpot-crown{
+        width:82px;
+        height:67px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    .prize-screen-flash,
+    .prize-golden-overlay,
+    .jackpot-title,
+    .jackpot-crown,
+    .prize-rank-badge,
+    .prize-countup,
+    .prize-sparkle,
+    .gold-burst-particle,
+    .prize-confetti-piece,
+    .coin-rain-item,
+    .diamond-rain-item,
+    .firework-particle,
+    .firework::after,
+    .jackpot-rainbow-aura,
+    .mystery-box-screen,
+    .mystery-prize-amount{
+        animation:none !important;
+    }
+
+    .jackpot-title.show,
+    .jackpot-crown.show,
+    .prize-rank-badge.show,
+    .prize-countup.show{
+        opacity:1;
+        transform:translateX(-50%);
+    }
+
+}
