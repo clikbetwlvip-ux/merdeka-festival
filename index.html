@@ -151,11 +151,12 @@
         </div>
 
 
-        <button
-          id="enterFestivalButton"
-          class="primary-button gold-button opening-button"
-          type="button"
-        >
+      <button
+  id="enterFestivalButton"
+  class="primary-button gold-button opening-button"
+  type="button"
+  data-screen-target="login"
+>
 
           <span class="button-glow"></span>
 
@@ -235,11 +236,12 @@
 
       <!-- Tombol kembali -->
       <button
-        id="backToOpeningButton"
-        class="back-button"
-        type="button"
-        aria-label="Kembali ke halaman opening"
-      >
+  id="backToOpeningButton"
+  class="back-button"
+  type="button"
+  data-screen-target="opening"
+  aria-label="Kembali ke halaman opening"
+>
         <span>←</span>
       </button>
 
@@ -367,14 +369,15 @@
                 <span class="input-icon">👤</span>
 
                 <input
-                  id="memberIdInput"
-                  name="memberId"
-                  type="text"
-                  maxlength="24"
-                  placeholder="Contoh: PLAYER123"
-                  spellcheck="false"
-                  required
-                >
+  id="memberIdInput"
+  name="username"
+  class="login-username"
+  type="text"
+  maxlength="24"
+  placeholder="Contoh: PLAYER123"
+  spellcheck="false"
+  required
+>
 
                 <span
                   id="memberValidIcon"
@@ -422,7 +425,7 @@
               id="loginButton"
               class="primary-button red-button login-button"
               type="submit"
-              disabled
+             
             >
 
               <span class="button-glow"></span>
@@ -571,9 +574,12 @@
                 SELAMAT DATANG
               </span>
 
-              <h1 id="lobbyMemberName">
-                PLAYER123
-              </h1>
+           <h1
+  id="lobbyMemberName"
+  data-user-name
+>
+  PLAYER123
+</h1>
 
               <p>
                 Pilih perlombaan dan menangkan Mystery Box.
@@ -595,10 +601,10 @@
               <div class="stat-copy">
                 <span>SISA TIKET HARI INI</span>
 
-                <strong>
-                  <span id="remainingTicketValue">8</span>
-                  <small>/ 8</small>
-                </strong>
+          <strong>
+    <span id="remainingTicketValue" data-ticket-count>0</span>
+    <small>/ 8</small>
+</strong>
               </div>
 
               <div class="ticket-progress">
@@ -793,10 +799,7 @@
 
 
             <!-- Game 1: Panjat Pinang -->
-            <article
-              class="game-card game-card-pinang"
-              data-game="pinang"
-            >
+           <article class="game-card game-card-pinang">
 
               <div class="game-card-background">
 
@@ -890,15 +893,15 @@
                 </div>
 
 
-                <button
-                  id="playPinangButton"
-                  class="game-play-button"
-                  type="button"
-                  data-game-target="pinang"
-                >
-                  <span>MAIN SEKARANG</span>
-                  <span>➜</span>
-                </button>
+    <button
+  id="playPinangButton"
+  class="game-play-button"
+  type="button"
+  data-game="panjat-pinang"
+>
+  <span>MAIN SEKARANG</span>
+  <span>➜</span>
+</button>
 
               </div>
 
@@ -909,10 +912,7 @@
 
 
             <!-- Game 2: Makan Kerupuk -->
-            <article
-              class="game-card game-card-kerupuk"
-              data-game="kerupuk"
-            >
+            <article class="game-card game-card-kerupuk">
 
               <div class="game-card-background">
 
@@ -1005,12 +1005,12 @@
                 </div>
 
 
-                <button
-                  id="playKerupukButton"
-                  class="game-play-button"
-                  type="button"
-                  data-game-target="kerupuk"
-                >
+           <button
+  id="playKerupukButton"
+  class="game-play-button"
+  type="button"
+  data-game="makan-kerupuk"
+>
                   <span>MAIN SEKARANG</span>
                   <span>➜</span>
                 </button>
@@ -1024,10 +1024,7 @@
 
 
             <!-- Game 3: Lomba Kelereng -->
-            <article
-              class="game-card game-card-kelereng"
-              data-game="kelereng"
-            >
+           <article class="game-card game-card-kelereng">
 
               <div class="game-card-background">
 
@@ -1126,12 +1123,12 @@
                 </div>
 
 
-                <button
-                  id="playKelerengButton"
-                  class="game-play-button"
-                  type="button"
-                  data-game-target="kelereng"
-                >
+            <button
+  id="playKelerengButton"
+  class="game-play-button"
+  type="button"
+  data-game="lomba-kelereng"
+>
                   <span>MAIN SEKARANG</span>
                   <span>➜</span>
                 </button>
@@ -1316,11 +1313,11 @@
     <!-- =========================================
          GAME PANJAT PINANG
     ========================================== -->
-    <section
-      id="pinangScreen"
-      class="screen game-screen pinang-game-screen"
-      aria-hidden="true"
-    >
+ <section
+  id="panjatPinangScreen"
+  class="screen game-screen panjat-pinang-screen pinang-game-screen"
+  aria-hidden="true"
+>
 
       <!-- Background arena -->
       <div class="pinang-game-background">
@@ -1360,12 +1357,13 @@
 
         <div class="game-header-left">
 
-          <button
-            id="pinangBackButton"
-            class="game-back-button"
-            type="button"
-            aria-label="Kembali ke lobby"
-          >
+         <button
+  id="pinangBackButton"
+  class="game-back-button"
+  type="button"
+  data-action="back-lobby"
+  aria-label="Kembali ke lobby"
+>
             <span>←</span>
           </button>
 
@@ -1749,16 +1747,16 @@
                 😎
               </div>
 
-              <div>
-                <strong id="pinangMemberName">
-                  PLAYER123
-                </strong>
+           <div>
+    <strong id="pinangMemberName" data-user-name>
+        PLAYER123
+    </strong>
 
-                <small>
-                  Tiket tersisa:
-                  <span id="pinangRemainingTicket">8</span>
-                </small>
-              </div>
+    <small>
+        Tiket tersisa:
+        <span id="pinangRemainingTicket" data-ticket-count>0</span>
+    </small>
+</div>
 
             </div>
 
@@ -2359,12 +2357,13 @@
 
         <div class="game-header-left">
 
-          <button
-            id="kerupukBackButton"
-            class="game-back-button"
-            type="button"
-            aria-label="Kembali ke lobby"
-          >
+         <button
+  id="kerupukBackButton"
+  class="game-back-button"
+  type="button"
+  data-action="back-lobby"
+  aria-label="Kembali ke lobby"
+>
             <span>←</span>
           </button>
 
@@ -2751,18 +2750,16 @@
                 😎
               </div>
 
-              <div>
+        <div>
+    <strong id="kerupukMemberName" data-user-name>
+        PLAYER123
+    </strong>
 
-                <strong id="kerupukMemberName">
-                  PLAYER123
-                </strong>
-
-                <small>
-                  Tiket tersisa:
-                  <span id="kerupukRemainingTicket">8</span>
-                </small>
-
-              </div>
+    <small>
+        Tiket tersisa:
+        <span id="kerupukRemainingTicket" data-ticket-count>0</span>
+    </small>
+</div>
 
             </div>
 
@@ -3373,12 +3370,13 @@
 
         <div class="game-header-left">
 
-          <button
-            id="kelerengBackButton"
-            class="game-back-button"
-            type="button"
-            aria-label="Kembali ke lobby"
-          >
+         <button
+  id="kelerengBackButton"
+  class="game-back-button"
+  type="button"
+  data-action="back-lobby"
+  aria-label="Kembali ke lobby"
+>
             <span>←</span>
           </button>
 
@@ -3765,18 +3763,16 @@
                 😎
               </div>
 
-              <div>
+         <div>
+    <strong id="kelerengMemberName" data-user-name>
+        PLAYER123
+    </strong>
 
-                <strong id="kelerengMemberName">
-                  PLAYER123
-                </strong>
-
-                <small>
-                  Tiket tersisa:
-                  <span id="kelerengRemainingTicket">8</span>
-                </small>
-
-              </div>
+    <small>
+        Tiket tersisa:
+        <span id="kelerengRemainingTicket" data-ticket-count>0</span>
+    </small>
+</div>
 
             </div>
 
