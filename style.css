@@ -3109,3 +3109,578 @@ font-size:16px;
     gap: 12px;
   }
 }
+/* =========================================================
+   CSS PART 3B-2A — TICKET CARD
+========================================================= */
+
+
+/* =========================================================
+   1. TICKET CARD UTAMA
+========================================================= */
+
+.ticket-card,
+.daily-ticket-card,
+.lobby-ticket-card {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 220, 125, 0.32);
+  border-radius: var(--radius-large);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 221, 118, 0.18),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(111, 6, 20, 0.95),
+      rgba(42, 2, 9, 0.97) 56%,
+      rgba(13, 1, 4, 0.99)
+    );
+  box-shadow:
+    var(--shadow-large),
+    inset 0 1px rgba(255, 255, 255, 0.12),
+    0 0 28px rgba(242, 189, 67, 0.09);
+}
+
+.ticket-card::before,
+.daily-ticket-card::before,
+.lobby-ticket-card::before {
+  position: absolute;
+  top: -80px;
+  right: -70px;
+  width: 205px;
+  height: 205px;
+  border: 1px solid rgba(255, 219, 117, 0.11);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 30px rgba(255, 219, 117, 0.035),
+    0 0 28px rgba(255, 219, 117, 0.05);
+  content: "";
+  pointer-events: none;
+}
+
+.ticket-card::after,
+.daily-ticket-card::after,
+.lobby-ticket-card::after {
+  position: absolute;
+  right: -38px;
+  bottom: -60px;
+  width: 180px;
+  height: 130px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(242, 189, 67, 0.16),
+      transparent 70%
+    );
+  filter: blur(8px);
+  content: "";
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   2. HEADER TICKET CARD
+========================================================= */
+
+.ticket-card-header,
+.daily-ticket-header,
+.lobby-ticket-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.ticket-card-heading,
+.daily-ticket-heading {
+  min-width: 0;
+}
+
+.ticket-card-label,
+.daily-ticket-label {
+  color: var(--gold-400);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.ticket-card-title,
+.daily-ticket-title {
+  margin-top: 4px;
+  color: var(--white);
+  font-size: clamp(1.12rem, 2.5vw, 1.45rem);
+  font-weight: 1000;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.ticket-card-description,
+.daily-ticket-description {
+  margin-top: 6px;
+  color: var(--white-50);
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.ticket-card-icon,
+.daily-ticket-icon {
+  position: relative;
+  display: grid;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  place-items: center;
+  border: 1px solid rgba(255, 226, 143, 0.46);
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      #ffe994,
+      #df9c1f 52%,
+      #7a3f00 100%
+    );
+  color: #351700;
+  font-size: 1.55rem;
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.37),
+    inset 0 2px rgba(255, 255, 255, 0.45),
+    var(--gold-glow);
+  animation: ticketIconFloat 3.2s ease-in-out infinite;
+}
+
+@keyframes ticketIconFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(2deg);
+  }
+}
+
+
+/* =========================================================
+   3. TICKET COUNTER
+========================================================= */
+
+.ticket-counter,
+.daily-ticket-counter,
+.ticket-total-panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.025)
+    );
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.07),
+    0 7px 18px rgba(0, 0, 0, 0.2);
+}
+
+.ticket-counter-main,
+.daily-ticket-counter-main {
+  min-width: 0;
+}
+
+.ticket-counter-label,
+.daily-ticket-counter-label {
+  color: var(--white-50);
+  font-size: 0.63rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.ticket-counter-value,
+.daily-ticket-counter-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 4px;
+  line-height: 1;
+}
+
+.ticket-current,
+.daily-ticket-current {
+  color: var(--gold-400);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 1000;
+  letter-spacing: -0.06em;
+  text-shadow:
+    0 3px 13px rgba(0, 0, 0, 0.45),
+    0 0 14px rgba(242, 189, 67, 0.22);
+}
+
+.ticket-divider,
+.ticket-limit,
+.daily-ticket-limit {
+  color: var(--white-50);
+  font-size: clamp(0.92rem, 2vw, 1.12rem);
+  font-weight: 900;
+}
+
+.ticket-counter-note,
+.daily-ticket-counter-note {
+  margin-top: 7px;
+  color: var(--white-50);
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+.ticket-counter-badge,
+.daily-ticket-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 6px;
+  min-height: 32px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 219, 117, 0.28);
+  border-radius: var(--radius-pill);
+  background: rgba(242, 189, 67, 0.1);
+  color: var(--gold-400);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   4. TICKET INFO GRID
+========================================================= */
+
+.ticket-info-grid,
+.daily-ticket-info-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ticket-info-item,
+.daily-ticket-info-item {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.07),
+      rgba(255, 255, 255, 0.024)
+    );
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.06),
+    0 5px 14px rgba(0, 0, 0, 0.18);
+}
+
+.ticket-info-item::after,
+.daily-ticket-info-item::after {
+  position: absolute;
+  top: -26px;
+  right: -23px;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(242, 189, 67, 0.11),
+      transparent 70%
+    );
+  content: "";
+}
+
+.ticket-info-icon,
+.daily-ticket-info-icon {
+  font-size: 1rem;
+}
+
+.ticket-info-label,
+.daily-ticket-info-label {
+  overflow: hidden;
+  color: var(--white-50);
+  font-size: 0.59rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ticket-info-value,
+.daily-ticket-info-value {
+  overflow: hidden;
+  color: var(--white);
+  font-size: 0.86rem;
+  font-weight: 1000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ticket-info-value.gold,
+.daily-ticket-info-value.gold {
+  color: var(--gold-400);
+}
+
+.ticket-info-value.green,
+.daily-ticket-info-value.green {
+  color: #62e990;
+}
+
+
+/* =========================================================
+   5. TICKET NOTICE
+========================================================= */
+
+.ticket-notice,
+.daily-ticket-notice,
+.ticket-expiry-notice {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 13px;
+  border: 1px solid rgba(255, 183, 92, 0.2);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(180, 75, 0, 0.1),
+      rgba(88, 16, 0, 0.07)
+    );
+}
+
+.ticket-notice-icon,
+.daily-ticket-notice-icon {
+  flex: 0 0 auto;
+  font-size: 1rem;
+}
+
+.ticket-notice-text,
+.daily-ticket-notice-text {
+  color: rgba(255, 226, 190, 0.74);
+  font-size: 0.7rem;
+  line-height: 1.55;
+}
+
+.ticket-notice-text strong,
+.daily-ticket-notice-text strong {
+  color: #ffd17f;
+}
+
+
+/* =========================================================
+   6. TICKET ACTION
+========================================================= */
+
+.ticket-action-row,
+.daily-ticket-action-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ticket-action-row > button,
+.daily-ticket-action-row > button {
+  flex: 1 1 160px;
+}
+
+
+/* =========================================================
+   7. STATUS TICKET
+========================================================= */
+
+.ticket-status,
+.daily-ticket-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--white-70);
+  font-size: 0.69rem;
+  font-weight: 800;
+}
+
+.ticket-status::before,
+.daily-ticket-status::before {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  box-shadow:
+    0 0 7px rgba(242, 189, 67, 0.75),
+    0 0 13px rgba(242, 189, 67, 0.35);
+  content: "";
+  animation: ticketStatusBlink 1.8s ease-in-out infinite;
+}
+
+.ticket-status.complete::before,
+.daily-ticket-status.complete::before {
+  background: #4fe180;
+  box-shadow:
+    0 0 7px rgba(79, 225, 128, 0.78),
+    0 0 13px rgba(79, 225, 128, 0.36);
+}
+
+.ticket-status.locked::before,
+.daily-ticket-status.locked::before {
+  background: #ff6f78;
+  box-shadow:
+    0 0 7px rgba(255, 111, 120, 0.7),
+    0 0 13px rgba(255, 111, 120, 0.32);
+}
+
+@keyframes ticketStatusBlink {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+
+/* =========================================================
+   8. HOVER TICKET CARD
+========================================================= */
+
+@media (hover: hover) {
+  .ticket-card,
+  .daily-ticket-card,
+  .lobby-ticket-card {
+    transition:
+      transform var(--transition-normal),
+      border-color var(--transition-normal),
+      box-shadow var(--transition-normal);
+  }
+
+  .ticket-card:hover,
+  .daily-ticket-card:hover,
+  .lobby-ticket-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 220, 125, 0.5);
+    box-shadow:
+      0 23px 55px rgba(0, 0, 0, 0.5),
+      inset 0 1px rgba(255, 255, 255, 0.14),
+      var(--gold-glow);
+  }
+}
+
+
+/* =========================================================
+   9. RESPONSIVE TICKET CARD
+========================================================= */
+
+@media (max-width: 700px) {
+  .ticket-card,
+  .daily-ticket-card,
+  .lobby-ticket-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .ticket-card-icon,
+  .daily-ticket-icon {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+    border-radius: 16px;
+    font-size: 1.35rem;
+  }
+
+  .ticket-info-grid,
+  .daily-ticket-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .ticket-card,
+  .daily-ticket-card,
+  .lobby-ticket-card {
+    gap: 14px;
+    padding: 15px;
+  }
+
+  .ticket-card-title,
+  .daily-ticket-title {
+    font-size: 1rem;
+  }
+
+  .ticket-card-description,
+  .daily-ticket-description {
+    font-size: 0.69rem;
+  }
+
+  .ticket-counter,
+  .daily-ticket-counter,
+  .ticket-total-panel {
+    align-items: center;
+    padding: 13px;
+  }
+
+  .ticket-counter-badge,
+  .daily-ticket-badge {
+    padding: 6px 8px;
+    font-size: 0.57rem;
+  }
+
+  .ticket-info-grid,
+  .daily-ticket-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-info-item,
+  .daily-ticket-info-item {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .ticket-info-label {
+    white-space: normal;
+  }
+
+  .ticket-action-row,
+  .daily-ticket-action-row {
+    display: grid;
+  }
+
+  .ticket-action-row > button,
+  .daily-ticket-action-row > button {
+    width: 100%;
+  }
+}
