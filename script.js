@@ -6173,3 +6173,1964 @@
     "[CLICKBET88 PART 3] Premium Makan Kerupuk aktif."
   );
 })();
+/* =========================================================
+   CLICKBET88 FESTIVAL KEMERDEKAAN 2026
+   JAVASCRIPT BARU — PART 4
+   PREMIUM LOMBA KELERENG ENGINE
+========================================================= */
+
+(() => {
+  "use strict";
+
+  /* =========================================================
+     1. KONFIGURASI
+  ========================================================= */
+
+  const CONFIG = Object.freeze({
+    duration: 20,
+    countdown: 3,
+    ticketCost: 1,
+
+    targetSteps: 30,
+
+    maximumBalance: 50,
+    warningBalance: 32,
+    dangerBalance: 42,
+
+    leftRightPower: 8,
+    forwardInstability: 4.2,
+
+    naturalDriftMinimum: 0.25,
+    naturalDriftMaximum: 1.15,
+
+    balanceRecovery: 0.5,
+    maximumControlDelay: 80,
+
+    resultDelay: 650,
+    toastDuration: 1800,
+
+    minimumPlayerPosition: 4,
+    maximumPlayerPosition: 84
+  });
+
+
+  /* =========================================================
+     2. HELPER
+  ========================================================= */
+
+  const $ = (id) =>
+    document.getElementById(id);
+
+  const api = () =>
+    window.ClickbetGame || null;
+
+  const clamp = (
+    value,
+    minimum,
+    maximum
+  ) =>
+    Math.min(
+      Math.max(
+        Number(value) || 0,
+        minimum
+      ),
+      maximum
+    );
+
+  const random = (
+    minimum,
+    maximum
+  ) =>
+    minimum +
+    Math.random() *
+    (maximum - minimum);
+
+  function setText(
+    element,
+    value
+  ) {
+    if (element) {
+      element.textContent =
+        String(value);
+    }
+  }
+
+  function formatTime(seconds) {
+    const value =
+      Math.max(
+        0,
+        Math.ceil(seconds)
+      );
+
+    return `00:${String(value).padStart(2, "0")}`;
+  }
+
+  function playSound(
+    type = "click"
+  ) {
+    api()?.playSound?.(type);
+  }
+
+  function notify(
+    message,
+    type = "info"
+  ) {
+    api()?.notify?.(
+      message,
+      type
+    );
+  }
+
+  function openOverlay(element) {
+    if (!element) {
+      return;
+    }
+
+    if (api()?.openOverlay) {
+      api().openOverlay(element);
+      return;
+    }
+
+    element.hidden = false;
+
+    element.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    element.classList.add(
+      "active",
+      "show"
+    );
+  }
+
+  function closeOverlay(element) {
+    if (!element) {
+      return;
+    }
+
+    if (api()?.closeOverlay) {
+      api().closeOverlay(element);
+      return;
+    }
+
+    element.classList.remove(
+      "active",
+      "show"
+    );
+
+    element.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }
+
+
+  /* =========================================================
+     3. SCREEN
+  ========================================================= */
+
+  const screen =
+    $("kelerengScreen");
+
+  if (!screen) {
+    console.warn(
+      "[CLICKBET88 PART 4] Screen Lomba Kelereng tidak ditemukan."
+    );
+
+    return;
+  }
+
+
+  /* =========================================================
+     4. ELEMENT HTML
+  ========================================================= */
+
+  const ELEMENTS = {
+    screen,
+
+    stage:
+      screen.querySelector(
+        ".kelereng-stage"
+      ) ||
+      screen.querySelector(
+        ".kelereng-arena"
+      ) ||
+      screen.querySelector(
+        ".lomba-kelereng-arena"
+      ),
+
+    finishLine:
+      screen.querySelector(
+        ".race-track-finish-line"
+      ) ||
+      screen.querySelector(
+        ".kelereng-finish-line"
+      ),
+
+    player:
+      $("kelerengPlayer"),
+
+    playerFace:
+      $("kelerengPlayerFace"),
+
+    spoon:
+      $("kelerengSpoon"),
+
+    marble:
+      $("kelerengMarble"),
+
+    stepEffect:
+      $("kelerengStepEffect"),
+
+    timer:
+      $("kelerengTimerValue"),
+
+    timerProgress:
+      $("kelerengTimerProgress"),
+
+    progressValue:
+      $("kelerengProgressValue"),
+
+    progressBar:
+      $("kelerengProgressBar"),
+
+    balanceMarker:
+      $("kelerengBalanceMarker"),
+
+    balanceValue:
+      $("kelerengBalanceValue"),
+
+    readyMessage:
+      $("kelerengReadyMessage"),
+
+    startButton:
+      $("kelerengStartButton"),
+
+    controlButtons:
+      $("kelerengControlButtons"),
+
+    leftButton:
+      $("kelerengLeftButton"),
+
+    forwardButton:
+      $("kelerengForwardButton"),
+
+    rightButton:
+      $("kelerengRightButton"),
+
+    backButton:
+      $("kelerengBackButton"),
+
+    pauseButton:
+      $("kelerengPauseButton"),
+
+    soundButton:
+      $("kelerengSoundButton"),
+
+    soundIcon:
+      $("kelerengSoundIcon"),
+
+    countdownOverlay:
+      $("kelerengCountdownOverlay"),
+
+    countdownValue:
+      $("kelerengCountdownValue"),
+
+    countdownMessage:
+      $("kelerengCountdownMessage"),
+
+    pauseOverlay:
+      $("kelerengPauseOverlay"),
+
+    resumeButton:
+      $("kelerengResumeButton"),
+
+    quitButton:
+      $("kelerengQuitButton"),
+
+    resultOverlay:
+      $("kelerengResultOverlay"),
+
+    resultModal:
+      $("kelerengResultModal"),
+
+    closeResultButton:
+      $("closeKelerengResultButton"),
+
+    winContent:
+      $("kelerengWinContent"),
+
+    loseContent:
+      $("kelerengLoseContent"),
+
+    resultRemainingTime:
+      $("kelerengResultRemainingTime"),
+
+    resultBalance:
+      $("kelerengResultBalance"),
+
+    loseDescription:
+      $("kelerengLoseDescription"),
+
+    loseProgress:
+      $("kelerengLoseProgress"),
+
+    loseReason:
+      $("kelerengLoseReason"),
+
+    loseTicket:
+      $("kelerengLoseTicket"),
+
+    openMysteryButton:
+      $("openKelerengMysteryButton"),
+
+    winLobbyButton:
+      $("kelerengWinLobbyButton"),
+
+    retryButton:
+      $("retryKelerengButton"),
+
+    loseLobbyButton:
+      $("kelerengLoseLobbyButton"),
+
+    exitOverlay:
+      $("kelerengExitConfirmOverlay"),
+
+    cancelExitButton:
+      $("cancelKelerengExitButton"),
+
+    confirmExitButton:
+      $("confirmKelerengExitButton"),
+
+    toast:
+      $("kelerengToast"),
+
+    toastIcon:
+      $("kelerengToastIcon"),
+
+    toastMessage:
+      $("kelerengToastMessage")
+  };
+
+
+  /* =========================================================
+     5. STATE
+  ========================================================= */
+
+  const STATE = {
+    status: "idle",
+
+    steps: 0,
+    progress: 0,
+    visualProgress: 0,
+
+    balance: 0,
+    driftDirection: 1,
+
+    remainingTime:
+      CONFIG.duration,
+
+    score: 0,
+
+    lastFrameTime: 0,
+    lastControlTime: 0,
+
+    resultRegistered: false,
+    loseReason: "",
+
+    animationFrame: 0,
+    countdownTimer: 0,
+    resultTimer: 0,
+    toastTimer: 0,
+    animationTimer: 0
+  };
+
+
+  /* =========================================================
+     6. STATUS
+  ========================================================= */
+
+  function isPlaying() {
+    return (
+      STATE.status === "playing"
+    );
+  }
+
+  function isPaused() {
+    return (
+      STATE.status === "paused"
+    );
+  }
+
+  function isBusy() {
+    return [
+      "countdown",
+      "playing",
+      "paused"
+    ].includes(STATE.status);
+  }
+
+  function clearTimers() {
+    window.clearInterval(
+      STATE.countdownTimer
+    );
+
+    window.clearTimeout(
+      STATE.resultTimer
+    );
+
+    window.clearTimeout(
+      STATE.toastTimer
+    );
+
+    window.clearTimeout(
+      STATE.animationTimer
+    );
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    STATE.countdownTimer = 0;
+    STATE.resultTimer = 0;
+    STATE.animationTimer = 0;
+    STATE.animationFrame = 0;
+  }
+
+
+  /* =========================================================
+     7. TOAST
+  ========================================================= */
+
+  function showToast(
+    message,
+    type = "info"
+  ) {
+    const icons = {
+      info: "ℹ️",
+      success: "✅",
+      warning: "⚠️",
+      error: "❌",
+      balance: "⚖️",
+      step: "👣",
+      danger: "😵",
+      finish: "🏁"
+    };
+
+    if (
+      !ELEMENTS.toast ||
+      !ELEMENTS.toastMessage
+    ) {
+      notify(message, type);
+      return;
+    }
+
+    window.clearTimeout(
+      STATE.toastTimer
+    );
+
+    setText(
+      ELEMENTS.toastIcon,
+      icons[type] ||
+      icons.info
+    );
+
+    setText(
+      ELEMENTS.toastMessage,
+      message
+    );
+
+    ELEMENTS.toast.dataset.type =
+      type;
+
+    ELEMENTS.toast.classList.remove(
+      "show"
+    );
+
+    void ELEMENTS.toast.offsetWidth;
+
+    ELEMENTS.toast.classList.add(
+      "show"
+    );
+
+    STATE.toastTimer =
+      window.setTimeout(() => {
+        ELEMENTS.toast?.classList.remove(
+          "show"
+        );
+      }, CONFIG.toastDuration);
+  }
+
+
+  /* =========================================================
+     8. RENDER
+  ========================================================= */
+
+  function renderTimer() {
+    setText(
+      ELEMENTS.timer,
+      formatTime(
+        STATE.remainingTime
+      )
+    );
+
+    if (ELEMENTS.timerProgress) {
+      const percentage =
+        clamp(
+          (
+            STATE.remainingTime /
+            CONFIG.duration
+          ) * 100,
+          0,
+          100
+        );
+
+      ELEMENTS.timerProgress.style.width =
+        `${percentage}%`;
+
+      ELEMENTS.timerProgress.style.height =
+        `${percentage}%`;
+    }
+  }
+
+  function renderProgress() {
+    const progress =
+      clamp(
+        STATE.visualProgress,
+        0,
+        100
+      );
+
+    setText(
+      ELEMENTS.progressValue,
+      `${Math.floor(
+        STATE.progress
+      )}%`
+    );
+
+    if (ELEMENTS.progressBar) {
+      ELEMENTS.progressBar.style.width =
+        `${progress}%`;
+
+      ELEMENTS.progressBar.style.height =
+        `${progress}%`;
+
+      ELEMENTS.progressBar.setAttribute(
+        "aria-valuenow",
+        String(
+          Math.floor(progress)
+        )
+      );
+    }
+
+    if (ELEMENTS.player) {
+      const position =
+        CONFIG.minimumPlayerPosition +
+        (
+          progress / 100
+        ) *
+        (
+          CONFIG.maximumPlayerPosition -
+          CONFIG.minimumPlayerPosition
+        );
+
+      ELEMENTS.player.style.left =
+        `${position}%`;
+
+      ELEMENTS.player.style.bottom =
+        `${position}%`;
+
+      ELEMENTS.player.style.setProperty(
+        "--kelereng-progress",
+        `${progress}%`
+      );
+    }
+  }
+
+  function renderBalance() {
+    const balance =
+      clamp(
+        STATE.balance,
+        -CONFIG.maximumBalance,
+        CONFIG.maximumBalance
+      );
+
+    const absoluteBalance =
+      Math.abs(balance);
+
+    const markerPercentage =
+      clamp(
+        (
+          balance +
+          CONFIG.maximumBalance
+        ) /
+        (
+          CONFIG.maximumBalance * 2
+        ) *
+        100,
+        0,
+        100
+      );
+
+    if (ELEMENTS.balanceMarker) {
+      ELEMENTS.balanceMarker.style.left =
+        `${markerPercentage}%`;
+
+      ELEMENTS.balanceMarker.style.transform =
+        `translateX(-50%)`;
+    }
+
+    setText(
+      ELEMENTS.balanceValue,
+      `${Math.round(
+        absoluteBalance
+      )}%`
+    );
+
+    screen.classList.toggle(
+      "balance-warning",
+      absoluteBalance >=
+        CONFIG.warningBalance
+    );
+
+    screen.classList.toggle(
+      "balance-danger",
+      absoluteBalance >=
+        CONFIG.dangerBalance
+    );
+
+    if (ELEMENTS.spoon) {
+      const rotation =
+        balance * 0.8;
+
+      ELEMENTS.spoon.style.transform =
+        `rotate(${rotation}deg)`;
+    }
+
+    if (ELEMENTS.marble) {
+      const marbleOffset =
+        clamp(
+          balance * 0.8,
+          -38,
+          38
+        );
+
+      ELEMENTS.marble.style.transform =
+        `translateX(${marbleOffset}px)`;
+    }
+  }
+
+  function renderButtons() {
+    if (ELEMENTS.startButton) {
+      ELEMENTS.startButton.disabled =
+        isBusy();
+
+      ELEMENTS.startButton.hidden =
+        isBusy();
+    }
+
+    [
+      ELEMENTS.leftButton,
+      ELEMENTS.forwardButton,
+      ELEMENTS.rightButton
+    ].forEach((button) => {
+      if (button) {
+        button.disabled =
+          !isPlaying();
+      }
+    });
+
+    if (ELEMENTS.pauseButton) {
+      ELEMENTS.pauseButton.disabled =
+        !isPlaying();
+    }
+
+    ELEMENTS.controlButtons?.classList.toggle(
+      "active",
+      isPlaying()
+    );
+  }
+
+  function renderMessage() {
+    if (!ELEMENTS.readyMessage) {
+      return;
+    }
+
+    const messages = {
+      idle:
+        "Tekan mulai dan bersiap menjaga keseimbangan!",
+      countdown:
+        "Bersiap! Perlombaan segera dimulai.",
+      playing:
+        "Tekan JALAN untuk maju dan gunakan KIRI/KANAN agar tetap seimbang.",
+      paused:
+        "Permainan sedang dijeda.",
+      win:
+        "Berhasil melewati garis finis!",
+      lose:
+        STATE.loseReason === "JATUH"
+          ? "Kelereng jatuh dari sendok."
+          : "Waktu perlombaan telah habis."
+    };
+
+    ELEMENTS.readyMessage.textContent =
+      messages[STATE.status] ||
+      messages.idle;
+  }
+
+  function renderSound() {
+    setText(
+      ELEMENTS.soundIcon,
+      api()?.isSoundEnabled?.() ===
+      false
+        ? "🔇"
+        : "🔊"
+    );
+  }
+
+  function renderAll() {
+    renderTimer();
+    renderProgress();
+    renderBalance();
+    renderButtons();
+    renderMessage();
+    renderSound();
+  }
+
+
+  /* =========================================================
+     9. RESET VISUAL
+  ========================================================= */
+
+  function resetVisualClasses() {
+    ELEMENTS.player?.classList.remove(
+      "walking",
+      "step-left",
+      "step-right",
+      "falling",
+      "winner",
+      "loser",
+      "paused"
+    );
+
+    ELEMENTS.spoon?.classList.remove(
+      "danger",
+      "falling"
+    );
+
+    ELEMENTS.marble?.classList.remove(
+      "danger",
+      "falling",
+      "bouncing"
+    );
+
+    ELEMENTS.stage?.classList.remove(
+      "playing",
+      "paused",
+      "shake",
+      "winning",
+      "losing"
+    );
+
+    ELEMENTS.finishLine?.classList.remove(
+      "active"
+    );
+
+    if (ELEMENTS.playerFace) {
+      ELEMENTS.playerFace.textContent =
+        "😬";
+    }
+  }
+
+  function resetGame() {
+    clearTimers();
+    resetVisualClasses();
+
+    STATE.status = "idle";
+
+    STATE.steps = 0;
+    STATE.progress = 0;
+    STATE.visualProgress = 0;
+
+    STATE.balance = 0;
+    STATE.driftDirection =
+      Math.random() > 0.5
+        ? 1
+        : -1;
+
+    STATE.remainingTime =
+      CONFIG.duration;
+
+    STATE.score = 0;
+
+    STATE.lastFrameTime = 0;
+    STATE.lastControlTime = 0;
+
+    STATE.resultRegistered = false;
+    STATE.loseReason = "";
+
+    closeOverlay(
+      ELEMENTS.countdownOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.exitOverlay
+    );
+
+    renderAll();
+  }
+
+
+  /* =========================================================
+     10. COUNTDOWN
+  ========================================================= */
+
+  function startCountdown() {
+    if (isBusy()) {
+      return;
+    }
+
+    if (!api()) {
+      showToast(
+        "Core Part 1 belum aktif.",
+        "error"
+      );
+
+      return;
+    }
+
+    if (
+      !api().hasTickets?.(
+        CONFIG.ticketCost
+      )
+    ) {
+      showToast(
+        "Tiket tidak cukup untuk bermain.",
+        "warning"
+      );
+
+      playSound("error");
+      return;
+    }
+
+    resetGame();
+
+    STATE.status = "countdown";
+
+    renderAll();
+
+    openOverlay(
+      ELEMENTS.countdownOverlay
+    );
+
+    let count =
+      CONFIG.countdown;
+
+    setText(
+      ELEMENTS.countdownValue,
+      count
+    );
+
+    setText(
+      ELEMENTS.countdownMessage,
+      "BERSIAP!"
+    );
+
+    playSound("open");
+
+    STATE.countdownTimer =
+      window.setInterval(() => {
+        count -= 1;
+
+        if (count > 0) {
+          setText(
+            ELEMENTS.countdownValue,
+            count
+          );
+
+          setText(
+            ELEMENTS.countdownMessage,
+            count === 1
+              ? "SIAP!"
+              : "BERSIAP!"
+          );
+
+          playSound("click");
+          return;
+        }
+
+        window.clearInterval(
+          STATE.countdownTimer
+        );
+
+        setText(
+          ELEMENTS.countdownValue,
+          "GO!"
+        );
+
+        setText(
+          ELEMENTS.countdownMessage,
+          "JALAN SEKARANG!"
+        );
+
+        playSound("success");
+
+        window.setTimeout(() => {
+          closeOverlay(
+            ELEMENTS.countdownOverlay
+          );
+
+          beginGame();
+        }, 450);
+      }, 800);
+  }
+
+
+  /* =========================================================
+     11. MULAI GAME
+  ========================================================= */
+
+  function beginGame() {
+    const ticketUsed =
+      api()?.useTicket?.(
+        CONFIG.ticketCost,
+        "lomba-kelereng"
+      );
+
+    if (!ticketUsed) {
+      STATE.status = "idle";
+      renderAll();
+      return;
+    }
+
+    STATE.status = "playing";
+
+    STATE.remainingTime =
+      CONFIG.duration;
+
+    STATE.lastFrameTime =
+      performance.now();
+
+    ELEMENTS.stage?.classList.add(
+      "playing"
+    );
+
+    renderAll();
+
+    showToast(
+      "Permainan dimulai! Jaga kelereng tetap di tengah.",
+      "balance"
+    );
+
+    STATE.animationFrame =
+      requestAnimationFrame(
+        gameLoop
+      );
+  }
+
+
+  /* =========================================================
+     12. GAME LOOP
+  ========================================================= */
+
+  function gameLoop(timestamp) {
+    if (!isPlaying()) {
+      return;
+    }
+
+    const delta =
+      clamp(
+        (
+          timestamp -
+          STATE.lastFrameTime
+        ) / 1000,
+        0,
+        0.08
+      );
+
+    STATE.lastFrameTime =
+      timestamp;
+
+    STATE.remainingTime -=
+      delta;
+
+    const driftStrength =
+      random(
+        CONFIG.naturalDriftMinimum,
+        CONFIG.naturalDriftMaximum
+      );
+
+    if (
+      Math.random() <
+      0.012
+    ) {
+      STATE.driftDirection *= -1;
+    }
+
+    STATE.balance +=
+      STATE.driftDirection *
+      driftStrength *
+      delta *
+      10;
+
+    if (
+      Math.abs(STATE.balance) < 7
+    ) {
+      STATE.balance *=
+        1 -
+        CONFIG.balanceRecovery *
+        delta;
+    }
+
+    STATE.balance =
+      clamp(
+        STATE.balance,
+        -CONFIG.maximumBalance - 5,
+        CONFIG.maximumBalance + 5
+      );
+
+    STATE.visualProgress +=
+      (
+        STATE.progress -
+        STATE.visualProgress
+      ) *
+      Math.min(
+        delta * 12,
+        1
+      );
+
+    renderAll();
+
+    if (
+      Math.abs(STATE.balance) >=
+      CONFIG.maximumBalance
+    ) {
+      finishGame(
+        false,
+        "JATUH"
+      );
+
+      return;
+    }
+
+    if (
+      STATE.progress >= 100
+    ) {
+      finishGame(
+        true,
+        "FINIS"
+      );
+
+      return;
+    }
+
+    if (
+      STATE.remainingTime <= 0
+    ) {
+      STATE.remainingTime = 0;
+
+      finishGame(
+        false,
+        "WAKTU HABIS"
+      );
+
+      return;
+    }
+
+    STATE.animationFrame =
+      requestAnimationFrame(
+        gameLoop
+      );
+  }
+
+
+  /* =========================================================
+     13. KONTROL KESEIMBANGAN
+  ========================================================= */
+
+  function controlBalance(direction) {
+    if (!isPlaying()) {
+      return;
+    }
+
+    const now =
+      performance.now();
+
+    if (
+      now -
+      STATE.lastControlTime <
+      CONFIG.maximumControlDelay
+    ) {
+      return;
+    }
+
+    STATE.lastControlTime =
+      now;
+
+    STATE.balance +=
+      direction *
+      CONFIG.leftRightPower;
+
+    STATE.balance =
+      clamp(
+        STATE.balance,
+        -CONFIG.maximumBalance,
+        CONFIG.maximumBalance
+      );
+
+    animateBalanceControl(direction);
+
+    playSound("click");
+
+    renderAll();
+  }
+
+  function moveLeft() {
+    controlBalance(-1);
+  }
+
+  function moveRight() {
+    controlBalance(1);
+  }
+
+
+  /* =========================================================
+     14. MAJU
+  ========================================================= */
+
+  function moveForward() {
+    if (!isPlaying()) {
+      return;
+    }
+
+    STATE.steps += 1;
+
+    STATE.progress =
+      clamp(
+        (
+          STATE.steps /
+          CONFIG.targetSteps
+        ) * 100,
+        0,
+        100
+      );
+
+    const instability =
+      random(
+        -CONFIG.forwardInstability,
+        CONFIG.forwardInstability
+      );
+
+    STATE.balance +=
+      instability;
+
+    STATE.score +=
+      Math.max(
+        0,
+        Math.round(
+          150 -
+          Math.abs(
+            STATE.balance
+          ) * 2
+        )
+      );
+
+    animateStep();
+
+    if (
+      Math.abs(STATE.balance) >=
+      CONFIG.warningBalance
+    ) {
+      showToast(
+        "Hati-hati! Kelereng mulai tidak seimbang.",
+        "danger"
+      );
+    } else if (
+      STATE.steps % 5 === 0
+    ) {
+      showToast(
+        `${STATE.steps}/${CONFIG.targetSteps} langkah`,
+        "step"
+      );
+    }
+
+    playSound("click");
+
+    renderAll();
+
+    if (
+      STATE.progress >= 100
+    ) {
+      finishGame(
+        true,
+        "FINIS"
+      );
+    }
+  }
+
+
+  /* =========================================================
+     15. ANIMASI
+  ========================================================= */
+
+  function animateStep() {
+    STATE.animationTimer &&
+      window.clearTimeout(
+        STATE.animationTimer
+      );
+
+    ELEMENTS.player?.classList.remove(
+      "walking",
+      "step-left",
+      "step-right"
+    );
+
+    ELEMENTS.marble?.classList.remove(
+      "bouncing"
+    );
+
+    ELEMENTS.stepEffect?.classList.remove(
+      "active"
+    );
+
+    void screen.offsetWidth;
+
+    const leftStep =
+      STATE.steps % 2 === 0;
+
+    ELEMENTS.player?.classList.add(
+      "walking",
+      leftStep
+        ? "step-left"
+        : "step-right"
+    );
+
+    ELEMENTS.marble?.classList.add(
+      "bouncing"
+    );
+
+    ELEMENTS.stepEffect?.classList.add(
+      "active"
+    );
+
+    if (ELEMENTS.playerFace) {
+      ELEMENTS.playerFace.textContent =
+        Math.abs(STATE.balance) >
+        CONFIG.warningBalance
+          ? "😰"
+          : "😬";
+    }
+
+    STATE.animationTimer =
+      window.setTimeout(() => {
+        ELEMENTS.player?.classList.remove(
+          "walking",
+          "step-left",
+          "step-right"
+        );
+
+        ELEMENTS.marble?.classList.remove(
+          "bouncing"
+        );
+
+        ELEMENTS.stepEffect?.classList.remove(
+          "active"
+        );
+      }, 240);
+  }
+
+  function animateBalanceControl(direction) {
+    ELEMENTS.spoon?.classList.remove(
+      "control-left",
+      "control-right"
+    );
+
+    void ELEMENTS.spoon?.offsetWidth;
+
+    ELEMENTS.spoon?.classList.add(
+      direction < 0
+        ? "control-left"
+        : "control-right"
+    );
+
+    window.setTimeout(() => {
+      ELEMENTS.spoon?.classList.remove(
+        "control-left",
+        "control-right"
+      );
+    }, 180);
+  }
+
+
+  /* =========================================================
+     16. PAUSE
+  ========================================================= */
+
+  function pauseGame() {
+    if (!isPlaying()) {
+      return;
+    }
+
+    STATE.status = "paused";
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    ELEMENTS.stage?.classList.add(
+      "paused"
+    );
+
+    ELEMENTS.player?.classList.add(
+      "paused"
+    );
+
+    openOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    renderAll();
+    playSound("click");
+  }
+
+  function resumeGame() {
+    if (!isPaused()) {
+      return;
+    }
+
+    STATE.status = "playing";
+
+    STATE.lastFrameTime =
+      performance.now();
+
+    ELEMENTS.stage?.classList.remove(
+      "paused"
+    );
+
+    ELEMENTS.player?.classList.remove(
+      "paused"
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    renderAll();
+    playSound("open");
+
+    STATE.animationFrame =
+      requestAnimationFrame(
+        gameLoop
+      );
+  }
+
+
+  /* =========================================================
+     17. SELESAI GAME
+  ========================================================= */
+
+  function finishGame(
+    won,
+    reason
+  ) {
+    if (
+      STATE.status === "win" ||
+      STATE.status === "lose"
+    ) {
+      return;
+    }
+
+    cancelAnimationFrame(
+      STATE.animationFrame
+    );
+
+    STATE.status =
+      won ? "win" : "lose";
+
+    STATE.loseReason =
+      won ? "" : reason;
+
+    STATE.remainingTime =
+      Math.max(
+        STATE.remainingTime,
+        0
+      );
+
+    if (won) {
+      STATE.progress = 100;
+      STATE.visualProgress = 100;
+
+      ELEMENTS.player?.classList.add(
+        "winner"
+      );
+
+      ELEMENTS.stage?.classList.add(
+        "winning"
+      );
+
+      ELEMENTS.finishLine?.classList.add(
+        "active"
+      );
+
+      if (ELEMENTS.playerFace) {
+        ELEMENTS.playerFace.textContent =
+          "🥳";
+      }
+    } else {
+      ELEMENTS.player?.classList.add(
+        reason === "JATUH"
+          ? "falling"
+          : "loser"
+      );
+
+      ELEMENTS.marble?.classList.add(
+        reason === "JATUH"
+          ? "falling"
+          : "danger"
+      );
+
+      ELEMENTS.spoon?.classList.add(
+        reason === "JATUH"
+          ? "falling"
+          : "danger"
+      );
+
+      ELEMENTS.stage?.classList.add(
+        "losing",
+        "shake"
+      );
+
+      if (ELEMENTS.playerFace) {
+        ELEMENTS.playerFace.textContent =
+          reason === "JATUH"
+            ? "😵"
+            : "😢";
+      }
+    }
+
+    registerResult(won);
+
+    renderAll();
+
+    playSound(
+      won ? "success" : "error"
+    );
+
+    STATE.resultTimer =
+      window.setTimeout(() => {
+        showResult(won);
+      }, CONFIG.resultDelay);
+  }
+
+  function registerResult(won) {
+    if (
+      STATE.resultRegistered
+    ) {
+      return;
+    }
+
+    STATE.resultRegistered = true;
+
+    api()?.registerGameResult?.(
+      "lomba-kelereng",
+      won ? "win" : "lose",
+      {
+        progress:
+          Math.floor(
+            STATE.progress
+          ),
+
+        steps:
+          STATE.steps,
+
+        balance:
+          Math.round(
+            Math.abs(
+              STATE.balance
+            )
+          ),
+
+        score:
+          Math.floor(
+            STATE.score
+          ),
+
+        remainingTime:
+          Math.ceil(
+            STATE.remainingTime
+          ),
+
+        reason:
+          won
+            ? "FINIS"
+            : STATE.loseReason
+      }
+    );
+  }
+
+
+  /* =========================================================
+     18. HASIL
+  ========================================================= */
+
+  function showResult(won) {
+    if (ELEMENTS.winContent) {
+      ELEMENTS.winContent.hidden =
+        !won;
+
+      ELEMENTS.winContent.style.display =
+        won ? "" : "none";
+    }
+
+    if (ELEMENTS.loseContent) {
+      ELEMENTS.loseContent.hidden =
+        won;
+
+      ELEMENTS.loseContent.style.display =
+        won ? "none" : "";
+    }
+
+    setText(
+      ELEMENTS.resultRemainingTime,
+      `${Math.ceil(
+        STATE.remainingTime
+      )} detik`
+    );
+
+    setText(
+      ELEMENTS.resultBalance,
+      `${Math.round(
+        Math.abs(
+          STATE.balance
+        )
+      )}%`
+    );
+
+    setText(
+      ELEMENTS.loseProgress,
+      `${Math.floor(
+        STATE.progress
+      )}%`
+    );
+
+    setText(
+      ELEMENTS.loseReason,
+      STATE.loseReason ||
+      "GAGAL"
+    );
+
+    setText(
+      ELEMENTS.loseTicket,
+      api()?.getTickets?.() ?? 0
+    );
+
+    if (ELEMENTS.loseDescription) {
+      ELEMENTS.loseDescription.textContent =
+        STATE.loseReason === "JATUH"
+          ? "Kelereng jatuh karena keseimbangan melewati batas."
+          : "Waktu habis sebelum mencapai garis finis.";
+    }
+
+    ELEMENTS.resultModal?.classList.toggle(
+      "win",
+      won
+    );
+
+    ELEMENTS.resultModal?.classList.toggle(
+      "lose",
+      !won
+    );
+
+    openOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    showToast(
+      won
+        ? "Menang! Mystery Box berhasil dibuka."
+        : "Permainan selesai. Coba lagi!",
+      won
+        ? "finish"
+        : "warning"
+    );
+  }
+
+
+  /* =========================================================
+     19. EXIT
+  ========================================================= */
+
+  function requestExit() {
+    if (isBusy()) {
+      if (ELEMENTS.exitOverlay) {
+        openOverlay(
+          ELEMENTS.exitOverlay
+        );
+
+        return;
+      }
+
+      const confirmed =
+        window.confirm(
+          "Keluar dari permainan? Tiket tidak dikembalikan."
+        );
+
+      if (confirmed) {
+        quitToLobby();
+      }
+
+      return;
+    }
+
+    quitToLobby();
+  }
+
+  function quitToLobby() {
+    clearTimers();
+
+    closeOverlay(
+      ELEMENTS.exitOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.pauseOverlay
+    );
+
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    resetGame();
+
+    api()?.returnToLobby?.();
+  }
+
+
+  /* =========================================================
+     20. RETRY DAN MYSTERY
+  ========================================================= */
+
+  function retryGame() {
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    if (!api()?.hasTickets?.(1)) {
+      showToast(
+        "Tiket sudah habis.",
+        "warning"
+      );
+
+      window.setTimeout(() => {
+        api()?.returnToLobby?.();
+      }, 700);
+
+      return;
+    }
+
+    resetGame();
+    startCountdown();
+  }
+
+  function openMysteryBox() {
+    closeOverlay(
+      ELEMENTS.resultOverlay
+    );
+
+    if (!api()?.openMystery?.()) {
+      showToast(
+        "Mystery Box belum dapat dibuka.",
+        "warning"
+      );
+    }
+  }
+
+  function toggleSound() {
+    const enabled =
+      api()?.isSoundEnabled?.() ===
+      false;
+
+    api()?.setSound?.(enabled);
+
+    renderSound();
+  }
+
+
+  /* =========================================================
+     21. EVENT BUTTON
+  ========================================================= */
+
+  ELEMENTS.startButton?.addEventListener(
+    "click",
+    startCountdown
+  );
+
+  ELEMENTS.leftButton?.addEventListener(
+    "click",
+    moveLeft
+  );
+
+  ELEMENTS.forwardButton?.addEventListener(
+    "click",
+    moveForward
+  );
+
+  ELEMENTS.rightButton?.addEventListener(
+    "click",
+    moveRight
+  );
+
+  ELEMENTS.pauseButton?.addEventListener(
+    "click",
+    pauseGame
+  );
+
+  ELEMENTS.resumeButton?.addEventListener(
+    "click",
+    resumeGame
+  );
+
+  ELEMENTS.backButton?.addEventListener(
+    "click",
+    requestExit
+  );
+
+  ELEMENTS.quitButton?.addEventListener(
+    "click",
+    requestExit
+  );
+
+  ELEMENTS.cancelExitButton?.addEventListener(
+    "click",
+    () => {
+      closeOverlay(
+        ELEMENTS.exitOverlay
+      );
+    }
+  );
+
+  ELEMENTS.confirmExitButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.closeResultButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.winLobbyButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.loseLobbyButton?.addEventListener(
+    "click",
+    quitToLobby
+  );
+
+  ELEMENTS.retryButton?.addEventListener(
+    "click",
+    retryGame
+  );
+
+  ELEMENTS.openMysteryButton?.addEventListener(
+    "click",
+    openMysteryBox
+  );
+
+  ELEMENTS.soundButton?.addEventListener(
+    "click",
+    toggleSound
+  );
+
+
+  /* =========================================================
+     22. KEYBOARD
+  ========================================================= */
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      const activeScreen =
+        document.querySelector(
+          ".screen.active"
+        );
+
+      if (
+        activeScreen !== screen
+      ) {
+        return;
+      }
+
+      if (
+        event.code ===
+        "ArrowLeft"
+      ) {
+        event.preventDefault();
+        moveLeft();
+      }
+
+      if (
+        event.code ===
+        "ArrowRight"
+      ) {
+        event.preventDefault();
+        moveRight();
+      }
+
+      if (
+        event.code === "Space" ||
+        event.code === "ArrowUp"
+      ) {
+        if (isPlaying()) {
+          event.preventDefault();
+          moveForward();
+        }
+      }
+
+      if (
+        event.code === "KeyP"
+      ) {
+        event.preventDefault();
+
+        if (isPlaying()) {
+          pauseGame();
+        } else if (isPaused()) {
+          resumeGame();
+        }
+      }
+
+      if (
+        event.code === "Escape"
+      ) {
+        event.preventDefault();
+
+        if (isPaused()) {
+          resumeGame();
+        } else {
+          requestExit();
+        }
+      }
+    }
+  );
+
+
+  /* =========================================================
+     23. SCREEN CHANGE
+  ========================================================= */
+
+  document.addEventListener(
+    "clickbet:screenchange",
+    (event) => {
+      if (
+        event.detail?.screen ===
+        "kelereng"
+      ) {
+        resetGame();
+
+        window.setTimeout(() => {
+          ELEMENTS.startButton?.focus();
+        }, 300);
+      } else if (isBusy()) {
+        clearTimers();
+        STATE.status = "idle";
+      }
+    }
+  );
+
+
+  /* =========================================================
+     24. AUTO PAUSE
+  ========================================================= */
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (
+        document.hidden &&
+        isPlaying()
+      ) {
+        pauseGame();
+      }
+    }
+  );
+
+
+  /* =========================================================
+     25. PUBLIC API
+  ========================================================= */
+
+  window.ClickbetKelereng =
+    Object.freeze({
+      start:
+        startCountdown,
+
+      left:
+        moveLeft,
+
+      right:
+        moveRight,
+
+      forward:
+        moveForward,
+
+      pause:
+        pauseGame,
+
+      resume:
+        resumeGame,
+
+      reset:
+        resetGame,
+
+      returnLobby:
+        quitToLobby,
+
+      getStatus() {
+        return {
+          status:
+            STATE.status,
+
+          steps:
+            STATE.steps,
+
+          progress:
+            STATE.progress,
+
+          balance:
+            STATE.balance,
+
+          time:
+            STATE.remainingTime,
+
+          score:
+            STATE.score,
+
+          loseReason:
+            STATE.loseReason
+        };
+      }
+    });
+
+
+  /* =========================================================
+     26. INITIALIZATION
+  ========================================================= */
+
+  resetGame();
+  renderAll();
+
+  console.info(
+    "[CLICKBET88 PART 4] Premium Lomba Kelereng aktif."
+  );
+})();
