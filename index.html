@@ -4861,3 +4861,406 @@
       </div>
 
     </section>
+    <!-- =========================================
+         COUNTDOWN PEMBUKAAN MYSTERY BOX
+    ========================================== -->
+    <div
+      id="mysteryCountdownOverlay"
+      class="mystery-countdown-overlay"
+      aria-hidden="true"
+    >
+
+      <div class="mystery-countdown-background">
+
+        <div class="countdown-light countdown-light-left"></div>
+        <div class="countdown-light countdown-light-right"></div>
+
+        <span class="countdown-particle countdown-particle-one">✦</span>
+        <span class="countdown-particle countdown-particle-two">✦</span>
+        <span class="countdown-particle countdown-particle-three">◆</span>
+        <span class="countdown-particle countdown-particle-four">●</span>
+
+      </div>
+
+
+      <div class="mystery-countdown-content">
+
+        <span class="mystery-countdown-label">
+          MYSTERY BOX AKAN DIBUKA
+        </span>
+
+        <strong id="mysteryCountdownValue">
+          3
+        </strong>
+
+        <p id="mysteryCountdownText">
+          Bersiap menemukan hadiahmu!
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         PROSES PEMBUKAAN MYSTERY BOX
+    ========================================== -->
+    <div
+      id="mysteryOpeningOverlay"
+      class="mystery-opening-overlay"
+      aria-hidden="true"
+    >
+
+      <div class="mystery-opening-background">
+
+        <div class="opening-overlay-glow"></div>
+
+        <div class="opening-overlay-rays">
+
+          <span class="opening-ray ray-one"></span>
+          <span class="opening-ray ray-two"></span>
+          <span class="opening-ray ray-three"></span>
+          <span class="opening-ray ray-four"></span>
+          <span class="opening-ray ray-five"></span>
+          <span class="opening-ray ray-six"></span>
+          <span class="opening-ray ray-seven"></span>
+          <span class="opening-ray ray-eight"></span>
+
+        </div>
+
+      </div>
+
+
+      <div class="mystery-opening-content">
+
+        <span
+          id="mysteryOpeningLabel"
+          class="mystery-opening-label"
+        >
+          MEMBUKA BOX...
+        </span>
+
+
+        <div class="opening-box-animation-stage">
+
+          <div class="opening-box-stage-glow"></div>
+
+
+          <div
+            id="animatedMysteryBox"
+            class="animated-mystery-box"
+          >
+
+            <div
+              id="animatedMysteryBoxLid"
+              class="animated-mystery-box-lid"
+            >
+
+              <div class="animated-box-bow">
+
+                <span class="animated-bow-left"></span>
+                <span class="animated-bow-center"></span>
+                <span class="animated-bow-right"></span>
+
+              </div>
+
+            </div>
+
+
+            <div class="animated-mystery-box-body">
+
+              <span class="animated-box-ribbon-vertical"></span>
+              <span class="animated-box-ribbon-horizontal"></span>
+
+              <span class="animated-box-question">
+                ?
+              </span>
+
+            </div>
+
+
+            <div class="animated-box-light"></div>
+            <div class="animated-box-shadow"></div>
+
+          </div>
+
+
+
+          <!-- Efek cahaya pembukaan -->
+          <div
+            id="animatedBoxExplosion"
+            class="animated-box-explosion"
+          >
+
+            <span class="box-explosion-piece piece-one"></span>
+            <span class="box-explosion-piece piece-two"></span>
+            <span class="box-explosion-piece piece-three"></span>
+            <span class="box-explosion-piece piece-four"></span>
+            <span class="box-explosion-piece piece-five"></span>
+            <span class="box-explosion-piece piece-six"></span>
+            <span class="box-explosion-piece piece-seven"></span>
+            <span class="box-explosion-piece piece-eight"></span>
+
+          </div>
+
+
+
+          <!-- Efek koin -->
+          <div
+            id="animatedCoinBurst"
+            class="animated-coin-burst"
+          >
+
+            <span class="animated-coin coin-one">●</span>
+            <span class="animated-coin coin-two">●</span>
+            <span class="animated-coin coin-three">●</span>
+            <span class="animated-coin coin-four">●</span>
+            <span class="animated-coin coin-five">●</span>
+            <span class="animated-coin coin-six">●</span>
+            <span class="animated-coin coin-seven">●</span>
+            <span class="animated-coin coin-eight">●</span>
+            <span class="animated-coin coin-nine">●</span>
+            <span class="animated-coin coin-ten">●</span>
+
+          </div>
+
+        </div>
+
+
+        <p
+          id="mysteryOpeningMessage"
+          class="mystery-opening-message"
+        >
+          Tunggu sebentar, hadiah sedang dipilih.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         ROLLING NOMINAL HADIAH
+    ========================================== -->
+    <div
+      id="rewardRollingOverlay"
+      class="reward-rolling-overlay"
+      aria-hidden="true"
+    >
+
+      <div class="reward-rolling-background">
+
+        <div class="reward-rolling-gradient"></div>
+
+        <div class="rolling-firework rolling-firework-left">✦</div>
+        <div class="rolling-firework rolling-firework-right">✦</div>
+
+        <span class="rolling-particle rolling-particle-one">◆</span>
+        <span class="rolling-particle rolling-particle-two">●</span>
+        <span class="rolling-particle rolling-particle-three">✦</span>
+        <span class="rolling-particle rolling-particle-four">◆</span>
+        <span class="rolling-particle rolling-particle-five">●</span>
+
+      </div>
+
+
+      <div class="reward-rolling-content">
+
+        <div class="reward-rolling-heading">
+
+          <span class="section-label">
+            MYSTERY BOX
+          </span>
+
+          <h2>
+            Mencari Hadiah Terbaik...
+          </h2>
+
+          <p>
+            Tunggu sampai perputaran hadiah berhenti.
+          </p>
+
+        </div>
+
+
+
+        <!-- Mesin rolling hadiah -->
+        <div class="reward-slot-machine">
+
+          <div class="reward-slot-machine-top">
+
+            <span class="slot-machine-light light-one"></span>
+            <span class="slot-machine-light light-two"></span>
+            <span class="slot-machine-light light-three"></span>
+            <span class="slot-machine-light light-four"></span>
+            <span class="slot-machine-light light-five"></span>
+
+          </div>
+
+
+          <div class="reward-slot-window">
+
+            <div class="reward-slot-highlight"></div>
+
+            <div class="reward-slot-arrow reward-slot-arrow-left">
+              ▶
+            </div>
+
+
+            <div class="reward-slot-viewport">
+
+              <div
+                id="rewardSlotList"
+                class="reward-slot-list"
+              >
+
+                <div
+                  class="reward-slot-item"
+                  data-reward="5000"
+                >
+                  Rp5.000
+                </div>
+
+                <div
+                  class="reward-slot-item"
+                  data-reward="10000"
+                >
+                  Rp10.000
+                </div>
+
+                <div
+                  class="reward-slot-item"
+                  data-reward="25000"
+                >
+                  Rp25.000
+                </div>
+
+                <div
+                  class="reward-slot-item"
+                  data-reward="50000"
+                >
+                  Rp50.000
+                </div>
+
+                <div
+                  class="reward-slot-item"
+                  data-reward="100000"
+                >
+                  Rp100.000
+                </div>
+
+                <div
+                  class="reward-slot-item"
+                  data-reward="250000"
+                >
+                  Rp250.000
+                </div>
+
+                <div
+                  class="reward-slot-item"
+                  data-reward="350000"
+                >
+                  Rp350.000
+                </div>
+
+                <div
+                  class="reward-slot-item reward-slot-jackpot"
+                  data-reward="500000"
+                >
+                  Rp500.000
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="reward-slot-arrow reward-slot-arrow-right">
+              ◀
+            </div>
+
+          </div>
+
+
+          <div class="reward-slot-machine-bottom">
+
+            <span id="rewardRollingStatus">
+              HADIAH SEDANG DIACAK
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Loading rolling -->
+        <div class="reward-rolling-loader">
+
+          <span class="rolling-loader-dot dot-one"></span>
+          <span class="rolling-loader-dot dot-two"></span>
+          <span class="rolling-loader-dot dot-three"></span>
+
+        </div>
+
+
+        <div
+          id="rewardRollingHint"
+          class="reward-rolling-hint"
+        >
+          Jangan menutup halaman sampai proses selesai.
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         EFEK CONFETTI HADIAH
+    ========================================== -->
+    <div
+      id="rewardConfettiLayer"
+      class="reward-confetti-layer"
+      aria-hidden="true"
+    >
+
+      <span class="reward-confetti confetti-one"></span>
+      <span class="reward-confetti confetti-two"></span>
+      <span class="reward-confetti confetti-three"></span>
+      <span class="reward-confetti confetti-four"></span>
+      <span class="reward-confetti confetti-five"></span>
+      <span class="reward-confetti confetti-six"></span>
+      <span class="reward-confetti confetti-seven"></span>
+      <span class="reward-confetti confetti-eight"></span>
+      <span class="reward-confetti confetti-nine"></span>
+      <span class="reward-confetti confetti-ten"></span>
+      <span class="reward-confetti confetti-eleven"></span>
+      <span class="reward-confetti confetti-twelve"></span>
+
+    </div>
+
+
+
+    <!-- =========================================
+         TOAST MYSTERY BOX
+    ========================================== -->
+    <div
+      id="mysteryToast"
+      class="game-toast"
+      role="status"
+      aria-live="polite"
+    >
+
+      <span id="mysteryToastIcon">
+        🎁
+      </span>
+
+      <p id="mysteryToastMessage">
+        Pesan Mystery Box
+      </p>
+
+    </div>
