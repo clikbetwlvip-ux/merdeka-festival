@@ -4335,3 +4335,1989 @@
     initialize();
 
 })();
+/* =========================================================
+   JAVASCRIPT PART 4
+   ENGINE GAME LOMBA KELERENG
+========================================================= */
+
+(() => {
+    "use strict";
+
+    /* =====================================================
+       KONFIGURASI
+    ===================================================== */
+
+    const KELERENG_CONFIG = {
+        duration: 20,
+        targetSteps: 30,
+        ticketCost: 1,
+        countdownStart: 3,
+
+        maximumBalance: 50,
+        safeBalance: 18,
+        warningBalance: 34,
+
+        controlStrength: 7,
+        naturalDrift: 1.4,
+        stepBalanceImpact: 3.2,
+
+        minimumPlayerLeft: 5,
+        maximumPlayerLeft: 84,
+
+        resultDelay: 550
+    };
+
+
+    /* =====================================================
+       SCREEN
+    ===================================================== */
+
+    const screen =
+        document.getElementById("kelerengScreen");
+
+    if (!screen) {
+        console.warn(
+            "[CLICKBET88] Screen Lomba Kelereng tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    /* =====================================================
+       ELEMEN HTML
+    ===================================================== */
+
+    const elements = {
+        screen,
+
+        backButton:
+            document.getElementById("kelerengBackButton"),
+
+        pauseButton:
+            document.getElementById("kelerengPauseButton"),
+
+        soundButton:
+            document.getElementById("kelerengSoundButton"),
+
+        soundIcon:
+            document.getElementById("kelerengSoundIcon"),
+
+        timer:
+            document.getElementById("kelerengTimerValue"),
+
+        timerProgress:
+            document.getElementById("kelerengTimerProgress"),
+
+        progressValue:
+            document.getElementById("kelerengProgressValue"),
+
+        progressBar:
+            document.getElementById("kelerengProgressBar"),
+
+        balanceMarker:
+            document.getElementById("kelerengBalanceMarker"),
+
+        balanceValue:
+            document.getElementById("kelerengBalanceValue"),
+
+        player:
+            document.getElementById("kelerengPlayer"),
+
+        playerFace:
+            document.getElementById("kelerengPlayerFace"),
+
+        spoon:
+            document.getElementById("kelerengSpoon"),
+
+        marble:
+            document.getElementById("kelerengMarble"),
+
+        stepEffect:
+            document.getElementById("kelerengStepEffect"),
+
+        readyMessage:
+            document.getElementById("kelerengReadyMessage"),
+
+        startButton:
+            document.getElementById("kelerengStartButton"),
+
+        controlButtons:
+            document.getElementById("kelerengControlButtons"),
+
+        leftButton:
+            document.getElementById("kelerengLeftButton"),
+
+        forwardButton:
+            document.getElementById("kelerengForwardButton"),
+
+        rightButton:
+            document.getElementById("kelerengRightButton"),
+
+        countdownOverlay:
+            document.getElementById(
+                "kelerengCountdownOverlay"
+            ),
+
+        countdownValue:
+            document.getElementById(
+                "kelerengCountdownValue"
+            ),
+
+        countdownMessage:
+            document.getElementById(
+                "kelerengCountdownMessage"
+            ),
+
+        pauseOverlay:
+            document.getElementById("kelerengPauseOverlay"),
+
+        resumeButton:
+            document.getElementById("kelerengResumeButton"),
+
+        quitButton:
+            document.getElementById("kelerengQuitButton"),
+
+        resultOverlay:
+            document.getElementById("kelerengResultOverlay"),
+
+        resultModal:
+            document.getElementById("kelerengResultModal"),
+
+        closeResultButton:
+            document.getElementById(
+                "closeKelerengResultButton"
+            ),
+
+        winContent:
+            document.getElementById("kelerengWinContent"),
+
+        loseContent:
+            document.getElementById("kelerengLoseContent"),
+
+        resultRemainingTime:
+            document.getElementById(
+                "kelerengResultRemainingTime"
+            ),
+
+        resultBalance:
+            document.getElementById(
+                "kelerengResultBalance"
+            ),
+
+        loseDescription:
+            document.getElementById(
+                "kelerengLoseDescription"
+            ),
+
+        loseProgress:
+            document.getElementById(
+                "kelerengLoseProgress"
+            ),
+
+        loseReason:
+            document.getElementById(
+                "kelerengLoseReason"
+            ),
+
+        loseTicket:
+            document.getElementById(
+                "kelerengLoseTicket"
+            ),
+
+        openMysteryButton:
+            document.getElementById(
+                "openKelerengMysteryButton"
+            ),
+
+        winLobbyButton:
+            document.getElementById(
+                "kelerengWinLobbyButton"
+            ),
+
+        retryButton:
+            document.getElementById(
+                "retryKelerengButton"
+            ),
+
+        loseLobbyButton:
+            document.getElementById(
+                "kelerengLoseLobbyButton"
+            ),
+
+        exitOverlay:
+            document.getElementById(
+                "kelerengExitConfirmOverlay"
+            ),
+
+        cancelExitButton:
+            document.getElementById(
+                "cancelKelerengExitButton"
+            ),
+
+        confirmExitButton:
+            document.getElementById(
+                "confirmKelerengExitButton"
+            ),
+
+        toast:
+            document.getElementById("kelerengToast"),
+
+        toastIcon:
+            document.getElementById("kelerengToastIcon"),
+
+        toastMessage:
+            document.getElementById(
+                "kelerengToastMessage"
+            ),
+
+        finishLine:
+            screen.querySelector(
+                ".race-track-finish-line"
+            ),
+
+        stage:
+            screen.querySelector(".kelereng-stage")
+    };
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    const game = {
+        status: "idle",
+
+        stepCount: 0,
+        progress: 0,
+        balance: 0,
+        timeLeft: KELERENG_CONFIG.duration,
+
+        timerId: null,
+        countdownId: null,
+        physicsId: null,
+        toastTimer: null,
+        animationTimer: null,
+
+        finishing: false,
+        ticketUsed: false,
+        soundEnabled: true,
+
+        loseReason: ""
+    };
+
+
+    /* =====================================================
+       UTILITAS
+    ===================================================== */
+
+    function clamp(value, minimum, maximum) {
+        return Math.min(
+            Math.max(Number(value) || 0, minimum),
+            maximum
+        );
+    }
+
+
+    function formatTime(seconds) {
+        const cleanSeconds = Math.max(
+            0,
+            Math.ceil(Number(seconds) || 0)
+        );
+
+        return `00:${String(cleanSeconds).padStart(2, "0")}`;
+    }
+
+
+    function getAPI() {
+        return window.ClickbetGame || null;
+    }
+
+
+    function getTicketCount() {
+        const api = getAPI();
+
+        if (
+            !api ||
+            typeof api.getTicketStatus !== "function"
+        ) {
+            return 0;
+        }
+
+        const status = api.getTicketStatus();
+
+        return Number(status?.current) || 0;
+    }
+
+
+    function isPlaying() {
+        return game.status === "playing";
+    }
+
+
+    function isBusy() {
+        return [
+            "countdown",
+            "playing",
+            "paused"
+        ].includes(game.status);
+    }
+
+
+    function isScreenActive() {
+        const activeScreen =
+            document.body.dataset.activeScreen || "";
+
+        return (
+            activeScreen === "kelereng" ||
+            activeScreen === "lomba-kelereng" ||
+            activeScreen === "lombaKelereng" ||
+            screen.classList.contains("active")
+        );
+    }
+
+
+    function getBalanceAbsolute() {
+        return Math.abs(game.balance);
+    }
+
+
+    function getBalanceLabel() {
+        const absolute =
+            getBalanceAbsolute();
+
+        if (
+            absolute <=
+            KELERENG_CONFIG.safeBalance
+        ) {
+            return "STABIL";
+        }
+
+        if (
+            absolute <=
+            KELERENG_CONFIG.warningBalance
+        ) {
+            return "GOYANG";
+        }
+
+        return "BAHAYA";
+    }
+
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    function showOverlay(element) {
+        if (!element) return;
+
+        element.hidden = false;
+        element.setAttribute("aria-hidden", "false");
+
+        requestAnimationFrame(() => {
+            element.classList.add(
+                "active",
+                "show",
+                "visible"
+            );
+        });
+    }
+
+
+    function hideOverlay(element) {
+        if (!element) return;
+
+        element.classList.remove(
+            "active",
+            "show",
+            "visible"
+        );
+
+        element.setAttribute("aria-hidden", "true");
+
+        window.setTimeout(() => {
+            const visible =
+                element.classList.contains("active") ||
+                element.classList.contains("show") ||
+                element.classList.contains("visible");
+
+            if (!visible) {
+                element.hidden = true;
+            }
+        }, 300);
+    }
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    function showToast(
+        message,
+        type = "info",
+        duration = 2300
+    ) {
+        clearTimeout(game.toastTimer);
+
+        if (
+            !elements.toast ||
+            !elements.toastMessage
+        ) {
+            getAPI()?.notify?.(message, type);
+            return;
+        }
+
+        const icons = {
+            info: "ℹ️",
+            success: "✅",
+            warning: "⚠️",
+            error: "❌"
+        };
+
+        if (elements.toastIcon) {
+            elements.toastIcon.textContent =
+                icons[type] || icons.info;
+        }
+
+        elements.toastMessage.textContent =
+            message;
+
+        elements.toast.className =
+            `game-toast ${type} show`;
+
+        game.toastTimer =
+            window.setTimeout(() => {
+                elements.toast?.classList.remove(
+                    "show"
+                );
+            }, duration);
+    }
+
+
+    /* =====================================================
+       TIMER CLEANUP
+    ===================================================== */
+
+    function clearGameTimers() {
+        clearInterval(game.timerId);
+        clearInterval(game.countdownId);
+        clearInterval(game.physicsId);
+        clearTimeout(game.animationTimer);
+
+        game.timerId = null;
+        game.countdownId = null;
+        game.physicsId = null;
+        game.animationTimer = null;
+    }
+
+
+    /* =====================================================
+       RENDER
+    ===================================================== */
+
+    function renderGame() {
+        const progress =
+            clamp(game.progress, 0, 100);
+
+        const balance =
+            clamp(
+                game.balance,
+                -KELERENG_CONFIG.maximumBalance,
+                KELERENG_CONFIG.maximumBalance
+            );
+
+        const timePercentage =
+            clamp(
+                game.timeLeft /
+                KELERENG_CONFIG.duration *
+                100,
+                0,
+                100
+            );
+
+        const balancePercentage =
+            clamp(
+                50 +
+                balance /
+                KELERENG_CONFIG.maximumBalance *
+                50,
+                0,
+                100
+            );
+
+        const playerMovement =
+            KELERENG_CONFIG.maximumPlayerLeft -
+            KELERENG_CONFIG.minimumPlayerLeft;
+
+        const playerLeft =
+            KELERENG_CONFIG.minimumPlayerLeft +
+            playerMovement *
+            (progress / 100);
+
+
+        if (elements.timer) {
+            elements.timer.textContent =
+                formatTime(game.timeLeft);
+
+            elements.timer.classList.toggle(
+                "danger",
+                game.timeLeft <= 5 &&
+                game.status === "playing"
+            );
+        }
+
+
+        if (elements.timerProgress) {
+            elements.timerProgress.style.width =
+                `${timePercentage}%`;
+
+            elements.timerProgress.classList.toggle(
+                "danger",
+                game.timeLeft <= 5
+            );
+        }
+
+
+        if (elements.progressValue) {
+            elements.progressValue.textContent =
+                `${Math.round(progress)}%`;
+        }
+
+
+        if (elements.progressBar) {
+            elements.progressBar.style.width =
+                `${progress}%`;
+        }
+
+
+        if (elements.balanceMarker) {
+            elements.balanceMarker.style.left =
+                `${balancePercentage}%`;
+        }
+
+
+        if (elements.balanceValue) {
+            const label = getBalanceLabel();
+
+            elements.balanceValue.textContent =
+                label;
+
+            elements.balanceValue.classList.toggle(
+                "stable",
+                label === "STABIL"
+            );
+
+            elements.balanceValue.classList.toggle(
+                "warning",
+                label === "GOYANG"
+            );
+
+            elements.balanceValue.classList.toggle(
+                "danger",
+                label === "BAHAYA"
+            );
+        }
+
+
+        if (elements.player) {
+            elements.player.style.left =
+                `${playerLeft}%`;
+        }
+
+
+        if (elements.marble) {
+            const marbleLeft =
+                clamp(
+                    50 +
+                    balance /
+                    KELERENG_CONFIG.maximumBalance *
+                    38,
+                    8,
+                    92
+                );
+
+            elements.marble.style.left =
+                `${marbleLeft}%`;
+
+            elements.marble.classList.toggle(
+                "danger",
+                getBalanceLabel() === "BAHAYA"
+            );
+        }
+
+
+        if (elements.spoon) {
+            const rotation =
+                clamp(
+                    balance * 0.16,
+                    -8,
+                    8
+                );
+
+            elements.spoon.style.transform =
+                `rotate(${rotation}deg)`;
+        }
+
+
+        const controlsEnabled =
+            game.status === "playing";
+
+        [
+            elements.leftButton,
+            elements.forwardButton,
+            elements.rightButton
+        ].forEach((button) => {
+            if (button) {
+                button.disabled =
+                    !controlsEnabled;
+            }
+        });
+
+
+        if (elements.startButton) {
+            elements.startButton.disabled =
+                isBusy();
+
+            const startText =
+                elements.startButton.querySelector(
+                    ".start-button-text"
+                );
+
+            if (startText) {
+                if (game.status === "idle") {
+                    startText.textContent =
+                        "MULAI PERMAINAN";
+                } else if (
+                    game.status === "finished"
+                ) {
+                    startText.textContent =
+                        "MAIN LAGI";
+                } else if (
+                    game.status === "countdown"
+                ) {
+                    startText.textContent =
+                        "BERSIAP...";
+                } else {
+                    startText.textContent =
+                        "PERMAINAN BERJALAN";
+                }
+            }
+        }
+
+
+        screen.classList.toggle(
+            "game-playing",
+            game.status === "playing"
+        );
+
+        screen.classList.toggle(
+            "game-paused",
+            game.status === "paused"
+        );
+
+        screen.classList.toggle(
+            "game-finished",
+            game.status === "finished"
+        );
+    }
+
+
+    /* =====================================================
+       RESET VISUAL
+    ===================================================== */
+
+    function resetVisualClasses() {
+        elements.player?.classList.remove(
+            "walking",
+            "stepping",
+            "winning",
+            "losing",
+            "paused"
+        );
+
+        elements.marble?.classList.remove(
+            "danger",
+            "falling",
+            "winning"
+        );
+
+        elements.spoon?.classList.remove(
+            "shaking",
+            "paused"
+        );
+
+        elements.stepEffect?.classList.remove(
+            "active"
+        );
+
+        elements.finishLine?.classList.remove(
+            "active"
+        );
+
+        elements.stage?.classList.remove(
+            "win",
+            "lose"
+        );
+
+        if (elements.spoon) {
+            elements.spoon.style.transform =
+                "rotate(0deg)";
+        }
+
+        if (elements.playerFace) {
+            elements.playerFace.textContent =
+                "😬";
+        }
+    }
+
+
+    function resetRoundData() {
+        clearGameTimers();
+
+        game.stepCount = 0;
+        game.progress = 0;
+        game.balance = 0;
+        game.timeLeft =
+            KELERENG_CONFIG.duration;
+
+        game.finishing = false;
+        game.loseReason = "";
+
+        resetVisualClasses();
+
+        hideOverlay(elements.countdownOverlay);
+        hideOverlay(elements.pauseOverlay);
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.exitOverlay);
+
+        renderGame();
+    }
+
+
+    function resetGame(options = {}) {
+        const {
+            preserveTicketStatus = false
+        } = options;
+
+        resetRoundData();
+
+        game.status = "idle";
+
+        if (!preserveTicketStatus) {
+            game.ticketUsed = false;
+        }
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Tekan mulai dan bersiap menjaga keseimbangan!";
+        }
+
+        renderGame();
+    }
+
+
+    /* =====================================================
+       TIKET
+    ===================================================== */
+
+    function consumeTicket() {
+        const api = getAPI();
+
+        if (!api) {
+            showToast(
+                "Sistem tiket belum tersedia.",
+                "error"
+            );
+
+            return false;
+        }
+
+        if (
+            getTicketCount() <
+            KELERENG_CONFIG.ticketCost
+        ) {
+            showToast(
+                "Tiket kamu tidak mencukupi.",
+                "warning",
+                2800
+            );
+
+            api.notify?.(
+                "Kamu membutuhkan 1 tiket untuk memainkan Lomba Kelereng.",
+                "warning"
+            );
+
+            return false;
+        }
+
+        if (
+            typeof api.useTicket !== "function"
+        ) {
+            showToast(
+                "Fungsi penggunaan tiket belum tersedia.",
+                "error"
+            );
+
+            return false;
+        }
+
+        const successful =
+            api.useTicket(
+                KELERENG_CONFIG.ticketCost
+            );
+
+        if (!successful) {
+            showToast(
+                "Tiket gagal digunakan.",
+                "error"
+            );
+
+            return false;
+        }
+
+        game.ticketUsed = true;
+
+        showToast(
+            "1 tiket digunakan. Jaga keseimbangan!",
+            "success"
+        );
+
+        return true;
+    }
+
+
+    /* =====================================================
+       COUNTDOWN
+    ===================================================== */
+
+    function startCountdown() {
+        if (isBusy()) {
+            return;
+        }
+
+        if (!consumeTicket()) {
+            return;
+        }
+
+        resetRoundData();
+
+        game.status = "countdown";
+
+        let countdown =
+            KELERENG_CONFIG.countdownStart;
+
+        if (elements.countdownValue) {
+            elements.countdownValue.textContent =
+                countdown;
+        }
+
+        if (elements.countdownMessage) {
+            elements.countdownMessage.textContent =
+                "Bersiap!";
+        }
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Bersiap, perlombaan segera dimulai!";
+        }
+
+        showOverlay(elements.countdownOverlay);
+        renderGame();
+
+        game.countdownId =
+            window.setInterval(() => {
+                countdown -= 1;
+
+                if (countdown > 0) {
+                    if (elements.countdownValue) {
+                        elements.countdownValue.textContent =
+                            countdown;
+                    }
+
+                    if (
+                        elements.countdownMessage
+                    ) {
+                        elements.countdownMessage.textContent =
+                            countdown === 1
+                                ? "Siap!"
+                                : "Bersiap!";
+                    }
+
+                    return;
+                }
+
+                clearInterval(
+                    game.countdownId
+                );
+
+                game.countdownId = null;
+
+                if (elements.countdownValue) {
+                    elements.countdownValue.textContent =
+                        "GO!";
+                }
+
+                if (elements.countdownMessage) {
+                    elements.countdownMessage.textContent =
+                        "Mulai berjalan!";
+                }
+
+                window.setTimeout(() => {
+                    hideOverlay(
+                        elements.countdownOverlay
+                    );
+
+                    startRound();
+                }, 500);
+            }, 850);
+    }
+
+
+    /* =====================================================
+       MULAI GAME
+    ===================================================== */
+
+    function startRound() {
+        game.status = "playing";
+        game.finishing = false;
+
+        elements.player?.classList.add(
+            "walking"
+        );
+
+        if (elements.playerFace) {
+            elements.playerFace.textContent =
+                "😬";
+        }
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Tekan Jalan sambil menjaga kelereng tetap di tengah!";
+        }
+
+        renderGame();
+
+        startTimer();
+        startPhysics();
+    }
+
+
+    function startTimer() {
+        game.timerId =
+            window.setInterval(() => {
+                if (
+                    game.status !== "playing"
+                ) {
+                    return;
+                }
+
+                game.timeLeft =
+                    Math.max(
+                        game.timeLeft - 0.1,
+                        0
+                    );
+
+                renderGame();
+
+                if (game.timeLeft <= 0) {
+                    finishGame(
+                        false,
+                        "WAKTU HABIS"
+                    );
+                }
+            }, 100);
+    }
+
+
+    function startPhysics() {
+        game.physicsId =
+            window.setInterval(() => {
+                if (
+                    game.status !== "playing"
+                ) {
+                    return;
+                }
+
+                const direction =
+                    Math.random() > 0.5
+                        ? 1
+                        : -1;
+
+                const intensity =
+                    KELERENG_CONFIG.naturalDrift *
+                    (0.45 + Math.random());
+
+                game.balance +=
+                    direction * intensity;
+
+                /*
+                 * Semakin jauh progress, keseimbangan
+                 * sedikit lebih sulit.
+                 */
+                game.balance +=
+                    direction *
+                    game.progress *
+                    0.004;
+
+                game.balance =
+                    clamp(
+                        game.balance,
+                        -KELERENG_CONFIG.maximumBalance -
+                            5,
+                        KELERENG_CONFIG.maximumBalance +
+                            5
+                    );
+
+                renderGame();
+
+                if (
+                    getBalanceAbsolute() >=
+                    KELERENG_CONFIG.maximumBalance
+                ) {
+                    finishGame(
+                        false,
+                        "KELERENG JATUH"
+                    );
+                }
+            }, 180);
+    }
+
+
+    /* =====================================================
+       KONTROL KESEIMBANGAN
+    ===================================================== */
+
+    function moveBalance(direction) {
+        if (!isPlaying()) {
+            return;
+        }
+
+        const strength =
+            KELERENG_CONFIG.controlStrength;
+
+        /*
+         * Tombol kiri menggeser kelereng ke kiri.
+         * Tombol kanan menggeser kelereng ke kanan.
+         */
+        game.balance +=
+            direction === "left"
+                ? -strength
+                : strength;
+
+        game.balance =
+            clamp(
+                game.balance,
+                -KELERENG_CONFIG.maximumBalance,
+                KELERENG_CONFIG.maximumBalance
+            );
+
+        animateBalanceControl(direction);
+        renderGame();
+
+        if (
+            getBalanceAbsolute() >=
+            KELERENG_CONFIG.maximumBalance
+        ) {
+            finishGame(
+                false,
+                "KELERENG JATUH"
+            );
+        }
+    }
+
+
+    function moveLeft() {
+        moveBalance("left");
+    }
+
+
+    function moveRight() {
+        moveBalance("right");
+    }
+
+
+    function animateBalanceControl(direction) {
+        const button =
+            direction === "left"
+                ? elements.leftButton
+                : elements.rightButton;
+
+        button?.classList.remove("pressed");
+
+        void button?.offsetWidth;
+
+        button?.classList.add("pressed");
+
+        window.setTimeout(() => {
+            button?.classList.remove("pressed");
+        }, 150);
+
+        elements.spoon?.classList.remove(
+            "shaking"
+        );
+
+        void elements.spoon?.offsetWidth;
+
+        elements.spoon?.classList.add(
+            "shaking"
+        );
+
+        window.setTimeout(() => {
+            elements.spoon?.classList.remove(
+                "shaking"
+            );
+        }, 230);
+    }
+
+
+    /* =====================================================
+       JALAN / MAJU
+    ===================================================== */
+
+    function moveForward() {
+        if (!isPlaying()) {
+            return;
+        }
+
+        if (game.finishing) {
+            return;
+        }
+
+        game.stepCount += 1;
+
+        game.progress =
+            clamp(
+                game.stepCount /
+                KELERENG_CONFIG.targetSteps *
+                100,
+                0,
+                100
+            );
+
+        /*
+         * Setiap melangkah memberi sedikit guncangan.
+         */
+        const impactDirection =
+            Math.random() > 0.5
+                ? 1
+                : -1;
+
+        game.balance +=
+            impactDirection *
+            KELERENG_CONFIG.stepBalanceImpact *
+            (0.7 + Math.random() * 0.6);
+
+        game.balance =
+            clamp(
+                game.balance,
+                -KELERENG_CONFIG.maximumBalance,
+                KELERENG_CONFIG.maximumBalance
+            );
+
+        animateStep();
+        renderGame();
+
+        if (
+            getBalanceAbsolute() >=
+            KELERENG_CONFIG.maximumBalance
+        ) {
+            finishGame(
+                false,
+                "KELERENG JATUH"
+            );
+
+            return;
+        }
+
+        if (
+            game.stepCount >=
+            KELERENG_CONFIG.targetSteps
+        ) {
+            finishGame(true);
+        }
+    }
+
+
+    function animateStep() {
+        elements.player?.classList.remove(
+            "stepping"
+        );
+
+        void elements.player?.offsetWidth;
+
+        elements.player?.classList.add(
+            "stepping"
+        );
+
+        elements.forwardButton?.classList.remove(
+            "pressed"
+        );
+
+        void elements.forwardButton?.offsetWidth;
+
+        elements.forwardButton?.classList.add(
+            "pressed"
+        );
+
+        if (elements.stepEffect) {
+            elements.stepEffect.classList.remove(
+                "active"
+            );
+
+            void elements.stepEffect.offsetWidth;
+
+            elements.stepEffect.classList.add(
+                "active"
+            );
+        }
+
+        clearTimeout(game.animationTimer);
+
+        game.animationTimer =
+            window.setTimeout(() => {
+                elements.player?.classList.remove(
+                    "stepping"
+                );
+
+                elements.forwardButton?.classList.remove(
+                    "pressed"
+                );
+
+                elements.stepEffect?.classList.remove(
+                    "active"
+                );
+            }, 230);
+    }
+
+
+    /* =====================================================
+       SELESAI GAME
+    ===================================================== */
+
+    function finishGame(
+        isWinner,
+        reason = ""
+    ) {
+        if (
+            game.status !== "playing" &&
+            game.status !== "paused"
+        ) {
+            return;
+        }
+
+        if (game.finishing) {
+            return;
+        }
+
+        game.finishing = true;
+        game.loseReason = reason;
+
+        clearGameTimers();
+
+        game.status = "finished";
+
+        elements.player?.classList.remove(
+            "walking",
+            "stepping",
+            "paused"
+        );
+
+        elements.spoon?.classList.remove(
+            "shaking",
+            "paused"
+        );
+
+        if (isWinner) {
+            game.progress = 100;
+            game.balance =
+                clamp(game.balance, -12, 12);
+
+            elements.player?.classList.add(
+                "winning"
+            );
+
+            elements.marble?.classList.add(
+                "winning"
+            );
+
+            elements.finishLine?.classList.add(
+                "active"
+            );
+
+            elements.stage?.classList.add(
+                "win"
+            );
+
+            if (elements.playerFace) {
+                elements.playerFace.textContent =
+                    "🤩";
+            }
+
+            if (elements.readyMessage) {
+                elements.readyMessage.textContent =
+                    "Hebat! Kamu berhasil mencapai garis finis!";
+            }
+        } else {
+            elements.player?.classList.add(
+                "losing"
+            );
+
+            elements.stage?.classList.add(
+                "lose"
+            );
+
+            if (
+                reason === "KELERENG JATUH"
+            ) {
+                elements.marble?.classList.add(
+                    "falling"
+                );
+            }
+
+            if (elements.playerFace) {
+                elements.playerFace.textContent =
+                    "😵";
+            }
+
+            if (elements.readyMessage) {
+                elements.readyMessage.textContent =
+                    reason === "WAKTU HABIS"
+                        ? "Waktu habis sebelum mencapai finis!"
+                        : "Kelereng jatuh dari sendok!";
+            }
+        }
+
+        renderGame();
+        registerResult(isWinner);
+
+        window.setTimeout(() => {
+            showResult(isWinner);
+        }, KELERENG_CONFIG.resultDelay);
+    }
+
+
+    /* =====================================================
+       DAFTARKAN HASIL
+    ===================================================== */
+
+    function registerResult(isWinner) {
+        const api = getAPI();
+
+        if (
+            !api ||
+            typeof api.registerGameResult !==
+                "function"
+        ) {
+            return;
+        }
+
+        api.registerGameResult(
+            "kelereng",
+            isWinner ? "win" : "lose",
+            Math.round(game.progress),
+            0
+        );
+    }
+
+
+    /* =====================================================
+       HASIL
+    ===================================================== */
+
+    function showResult(isWinner) {
+        if (!elements.resultOverlay) {
+            return;
+        }
+
+        if (elements.winContent) {
+            elements.winContent.hidden =
+                !isWinner;
+        }
+
+        if (elements.loseContent) {
+            elements.loseContent.hidden =
+                isWinner;
+        }
+
+        if (isWinner) {
+            if (
+                elements.resultRemainingTime
+            ) {
+                elements.resultRemainingTime.textContent =
+                    formatTime(game.timeLeft);
+            }
+
+            if (elements.resultBalance) {
+                elements.resultBalance.textContent =
+                    getBalanceLabel();
+            }
+
+            elements.resultModal?.classList.add(
+                "win",
+                "result-win"
+            );
+
+            elements.resultModal?.classList.remove(
+                "lose",
+                "result-lose"
+            );
+
+            createConfetti();
+        } else {
+            if (elements.loseProgress) {
+                elements.loseProgress.textContent =
+                    `${Math.round(
+                        game.progress
+                    )}%`;
+            }
+
+            if (elements.loseReason) {
+                elements.loseReason.textContent =
+                    game.loseReason ||
+                    "GAGAL";
+            }
+
+            if (elements.loseTicket) {
+                elements.loseTicket.textContent =
+                    getTicketCount();
+            }
+
+            if (elements.loseDescription) {
+                if (
+                    game.loseReason ===
+                    "WAKTU HABIS"
+                ) {
+                    elements.loseDescription.textContent =
+                        "Waktu permainan telah habis sebelum kamu mencapai garis finis.";
+                } else {
+                    elements.loseDescription.textContent =
+                        "Kelereng terjatuh dari sendok. Kendalikan arah dengan sentuhan lebih pendek.";
+                }
+            }
+
+            elements.resultModal?.classList.add(
+                "lose",
+                "result-lose"
+            );
+
+            elements.resultModal?.classList.remove(
+                "win",
+                "result-win"
+            );
+        }
+
+        showOverlay(elements.resultOverlay);
+    }
+
+
+    /* =====================================================
+       CONFETTI
+    ===================================================== */
+
+    function createConfetti() {
+        const container =
+            elements.resultOverlay;
+
+        if (!container) {
+            return;
+        }
+
+        container
+            .querySelectorAll(
+                ".kelereng-js-confetti"
+            )
+            .forEach((item) =>
+                item.remove()
+            );
+
+        const fragment =
+            document.createDocumentFragment();
+
+        for (
+            let index = 0;
+            index < 50;
+            index += 1
+        ) {
+            const confetti =
+                document.createElement("span");
+
+            confetti.className =
+                "kelereng-js-confetti";
+
+            confetti.style.setProperty(
+                "--confetti-left",
+                `${Math.random() * 100}%`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-delay",
+                `${Math.random() * 0.8}s`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-duration",
+                `${1.8 + Math.random() * 1.7}s`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-rotation",
+                `${Math.random() * 900}deg`
+            );
+
+            confetti.style.setProperty(
+                "--confetti-hue",
+                `${Math.floor(
+                    Math.random() * 360
+                )}`
+            );
+
+            fragment.appendChild(confetti);
+        }
+
+        container.appendChild(fragment);
+
+        window.setTimeout(() => {
+            container
+                .querySelectorAll(
+                    ".kelereng-js-confetti"
+                )
+                .forEach((item) =>
+                    item.remove()
+                );
+        }, 4300);
+    }
+
+
+    /* =====================================================
+       PAUSE / RESUME
+    ===================================================== */
+
+    function pauseGame() {
+        if (game.status !== "playing") {
+            showToast(
+                "Permainan belum dimulai.",
+                "info"
+            );
+
+            return;
+        }
+
+        game.status = "paused";
+
+        elements.player?.classList.add(
+            "paused"
+        );
+
+        elements.spoon?.classList.add(
+            "paused"
+        );
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Permainan sedang dijeda.";
+        }
+
+        showOverlay(elements.pauseOverlay);
+        renderGame();
+    }
+
+
+    function resumeGame() {
+        if (game.status !== "paused") {
+            return;
+        }
+
+        game.status = "playing";
+
+        elements.player?.classList.remove(
+            "paused"
+        );
+
+        elements.spoon?.classList.remove(
+            "paused"
+        );
+
+        if (elements.readyMessage) {
+            elements.readyMessage.textContent =
+                "Lanjutkan perjalanan menuju garis finis!";
+        }
+
+        hideOverlay(elements.pauseOverlay);
+        renderGame();
+    }
+
+
+    /* =====================================================
+       KELUAR
+    ===================================================== */
+
+    function requestExit() {
+        if (isBusy()) {
+            showOverlay(elements.exitOverlay);
+            return;
+        }
+
+        returnToLobby();
+    }
+
+
+    function cancelExit() {
+        hideOverlay(elements.exitOverlay);
+    }
+
+
+    function confirmExit() {
+        hideOverlay(elements.exitOverlay);
+        returnToLobby();
+    }
+
+
+    function returnToLobby() {
+        clearGameTimers();
+
+        hideOverlay(elements.pauseOverlay);
+        hideOverlay(elements.countdownOverlay);
+        hideOverlay(elements.resultOverlay);
+        hideOverlay(elements.exitOverlay);
+
+        resetGame();
+
+        const api = getAPI();
+
+        if (
+            api &&
+            typeof api.backToLobby === "function"
+        ) {
+            api.backToLobby();
+            return;
+        }
+
+        api?.showScreen?.("lobby");
+    }
+
+
+    /* =====================================================
+       TOMBOL RESULT
+    ===================================================== */
+
+    function closeResult() {
+        hideOverlay(elements.resultOverlay);
+    }
+
+
+    function retryGame() {
+        hideOverlay(elements.resultOverlay);
+
+        window.setTimeout(() => {
+            resetGame();
+            startCountdown();
+        }, 250);
+    }
+
+
+    function openMysteryBox() {
+        hideOverlay(elements.resultOverlay);
+
+        const api = getAPI();
+
+        if (
+            !api ||
+            typeof api.showScreen !== "function"
+        ) {
+            showToast(
+                "Mystery Box belum tersedia.",
+                "warning"
+            );
+
+            return;
+        }
+
+        api.showScreen("mystery");
+
+        api.notify?.(
+            "Mystery Box terbuka. Engine hadiah akan diaktifkan pada Part berikutnya.",
+            "success"
+        );
+    }
+
+
+    /* =====================================================
+       SUARA
+    ===================================================== */
+
+    function toggleSound() {
+        game.soundEnabled =
+            !game.soundEnabled;
+
+        if (elements.soundIcon) {
+            elements.soundIcon.textContent =
+                game.soundEnabled
+                    ? "🔊"
+                    : "🔇";
+        }
+
+        getAPI()?.setSound?.(
+            game.soundEnabled
+        );
+
+        showToast(
+            game.soundEnabled
+                ? "Suara diaktifkan."
+                : "Suara dimatikan.",
+            "info"
+        );
+    }
+
+
+    /* =====================================================
+       KEYBOARD
+    ===================================================== */
+
+    function handleKeyboard(event) {
+        if (!isScreenActive()) {
+            return;
+        }
+
+        if (
+            event.code === "Space" &&
+            game.status === "playing"
+        ) {
+            event.preventDefault();
+            moveForward();
+            return;
+        }
+
+        if (
+            event.key === "ArrowLeft" &&
+            game.status === "playing"
+        ) {
+            event.preventDefault();
+            moveLeft();
+            return;
+        }
+
+        if (
+            event.key === "ArrowRight" &&
+            game.status === "playing"
+        ) {
+            event.preventDefault();
+            moveRight();
+            return;
+        }
+
+        if (
+            event.key === "Escape" &&
+            game.status === "paused"
+        ) {
+            resumeGame();
+            return;
+        }
+
+        if (
+            event.key === "Escape" &&
+            isBusy()
+        ) {
+            requestExit();
+        }
+    }
+
+
+    /* =====================================================
+       SCREEN CHANGE
+    ===================================================== */
+
+    function handleScreenChange(event) {
+        const screenName =
+            event.detail?.screen || "";
+
+        const enteringKelereng =
+            screenName === "kelereng" ||
+            screenName === "lomba-kelereng" ||
+            screenName === "lombaKelereng";
+
+        if (enteringKelereng) {
+            renderGame();
+            return;
+        }
+
+        if (isBusy()) {
+            clearGameTimers();
+            resetGame();
+        }
+    }
+
+
+    /* =====================================================
+       BIND EVENTS
+    ===================================================== */
+
+    function bindEvents() {
+        elements.startButton?.addEventListener(
+            "click",
+            startCountdown
+        );
+
+        elements.leftButton?.addEventListener(
+            "click",
+            moveLeft
+        );
+
+        elements.forwardButton?.addEventListener(
+            "click",
+            moveForward
+        );
+
+        elements.rightButton?.addEventListener(
+            "click",
+            moveRight
+        );
+
+        elements.pauseButton?.addEventListener(
+            "click",
+            pauseGame
+        );
+
+        elements.resumeButton?.addEventListener(
+            "click",
+            resumeGame
+        );
+
+        elements.quitButton?.addEventListener(
+            "click",
+            requestExit
+        );
+
+        elements.backButton?.addEventListener(
+            "click",
+            (event) => {
+                if (isBusy()) {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    requestExit();
+                }
+            },
+            true
+        );
+
+        elements.cancelExitButton?.addEventListener(
+            "click",
+            cancelExit
+        );
+
+        elements.confirmExitButton?.addEventListener(
+            "click",
+            confirmExit
+        );
+
+        elements.closeResultButton?.addEventListener(
+            "click",
+            closeResult
+        );
+
+        elements.retryButton?.addEventListener(
+            "click",
+            retryGame
+        );
+
+        elements.winLobbyButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.loseLobbyButton?.addEventListener(
+            "click",
+            returnToLobby
+        );
+
+        elements.openMysteryButton?.addEventListener(
+            "click",
+            openMysteryBox
+        );
+
+        elements.soundButton?.addEventListener(
+            "click",
+            toggleSound
+        );
+
+        elements.resultOverlay?.addEventListener(
+            "click",
+            (event) => {
+                if (
+                    event.target ===
+                    elements.resultOverlay
+                ) {
+                    closeResult();
+                }
+            }
+        );
+
+        elements.exitOverlay?.addEventListener(
+            "click",
+            (event) => {
+                if (
+                    event.target ===
+                    elements.exitOverlay
+                ) {
+                    cancelExit();
+                }
+            }
+        );
+
+        document.addEventListener(
+            "keydown",
+            handleKeyboard
+        );
+
+        document.addEventListener(
+            "clickbet:screenchange",
+            handleScreenChange
+        );
+    }
+
+
+    /* =====================================================
+       PUBLIC API
+    ===================================================== */
+
+    window.ClickbetKelereng = {
+        start: startCountdown,
+        left: moveLeft,
+        right: moveRight,
+        forward: moveForward,
+        pause: pauseGame,
+        resume: resumeGame,
+        reset: resetGame,
+
+        getState() {
+            return {
+                status: game.status,
+                stepCount: game.stepCount,
+                progress: game.progress,
+                balance: game.balance,
+                balanceStatus:
+                    getBalanceLabel(),
+                timeLeft: game.timeLeft,
+                ticketUsed: game.ticketUsed,
+                loseReason: game.loseReason
+            };
+        }
+    };
+
+
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
+
+    function initialize() {
+        bindEvents();
+        resetGame();
+
+        console.info(
+            "[CLICKBET88] JavaScript Part 4 Lomba Kelereng aktif."
+        );
+    }
+
+
+    initialize();
+
+})();
