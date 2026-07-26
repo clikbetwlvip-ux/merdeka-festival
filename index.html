@@ -2940,3 +2940,396 @@
       </div>
 
     </section>
+    <!-- =========================================
+         HASIL GAME MAKAN KERUPUK
+    ========================================== -->
+    <div
+      id="kerupukResultOverlay"
+      class="game-result-overlay"
+      aria-hidden="true"
+    >
+
+      <div
+        id="kerupukResultModal"
+        class="game-result-modal"
+      >
+
+        <div class="result-background-glow"></div>
+
+        <button
+          id="closeKerupukResultButton"
+          class="result-close-button"
+          type="button"
+          aria-label="Tutup hasil permainan"
+        >
+          ×
+        </button>
+
+
+        <!-- Tampilan menang -->
+        <div
+          id="kerupukWinContent"
+          class="result-content win-result-content"
+        >
+
+          <div class="result-ribbon">
+            <span>KERUPUK HABIS!</span>
+          </div>
+
+
+          <div class="result-icon-wrapper">
+
+            <div class="result-icon-glow"></div>
+
+            <div class="result-trophy-icon">
+              🏆
+            </div>
+
+          </div>
+
+
+          <span class="result-label">
+            MISI BERHASIL
+          </span>
+
+          <h2>
+            Cepat Sekali!
+          </h2>
+
+          <p>
+            Kamu berhasil menghabiskan kerupuk sebelum waktu
+            permainan berakhir.
+          </p>
+
+
+          <div class="result-stat-grid">
+
+            <div class="result-stat-item">
+
+              <span>⏱️</span>
+
+              <div>
+                <small>Sisa Waktu</small>
+
+                <strong id="kerupukResultRemainingTime">
+                  00:00
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-stat-item">
+
+              <span>👆</span>
+
+              <div>
+                <small>Total Tap</small>
+
+                <strong id="kerupukResultTapCount">
+                  35
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-stat-item">
+
+              <span>🍘</span>
+
+              <div>
+                <small>Kerupuk Tersisa</small>
+
+                <strong>
+                  0%
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="result-unlock-box">
+
+            <div class="result-box-glow"></div>
+
+            <div class="result-mini-box">
+
+              <span class="result-mini-box-ribbon"></span>
+
+              <span class="result-mini-box-question">
+                ?
+              </span>
+
+            </div>
+
+
+            <div class="result-unlock-copy">
+
+              <small>HADIAH TERBUKA</small>
+
+              <strong>
+                Mystery Box
+              </strong>
+
+              <p>
+                Tekan tombol di bawah untuk membuka hadiahmu.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="result-action-group">
+
+            <button
+              id="openKerupukMysteryButton"
+              class="primary-button gold-button result-primary-button"
+              type="button"
+            >
+
+              <span class="button-glow"></span>
+
+              <span class="button-icon">
+                🎁
+              </span>
+
+              <span class="button-text">
+                BUKA MYSTERY BOX
+              </span>
+
+              <span class="button-arrow">
+                ➜
+              </span>
+
+            </button>
+
+
+            <button
+              id="kerupukWinLobbyButton"
+              class="secondary-button result-secondary-button"
+              type="button"
+            >
+              Kembali ke Lobby
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Tampilan kalah -->
+        <div
+          id="kerupukLoseContent"
+          class="result-content lose-result-content"
+          hidden
+        >
+
+          <div class="result-ribbon lose-ribbon">
+            <span>WAKTU HABIS</span>
+          </div>
+
+
+          <div class="result-icon-wrapper">
+
+            <div class="result-icon-glow lose-icon-glow"></div>
+
+            <div class="result-fail-icon">
+              🍘
+            </div>
+
+          </div>
+
+
+          <span class="result-label lose-result-label">
+            KERUPUK BELUM HABIS
+          </span>
+
+          <h2>
+            Sedikit Lagi!
+          </h2>
+
+          <p>
+            Waktu permainan telah habis. Tekan lebih cepat pada
+            kesempatan berikutnya.
+          </p>
+
+
+          <div class="result-stat-grid">
+
+            <div class="result-stat-item">
+
+              <span>👆</span>
+
+              <div>
+                <small>Total Tap</small>
+
+                <strong id="kerupukLoseTapCount">
+                  0
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-stat-item">
+
+              <span>🍘</span>
+
+              <div>
+                <small>Kerupuk Tersisa</small>
+
+                <strong id="kerupukLoseRemaining">
+                  100%
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-stat-item">
+
+              <span>🎫</span>
+
+              <div>
+                <small>Sisa Tiket</small>
+
+                <strong id="kerupukLoseTicket">
+                  7
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="result-fail-message">
+
+            <span>💡</span>
+
+            <p>
+              Gunakan dua jari secara bergantian atau tekan Space
+              berulang kali dengan cepat.
+            </p>
+
+          </div>
+
+
+          <div class="result-action-group">
+
+            <button
+              id="retryKerupukButton"
+              class="primary-button red-button result-primary-button"
+              type="button"
+            >
+
+              <span class="button-glow"></span>
+
+              <span class="button-icon">
+                🔄
+              </span>
+
+              <span class="button-text">
+                COBA LAGI
+              </span>
+
+            </button>
+
+
+            <button
+              id="kerupukLoseLobbyButton"
+              class="secondary-button result-secondary-button"
+              type="button"
+            >
+              Kembali ke Lobby
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         KONFIRMASI KELUAR MAKAN KERUPUK
+    ========================================== -->
+    <div
+      id="kerupukExitConfirmOverlay"
+      class="confirmation-overlay"
+      aria-hidden="true"
+    >
+
+      <div class="confirmation-modal">
+
+        <div class="confirmation-icon">
+          ⚠️
+        </div>
+
+        <span class="section-label">
+          KONFIRMASI
+        </span>
+
+        <h2>
+          Keluar dari Permainan?
+        </h2>
+
+        <p>
+          Progres makan kerupuk yang sedang berlangsung akan hilang.
+        </p>
+
+
+        <div class="confirmation-actions">
+
+          <button
+            id="cancelKerupukExitButton"
+            class="secondary-button"
+            type="button"
+          >
+            Tetap Bermain
+          </button>
+
+
+          <button
+            id="confirmKerupukExitButton"
+            class="primary-button red-button"
+            type="button"
+          >
+            Keluar ke Lobby
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NOTIFIKASI MAKAN KERUPUK
+    ========================================== -->
+    <div
+      id="kerupukToast"
+      class="game-toast"
+      role="status"
+      aria-live="polite"
+    >
+
+      <span id="kerupukToastIcon">
+        ℹ️
+      </span>
+
+      <p id="kerupukToastMessage">
+        Pesan permainan
+      </p>
+
+    </div>
