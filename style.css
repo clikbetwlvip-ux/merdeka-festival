@@ -22799,3 +22799,53 @@ body.no-scroll {
     animation-iteration-count: 1 !important;
   }
 }
+/* ===============================
+   FIX TOAST NOTIFIKASI
+=============================== */
+
+.game-toast{
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 340px;
+    max-width: 90vw;
+
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    box-sizing: border-box;
+}
+
+.game-toast p{
+    flex: 1;
+    margin: 0;
+
+    white-space: normal;
+    word-break: break-word;
+
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 600;
+}
+
+.game-toast span{
+    flex-shrink: 0;
+    font-size: 22px;
+}
+
+@media(max-width:600px){
+
+    .game-toast{
+        min-width: auto;
+        width: calc(100% - 24px);
+    }
+
+}
