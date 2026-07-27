@@ -258,3 +258,25 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSoundButton();
     startLoading();
 });
+const playNowButton =
+    document.getElementById("play-now-button");
+
+const menuCards =
+    document.querySelectorAll(".menu-card");
+
+playNowButton.addEventListener("click", () => {
+    showNotification(
+        "Menu mini-game akan dibuka pada tahap berikutnya."
+    );
+});
+
+menuCards.forEach((card) => {
+    card.addEventListener("click", () => {
+        const menuName =
+            card.querySelector("h3").textContent;
+
+        showNotification(
+            `${menuName} sedang dipersiapkan.`
+        );
+    });
+});
