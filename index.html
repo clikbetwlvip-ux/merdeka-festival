@@ -292,3 +292,792 @@
     </button>
 
 </section>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
+
+    <meta name="theme-color" content="#09000f">
+
+    <title>CLICKBET88 Fantasy Portal</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ==================================================
+         LOADING SCREEN
+    =================================================== -->
+    <section id="loadingScreen" class="screen screen-active">
+
+        <div class="loading-background"></div>
+        <div id="loadingParticles" class="particle-layer"></div>
+
+        <div class="loading-container">
+
+            <img
+                class="loading-logo"
+                src="https://clickbet88sedekahrejeki05.xyz/storage/webpersonalize/d54f5304-03b3-49f7-b283-e6fe0c595ca7.gif"
+                alt="CLICKBET88"
+            >
+
+            <p class="loading-title">
+                MEMBUKA FANTASY PORTAL
+            </p>
+
+            <div class="loading-bar">
+                <div id="loadingProgress" class="loading-progress"></div>
+            </div>
+
+            <div class="loading-info">
+                <span id="loadingMessage">Menyiapkan dunia...</span>
+                <strong id="loadingPercent">0%</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         INTRO SCREEN
+    =================================================== -->
+    <section id="introScreen" class="screen">
+
+        <div class="intro-background"></div>
+        <div class="intro-overlay"></div>
+
+        <div id="introStars" class="star-layer"></div>
+
+        <div class="portal portal-left"></div>
+        <div class="portal portal-right"></div>
+
+        <div class="intro-container">
+
+            <img
+                class="intro-logo"
+                src="https://clickbet88sedekahrejeki05.xyz/storage/webpersonalize/d54f5304-03b3-49f7-b283-e6fe0c595ca7.gif"
+                alt="CLICKBET88"
+            >
+
+            <div class="intro-heading">
+
+                <span class="small-heading">
+                    WELCOME TO
+                </span>
+
+                <h1>
+                    FANTASY
+                    <strong>PORTAL</strong>
+                </h1>
+
+                <p>
+                    Masuki dunia anime, selesaikan misi,
+                    kumpulkan poin, dan nikmati berbagai
+                    permainan promosi khusus member.
+                </p>
+
+            </div>
+
+            <button id="enterPortalButton" class="primary-button">
+                <span class="button-light"></span>
+                <span class="button-icon">⚔️</span>
+                <span>MASUK KE PORTAL</span>
+            </button>
+
+            <button id="soundButton" class="sound-button" type="button">
+                🔊 Suara Aktif
+            </button>
+
+            <p class="version">
+                CLICKBET88 FANTASY PORTAL • VERSION 1.0
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         LOGIN MEMBER
+    =================================================== -->
+    <section id="loginScreen" class="screen">
+
+        <div class="login-background"></div>
+        <div class="login-overlay"></div>
+
+        <div class="login-wrapper">
+
+            <div class="login-character">
+
+                <div class="character-glow"></div>
+
+                <div class="character-placeholder">
+                    <span>ANIME CHARACTER</span>
+                    <small>Gambar karakter akan dipasang nanti</small>
+                </div>
+
+            </div>
+
+            <div class="login-card">
+
+                <img
+                    class="login-logo"
+                    src="https://clickbet88sedekahrejeki05.xyz/storage/webpersonalize/d54f5304-03b3-49f7-b283-e6fe0c595ca7.gif"
+                    alt="CLICKBET88"
+                >
+
+                <span class="login-label">
+                    MEMBER ACCESS
+                </span>
+
+                <h2>Masuk ke Fantasy Portal</h2>
+
+                <p class="login-description">
+                    Masukkan ID member untuk melanjutkan.
+                </p>
+
+                <form id="memberLoginForm">
+
+                    <label for="memberId">
+                        ID MEMBER
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-icon">👤</span>
+
+                        <input
+                            id="memberId"
+                            name="memberId"
+                            type="text"
+                            maxlength="30"
+                            autocomplete="off"
+                            placeholder="Masukkan ID member"
+                            required
+                        >
+
+                    </div>
+
+                    <label for="memberCode">
+                        KODE AKSES
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-icon">🔐</span>
+
+                        <input
+                            id="memberCode"
+                            name="memberCode"
+                            type="password"
+                            maxlength="30"
+                            placeholder="Masukkan kode akses"
+                            required
+                        >
+
+                        <button
+                            id="togglePasswordButton"
+                            class="toggle-password"
+                            type="button"
+                            aria-label="Tampilkan kode akses"
+                        >
+                            👁️
+                        </button>
+
+                    </div>
+
+                    <label class="remember-row">
+
+                        <input
+                            id="rememberMember"
+                            type="checkbox"
+                        >
+
+                        <span>Ingat ID member</span>
+
+                    </label>
+
+                    <button
+                        class="login-button"
+                        type="submit"
+                    >
+                        MASUK SEKARANG
+                    </button>
+
+                </form>
+
+                <button
+                    id="backToIntroButton"
+                    class="back-button"
+                    type="button"
+                >
+                    ← Kembali
+                </button>
+
+                <p class="login-note">
+                    Versi awal masih memakai sistem demo lokal.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         MAIN LOBBY
+    =================================================== -->
+    <section id="lobbyScreen" class="screen">
+
+        <div class="lobby-background"></div>
+        <div class="lobby-overlay"></div>
+
+        <!-- HEADER -->
+        <header class="lobby-header">
+
+            <div class="profile-box">
+
+                <div class="profile-avatar">
+                    <span id="avatarLetter">M</span>
+                </div>
+
+                <div class="profile-info">
+
+                    <small>SELAMAT DATANG</small>
+
+                    <h2 id="memberName">
+                        Member
+                    </h2>
+
+                    <p>
+                        Level
+                        <strong id="memberLevel">1</strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="currency-list">
+
+                <div class="currency-item">
+
+                    <span class="currency-icon">🪙</span>
+
+                    <div>
+                        <small>POIN</small>
+                        <strong id="memberPoints">1.000</strong>
+                    </div>
+
+                </div>
+
+                <div class="currency-item">
+
+                    <span class="currency-icon">🎟️</span>
+
+                    <div>
+                        <small>TIKET</small>
+                        <strong id="memberTickets">3</strong>
+                    </div>
+
+                </div>
+
+                <button
+                    id="openSettingsButton"
+                    class="icon-button"
+                    type="button"
+                    title="Pengaturan"
+                >
+                    ⚙️
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- MAIN LOBBY CONTENT -->
+        <main class="lobby-main">
+
+            <!-- HERO -->
+            <section class="hero-section">
+
+                <div class="hero-content">
+
+                    <span class="hero-label">
+                        CLICKBET88 PRESENTS
+                    </span>
+
+                    <h1>
+                        ANIME FANTASY
+                        <strong>FESTIVAL</strong>
+                    </h1>
+
+                    <p>
+                        Mainkan mini-game promosi, selesaikan
+                        misi harian, dan kumpulkan poin event.
+                    </p>
+
+                    <div class="hero-actions">
+
+                        <button
+                            id="mainPlayButton"
+                            class="hero-play-button"
+                            type="button"
+                        >
+                            🎮 MAIN SEKARANG
+                        </button>
+
+                        <button
+                            id="openMissionButton"
+                            class="hero-secondary-button"
+                            type="button"
+                        >
+                            📜 LIHAT MISI
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="hero-character-area">
+
+                    <div class="character-aura"></div>
+
+                    <div class="hero-character-placeholder">
+
+                        <span>KARAKTER ANIME</span>
+
+                        <small>
+                            Gunakan PNG transparan
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- EVENT STATUS -->
+            <section class="event-status-grid">
+
+                <article class="status-card">
+
+                    <span class="status-icon">🔥</span>
+
+                    <div>
+                        <small>LOGIN BERUNTUN</small>
+                        <strong id="loginStreak">1 Hari</strong>
+                    </div>
+
+                </article>
+
+                <article class="status-card">
+
+                    <span class="status-icon">⭐</span>
+
+                    <div>
+                        <small>MISI SELESAI</small>
+                        <strong id="missionProgress">0 / 3</strong>
+                    </div>
+
+                </article>
+
+                <article class="status-card">
+
+                    <span class="status-icon">🏆</span>
+
+                    <div>
+                        <small>PERINGKAT</small>
+                        <strong id="memberRank">#128</strong>
+                    </div>
+
+                </article>
+
+                <article class="status-card">
+
+                    <span class="status-icon">⏳</span>
+
+                    <div>
+                        <small>RESET HARIAN</small>
+                        <strong id="dailyCountdown">23:59:59</strong>
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- MENU -->
+            <section class="section-block">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span>FANTASY PORTAL</span>
+                        <h2>Pilih Menu</h2>
+                    </div>
+
+                    <p>
+                        Semua fitur akan dibuat bertahap.
+                    </p>
+
+                </div>
+
+                <div class="menu-grid">
+
+                    <button
+                        class="menu-card"
+                        data-menu="games"
+                        type="button"
+                    >
+                        <span class="menu-icon">🎮</span>
+                        <h3>Mini Game</h3>
+                        <p>Mainkan tantangan event.</p>
+                        <b>BUKA →</b>
+                    </button>
+
+                    <button
+                        class="menu-card"
+                        data-menu="daily"
+                        type="button"
+                    >
+                        <span class="menu-icon">🎁</span>
+                        <h3>Daily Reward</h3>
+                        <p>Klaim hadiah setiap hari.</p>
+                        <b>KLAIM →</b>
+                    </button>
+
+                    <button
+                        class="menu-card"
+                        data-menu="mission"
+                        type="button"
+                    >
+                        <span class="menu-icon">📜</span>
+                        <h3>Mission</h3>
+                        <p>Selesaikan tugas harian.</p>
+                        <b>LIHAT →</b>
+                    </button>
+
+                    <button
+                        class="menu-card"
+                        data-menu="leaderboard"
+                        type="button"
+                    >
+                        <span class="menu-icon">🏆</span>
+                        <h3>Leaderboard</h3>
+                        <p>Lihat peringkat pemain.</p>
+                        <b>LIHAT →</b>
+                    </button>
+
+                    <button
+                        class="menu-card"
+                        data-menu="reward"
+                        type="button"
+                    >
+                        <span class="menu-icon">💎</span>
+                        <h3>Reward Center</h3>
+                        <p>Lihat koleksi hadiah.</p>
+                        <b>BUKA →</b>
+                    </button>
+
+                    <button
+                        class="menu-card"
+                        data-menu="history"
+                        type="button"
+                    >
+                        <span class="menu-icon">📖</span>
+                        <h3>History</h3>
+                        <p>Riwayat aktivitas event.</p>
+                        <b>LIHAT →</b>
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- MINI GAME PREVIEW -->
+            <section id="gameSection" class="section-block">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span>GAME PORTAL</span>
+                        <h2>Mini Game Pilihan</h2>
+                    </div>
+
+                    <p>
+                        Versi pertama akan dimulai dari Treasure Adventure.
+                    </p>
+
+                </div>
+
+                <div class="game-grid">
+
+                    <article class="game-card game-card-active">
+
+                        <div class="game-card-visual">
+                            <span>🎁</span>
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <small>GAME 01</small>
+
+                            <h3>Treasure Adventure</h3>
+
+                            <p>
+                                Pilih peti dan buka kejutan event.
+                            </p>
+
+                            <button
+                                class="game-button"
+                                data-game="treasure"
+                                type="button"
+                            >
+                                MAIN
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                    <article class="game-card">
+
+                        <div class="game-card-visual">
+                            <span>💎</span>
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <small>GAME 02</small>
+
+                            <h3>Crystal Smash</h3>
+
+                            <p>
+                                Pecahkan kristal dan kumpulkan skor.
+                            </p>
+
+                            <button
+                                class="game-button"
+                                data-game="crystal"
+                                type="button"
+                            >
+                                SEGERA HADIR
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                    <article class="game-card">
+
+                        <div class="game-card-visual">
+                            <span>🎴</span>
+                        </div>
+
+                        <div class="game-card-content">
+
+                            <small>GAME 03</small>
+
+                            <h3>Anime Card Match</h3>
+
+                            <p>
+                                Temukan pasangan kartu anime.
+                            </p>
+
+                            <button
+                                class="game-button"
+                                data-game="cards"
+                                type="button"
+                            >
+                                SEGERA HADIR
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- MOBILE NAVIGATION -->
+        <nav class="mobile-navigation">
+
+            <button
+                class="mobile-nav-active"
+                data-nav="home"
+                type="button"
+            >
+                <span>🏠</span>
+                <small>Home</small>
+            </button>
+
+            <button
+                data-nav="games"
+                type="button"
+            >
+                <span>🎮</span>
+                <small>Game</small>
+            </button>
+
+            <button
+                data-nav="reward"
+                type="button"
+            >
+                <span>🎁</span>
+                <small>Reward</small>
+            </button>
+
+            <button
+                data-nav="profile"
+                type="button"
+            >
+                <span>👤</span>
+                <small>Profile</small>
+            </button>
+
+        </nav>
+
+    </section>
+
+
+    <!-- ==================================================
+         GENERAL MODAL
+    =================================================== -->
+    <div id="generalModal" class="modal">
+
+        <div class="modal-backdrop" data-close-modal></div>
+
+        <div class="modal-card">
+
+            <button
+                class="modal-close"
+                type="button"
+                data-close-modal
+            >
+                ×
+            </button>
+
+            <div id="modalIcon" class="modal-icon">
+                ✨
+            </div>
+
+            <h2 id="modalTitle">
+                Informasi
+            </h2>
+
+            <p id="modalDescription">
+                Fitur sedang dipersiapkan.
+            </p>
+
+            <button
+                id="modalConfirmButton"
+                class="modal-confirm"
+                type="button"
+                data-close-modal
+            >
+                MENGERTI
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         SETTINGS MODAL
+    =================================================== -->
+    <div id="settingsModal" class="modal">
+
+        <div class="modal-backdrop" data-close-settings></div>
+
+        <div class="modal-card settings-card">
+
+            <button
+                class="modal-close"
+                type="button"
+                data-close-settings
+            >
+                ×
+            </button>
+
+            <div class="modal-icon">
+                ⚙️
+            </div>
+
+            <h2>Pengaturan</h2>
+
+            <div class="settings-list">
+
+                <button
+                    id="settingsSoundButton"
+                    class="settings-item"
+                    type="button"
+                >
+                    <span>🔊 Suara</span>
+                    <strong>Aktif</strong>
+                </button>
+
+                <button
+                    id="resetProgressButton"
+                    class="settings-item"
+                    type="button"
+                >
+                    <span>🔄 Reset Demo</span>
+                    <strong>Reset</strong>
+                </button>
+
+                <button
+                    id="logoutButton"
+                    class="settings-item settings-danger"
+                    type="button"
+                >
+                    <span>🚪 Keluar</span>
+                    <strong>Logout</strong>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         NOTIFICATION
+    =================================================== -->
+    <div id="notification" class="notification">
+
+        <span id="notificationIcon">✨</span>
+
+        <p id="notificationText">
+            Selamat datang.
+        </p>
+
+    </div>
+
+
+    <!-- ==================================================
+         JAVASCRIPT
+    =================================================== -->
+    <script src="data.js"></script>
+    <script src="game.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
